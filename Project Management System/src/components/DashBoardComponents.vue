@@ -6,45 +6,63 @@
                 menu
             </span>
         </div>
-        <div class="profile">
-            <span class="material-symbols-rounded">
+        <div class="profile-panel">
+            <span id ="acount-icon" class="material-symbols-rounded">
                 account_circle
             </span>
             <div class="text">
-                <p class="name">
+                <span class="text-name">
                     Liza S. Orillano
-                </p>
-                <p class="occupation">
+                </span>
+                <span class="text-occupation">
                     Civil Engineer
-                </p>
+                </span>
             </div>
-            <span class="material-symbols-rounded">
+            <span id="more-icon" class="material-symbols-rounded">
                 more_horiz
             </span>
         </div>
         <div class="panels">
-            <img class = "side-icon" src = "../assets/dashboard.svg" />
-            <div class="text-name">
-                <p>
-                    Dashboard
-                </p>
-            </div>
+            <span id="lower-icon" class="material-symbols-rounded">
+                dashboard
+            </span>
+            <span class = "text-panel">
+                Dashboard
+            </span>
         </div>
         <div class="panels">
-            <img class = "side-icon" src = "../assets/format-list.svg" />
-            <div class="text-name">
-                <p>
-                    All Surveys
-                </p>
-            </div>
+            <span id="lower-icon" class="material-symbols-rounded">
+                format_list_bulleted
+            </span>
+            <span class = "text-panel">
+                All Surveys
+            </span>
         </div>
         <div class="panels">
-            <img class = "side-icon" src = "../assets/pending-action.svg" />
-            <div class="text-name">
-                <p>
-                    Ongoing Surveys
-                </p>
-            </div>
+            <span id="lower-icon" class="material-symbols-rounded">
+                pending_actions
+            </span>
+            <span class = "text-panel">
+                Ongoing Surveys
+            </span>
+        </div>
+        <div class="lower-panel">
+            <div class="lower-panels">
+            <span id="lower-icon" class="material-symbols-rounded">
+                settings
+            </span>
+            <span class = "text-panel">
+                Settings
+            </span>
+        </div>
+        <div class="lower-panels">
+            <span id="lower-icon" class="material-symbols-rounded">
+                logout
+            </span>
+            <span class = "text-panel">
+                Logout
+            </span>
+        </div>
         </div>
     </div>
 </template>
@@ -75,13 +93,7 @@ body{
     margin: auto;
 }
 
-.material-symbols-rounded{
-    width: 48px;
-    height: 48px;
-    color: white;
-}
-
-.profile{
+.profile-panel{
     display: flex;
     height: 100px;
     width: 100%;
@@ -94,11 +106,12 @@ body{
     align-items: left;
     color: white;
 }
-p.name{
+.text-name{
     font-size: 20px;
     font-weight: bold;
+    margin-bottom: -5px;
 }
-p.occupation{
+.text-occupation{
     font-size: 12spx;
 }
 
@@ -110,19 +123,51 @@ p.occupation{
     justify-content: center;
 }
 
-.side-icon{
-    width: 35px;
-    height: 35px;
-    margin: auto;
-}
-
-.text-name{
+.text-panel{
     font-size: 20px;
     width: 220px;
     color: white;
-    margin: 10px;
-    padding: 10px;
-    margin-left: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+}
+
+.material-symbols-rounded{
+    font-size: 48px;
+    color: white;
+    margin: auto;
+}
+
+#more-icon{
+    font-size: 30px;
+}
+
+#acount-icon{
+    font-size: 65px;
+}
+
+#lower-icon{
+    font-size: 30px;
+    margin: auto;
+}
+
+.lower-panels{
+    width: 100%;
+    height: 65px;
+    display: flex;
+    flex-direction: rows;
+    justify-content: center;
+}
+
+.lower-panel{
+    position: absolute; 
+    bottom: 0; 
+    width: 300px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 </style>
