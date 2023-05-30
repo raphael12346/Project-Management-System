@@ -8,8 +8,8 @@
             
             <h1 class="head">LOGIN</h1>
             <div class="inputs">
-                <input type = "text" placeholder= "Enter Username" class="text"/>
-                <input type = "password" placeholder= "Enter Password" class="password"/>
+                <input type = "text" placeholder= "Username" class="text"/>
+                <input type = "password" placeholder= "Password" class="password"/>
             </div>
             <div>
                 <button class="submit">Login</button>
@@ -19,57 +19,13 @@
 </template>
     
 <style>
-
-.submit{
-    color: antiquewhite;
-    width: 50px;
-    height: 20px;
-    background-color:blue;
-    border: none;
-    border-radius: 5px;
-}
-
-.side{
-    height: 350PX;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    padding-left: 25px;
-    
-}
-
-.head{
-    color: black;
-    font-weight: bold;
-}
-
 body{
     display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Adjust the height as needed */
-  background-color: blue;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust the height as needed */
+    background-color: #007BFF;
 }
-
-.inputs{
-  display: flex;
-  flex-direction: column;
-
-}
-
-input.text, input.password{
-    height: 30px;
-    margin-bottom: 10px;
-    padding: 10px;
-}
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Inter, sans-serif;
-}
-
 .container{
     display: flex;
     align-items: center;
@@ -79,6 +35,17 @@ input.text, input.password{
     padding: 50px;
     padding-left: 0%;
     padding-right: 0%;
+    border-radius: 7px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.side{
+    height: 350px;
+    display: flex;
+    align-items: center;
+    padding: 50px;
+    padding-left: 25px;
+    padding-right: 0px;  
 }
 
 .login{
@@ -86,20 +53,50 @@ input.text, input.password{
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    max-width: 450px;
-    width: 300px;
+    width: 450px;
     padding: 25px;
     border-radius: 5px;
-}
-.logo{
-    width: 200px;
+    padding-left: 0px;
 }
 
-header{
-    font-size: 28px;
-    font-weight: 600;
-    color: #343A40;
-    text-align: center;
+.logo{
+    width: 400px;
+}
+
+.head{
+    color:#333333;
+    font-weight: 800;
+    font-size: 45px;
+    margin-bottom: 5px;
+}
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+input.text, input.password{
+    font-size: 18px;
+    height: 50px;
+    margin-bottom: 10px;
+    padding: 10px;
+    padding-left: 15px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.submit{
+    color: white;
+    width: 120px;
+    height: 50px;
+    background-color: #007BFF;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+}
+.submit:hover{
+    background-color: #343A40;
 }
 
 </style>
