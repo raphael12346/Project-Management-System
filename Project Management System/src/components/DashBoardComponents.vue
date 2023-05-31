@@ -1,10 +1,7 @@
 <template>
     <div class="sidebar">
         <div class="top-menu">
-            <img class = "logo" src = "../assets/logo.jpg" />
-            <span class="material-symbols-rounded">
-                menu
-            </span>
+            <img class = "logo" src = "../assets/logo.png" />
         </div>
         <div class="profile-panel">
             <span id ="acount-icon" class="material-symbols-rounded">
@@ -21,6 +18,9 @@
             <span id="more-icon" class="material-symbols-rounded">
                 more_horiz
             </span>
+            <div class="dropdown-list">
+                <span>Account Settings</span>
+            </div>
         </div>
         <div class="panels">
             <span id="lower-icon" class="material-symbols-rounded">
@@ -76,7 +76,7 @@ body{
 
 .sidebar{
     height: 100vh;
-    width: 300px;
+    width: 260px;
     background-color: #343A40;
     display: flex;
     align-items: top;
@@ -95,7 +95,7 @@ body{
 
 .profile-panel{
     display: flex;
-    height: 100px;
+    height: 70px;
     width: 100%;
 }
 
@@ -107,25 +107,25 @@ body{
     color: white;
 }
 .text-name{
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: -5px;
 }
 .text-occupation{
-    font-size: 12spx;
+    font-size: 12px;
 }
 
 .panels{
     width: 100%;
-    height: 65px;
+    height: 50px;
     display: flex;
     flex-direction: rows;
     justify-content: center;
 }
 
 .text-panel{
-    font-size: 20px;
-    width: 220px;
+    font-size: 16px;
+    width: 190px;
     color: white;
     display: flex;
     flex-direction: column;
@@ -140,15 +140,16 @@ body{
 }
 
 #more-icon{
-    font-size: 30px;
+    font-size: 28px;
+    cursor: pointer;
 }
 
 #acount-icon{
-    font-size: 65px;
+    font-size: 50px;
 }
 
 #lower-icon{
-    font-size: 30px;
+    font-size: 28px;
     margin: auto;
 }
 
@@ -163,11 +164,45 @@ body{
 .lower-panel{
     position: absolute; 
     bottom: 0; 
-    width: 300px;
-    height: 130px;
+    width: 260px;
+    height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 15px;
+}
+
+.panels:hover{
+    background-color:rgba(255, 255, 255, 0.82);
+    cursor: pointer;
+    border-right: 10px solid #343a404a;
+    padding-left: 10px;
+    
+}
+
+.panels:hover span{
+    color: #343A40;
+}
+
+.lower-panels:hover{
+    background-color:rgba(255, 255, 255, 0.82);
+    cursor: pointer;
+    border-right: 10px solid #343a404a;
+    padding-left: 10px;
+    
+}
+
+.lower-panels:hover span{
+    color: #343A40;
+}
+
+.dropdown-list{
+    position: absolute;
+    background-color: black;
+    left: 11%;
+    top: 18%;
+    padding: 5px;
+    cursor: pointer;
 }
 
 </style>
