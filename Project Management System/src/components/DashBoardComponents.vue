@@ -15,11 +15,13 @@
                     Civil Engineer
                 </span>
             </div>
-            <span id="more-icon" class="material-symbols-rounded">
-                more_horiz
-            </span>
-            <div class="dropdown-list">
-                <span>Account Settings</span>
+            <div class="dropdown">
+                <span id="more-icon" class="material-symbols-rounded">
+                    more_horiz
+                </span>
+                <div class="dropdown-content">
+                    <a href="#">Account Settings</a>
+                </div>
             </div>
         </div>
         <div class="panels">
@@ -139,11 +141,6 @@ body{
     margin: auto;
 }
 
-#more-icon{
-    font-size: 28px;
-    cursor: pointer;
-}
-
 #acount-icon{
     font-size: 50px;
 }
@@ -178,6 +175,7 @@ body{
     border-right: 10px solid #343a404a;
     padding-left: 10px;
     
+    
 }
 
 .panels:hover span{
@@ -197,13 +195,61 @@ body{
 }
 
 .dropdown-list{
-    position: absolute;
-    background-color: black;
-    left: 11%;
-    top: 18%;
-    padding: 5px;
-    cursor: pointer;
+    position: relative;
+    display: inline-block;
 }
+
+#more-icon{
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.dropdown{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.dropdown-content{
+    top: 65%;
+    display: none;
+    position: absolute;
+    background-color: #007BFF;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 3px;
+}
+
+.dropdown-content a{
+    color: white;
+    padding: 6px 10px;
+    display: block;
+    text-align: center;
+}
+
+.dropdown-content a:hover{
+    background-color: #ddd;
+    color: #343A40;
+}
+
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+.dropdown:hover .dropbtn{
+    background-color: #3e8e41;
+}
+
+
+
+
 
 </style>
 
