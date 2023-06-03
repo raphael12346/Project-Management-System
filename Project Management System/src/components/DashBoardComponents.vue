@@ -247,6 +247,7 @@ body{
 
 .dropdown-content{
     top: 65%;
+    left: 10%;
     display: none;
     position: absolute;
     background-color: #007BFF;
