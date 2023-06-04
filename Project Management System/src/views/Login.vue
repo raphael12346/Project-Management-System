@@ -7,3 +7,8 @@ import LoginComponent from '../components/LoginComponents.vue'
         <LoginComponent/>
     </main>
 </template>
+
+<style>
+
+
+</style>

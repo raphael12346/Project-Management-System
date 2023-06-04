@@ -29,9 +29,8 @@ body{
 }
 
 .container{
+    width: 70%;
     color: black;
-    margin-top: 100px;
-    margin-left: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;

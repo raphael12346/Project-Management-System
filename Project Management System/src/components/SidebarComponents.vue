@@ -105,10 +105,13 @@ body{
 }
 
 .sidebar{
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 100vh;
     width: 260px;
     background-color: #343A40;
-    display: flex;
     align-items: top;
     flex-direction: column;
 }
