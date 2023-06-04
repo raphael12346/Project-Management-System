@@ -1,22 +1,22 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import sidebar from '@/views/Login.vue'
+import sidebar from '@/components/Sidebarcomponents.vue'
 </script>
 
 <template>
   <div class="app">
-    <router-view />
     <sidebar/>
+    <router-view />
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .app
-  {
-    display: flex;
-    main{
-      background-color: black;
-    }
+<style lang="scss" scoped> 
+
+.app {
+	display: flex;
+  main{
+    display: inline-block;
   }
 
+}
 </style>
