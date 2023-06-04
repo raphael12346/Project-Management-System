@@ -57,7 +57,19 @@
     </div>
 
     <div class="right-column">
-          <h2>Calender</h2>
+          <h1>Calender</h1>
+          <div class="calendar">
+
+          </div>
+          <div class="agenda">
+            
+          </div>
+          <div class="agenda">
+            
+        </div>
+        <div class="agenda">
+            
+        </div>
     </div>
 
 </div>
@@ -89,7 +101,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 75%;
     height: 100%;
 }
 
@@ -99,6 +111,7 @@
     flex-direction: column;
     width: auto;
     height: 100%;
+    width: 100%;
 }
 
 .cards{
@@ -158,6 +171,23 @@ h4{
     width: 300px;
     height: 200px;
     background-color: blue;
+}
+
+.calendar{
+    margin: 3px;
+    height: 200px;
+    width: 100%;
+    background-color: #ffd900;
+    border-radius: 5px;
+}
+
+.agenda{
+    margin: 3px;
+    height: 100px;
+    width: 100%;
+    background-color: red;
+    border-radius: 5px;
+
 }
 
 
