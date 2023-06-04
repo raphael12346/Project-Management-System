@@ -17,10 +17,10 @@
     </section>
   </template>
     
-<style scoped>
+<style >
 body{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     height: 100vh;
     background-image: url("../assets/background.jpg");
@@ -29,16 +29,13 @@ body{
 }
 
 .container{
-    width: 70%;
+    width: 100%;
     color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.751);
-    padding-top: 40px;
-    padding-left: 0%;
-    padding-right: 0%;
     border-radius: 7px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }

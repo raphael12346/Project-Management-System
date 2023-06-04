@@ -1,11 +1,15 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, RouterView } from 'vue-router'
 import sidebar from '@/components/Sidebarcomponents.vue'
+
+const route = useRoute()
+const showSidebar = computed(() => route.name != 'login')
 </script>
 
 <template>
   <div class="app">
-    <sidebar/>
+    <sidebar v-if="showSidebar"/>
     <div class="router-view-container">
       <router-view></router-view>
     </div>
