@@ -23,10 +23,7 @@ import sidebar from '@/components/Sidebarcomponents.vue'
   padding-left: 260px; /* Adjust this value to match the width of your sidebar */
   
   main{
-    display: flex;
     height: 100vh;
-    justify-content: center;
-    align-items: center;
   }
 }
 </style>
