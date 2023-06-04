@@ -97,7 +97,7 @@
     </div>
 </template>
     
-<style>
+<style scoped>
 body{
     align-items: center;
     height: 100vh; /* Adjust the height as needed */

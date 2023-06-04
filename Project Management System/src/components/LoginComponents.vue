@@ -17,12 +17,12 @@
     </section>
   </template>
     
-<style>
+<style scoped>
 body{
     display: flex;
     justify-content: left;
-    align-items: flex-start;
-    width: 100vw;
+    align-items: center;
+    height: 100vh;
     background-image: url("../assets/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -37,7 +37,6 @@ body{
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.751);
-    height: 100%;
     padding-top: 40px;
     padding-left: 0%;
     padding-right: 0%;
