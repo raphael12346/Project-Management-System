@@ -17,17 +17,16 @@
     </section>
   </template>
     
-<style >
+<style>
 body{
     display: flex;
-    justify-content: center;
     align-items: center;
     height: 100vh;
     background-image: url("../assets/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    padding: 80px;
 }
-
 .container{
     width: 100%;
     color: black;

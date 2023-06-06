@@ -1,3 +1,21 @@
+<script>
+export default {
+  computed: {
+    activeComponent() {
+      return this.$route.meta.activeComponent;
+    }
+  },
+  methods: {
+    redirectToDashboard() {
+      this.$router.push('/dashboard')
+    },
+    redirectToallsurveys() {
+      this.$router.push('/allsurveys')
+    }
+  }
+}
+</script>
+
 <template>
     <div class="sidebar">
         <div class="upper">
@@ -25,19 +43,19 @@
                     </div>
                 </div>
             </div>
-            <div class="panels">
+            <div class="panels" :class="{ active: activeComponent === 'dashboard' }" @click="redirectToDashboard">
                 <span id="lower-icon" class="material-symbols-rounded">
                     dashboard
                 </span>
-                <span class = "text-panel">
+                <span class = "text-panel" :class="{ active: activeComponent === 'dashboard' }">
                     Dashboard
                 </span>
             </div>
-            <div class="panels">
+            <div class="panels" :class="{ active: activeComponent === 'allsurvey' }" @click="redirectToallsurveys">
                 <span id="lower-icon" class="material-symbols-rounded">
                     format_list_bulleted
                 </span>
-                <span class = "text-panel">
+                <span class = "text-panel" :class="{ active: activeComponent === 'dashboard' }">
                     All Surveys
                 </span>
             </div>
@@ -45,7 +63,7 @@
                 <span id="lower-icon" class="material-symbols-rounded">
                     pending_actions
                 </span>
-                <span class = "text-panel">
+                <span class = "text-panel" :class="{ active: activeComponent === 'dashboard' }">
                     Ongoing Surveys
                 </span>
             </div>
@@ -69,35 +87,9 @@
             </div>
         </div>
     </div>
-    <div class="right-container">
-        <div class="upper-bar">
-            <div class="search-bar">
-
-            </div>
-        </div>
-        <div class="count panel">
-            <div class="all-surveys-count">
-
-            </div>
-            <div class="ongoing-surveys-count">
-                
-            </div>
-        </div>
-        <div class="calender-panel">
-            <div class="calender">
-
-            </div>
-        </div>
-        <div class="all-suverys-panel">
-            
-        </div>
-        <div class="ongoing-surveys-panel">
-
-        </div>
-    </div>
 </template>
     
-<style scoped>
+<style>
 body{
     align-items: center;
     height: 100vh; /* Adjust the height as needed */
@@ -205,8 +197,6 @@ body{
     cursor: pointer;
     border-right: 10px solid #343a404a;
     padding-left: 10px;
-    
-    
 }
 
 .panels:hover span{
@@ -218,7 +208,6 @@ body{
     cursor: pointer;
     border-right: 10px solid #343a404a;
     padding-left: 10px;
-    
 }
 
 .lower-panels:hover span{
@@ -270,16 +259,24 @@ body{
 .dropdown-content a:hover{
     background-color: #ddd;
     color: #343A40;
+    border-radius: 3px;
+
 }
 
 .dropdown:hover .dropdown-content{
     display: block;
 }
 
-</style>
-
-<script>
-export default {
-    name: 'DashBoard'
+.panels.active {
+    background-color:rgb(255, 255, 255);
+    cursor: pointer;
+    color: #343A40; 
+    border-right: 10px solid #343a404a;
+    padding-left: 10px;
 }
-</script>
+
+.panels.active span{
+    color: #343A40;
+}
+
+</style>
