@@ -21,6 +21,13 @@ const router = createRouter({
       name: 'allsurveys',
       component: () => import('../views/AllSurveys.vue'),
       meta: { activeComponent: 'allsurvey' }
+    },
+
+    {
+      path: '/surveydetails',
+      name: 'surveydetails',
+      component: () => import('../views/SurveyDetails.vue'),
+      meta: { activeComponent: 'surveydetails' }
     }
 
   ]

@@ -22,13 +22,13 @@
     </div>
     <div class="container">
         <table>
-            <tr class="table-titles">
-                <th>Lot & Survey No.</th>
-                <th>Client</th>
-                <th>Property Location</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-                <th>Action</th>
+            <tr>
+                <th class="table-titles">Lot & Survey No.</th>
+                <th class="table-titles">Client</th>
+                <th class="table-titles">Property Location</th>
+                <th class="table-titles">Total Amount</th>
+                <th class="table-titles">Status</th>
+                <th class="table-titles">Action</th>
             </tr>
             <tr>
                 <th>LOT 5677 - A - 2 , PSD - 08 - D</th>
@@ -36,7 +36,18 @@
                 <th>Brgy. Airport, Ormoc City</th>
                 <th>₱20,000.00</th>
                 <th>Ongoing</th>
-                <th></th>
+                <th>
+                    <div class="actions">
+                        <button class="openBtn" @click="redirectTosurveydetails">
+                            Open
+                        </button>
+                        <button class="deleteBtn">
+                            <span id="delete-icon" class="material-symbols-rounded">
+                                delete
+                            </span>
+                        </button>
+                    </div>
+                </th>
             </tr>
             <tr>
                 <th>LOT 6001 - A - 2 , PSD - 08 - D</th>
@@ -44,7 +55,18 @@
                 <th>Brgy. Salvacion, Ormoc City</th>
                 <th>₱36,000.00</th>
                 <th>Completed</th>
-                <th></th>
+                <th>
+                    <div class="actions">
+                        <button class="openBtn" @click="redirectTosurveydetails">
+                            Open
+                        </button>
+                        <button class="deleteBtn">
+                            <span id="delete-icon" class="material-symbols-rounded">
+                                delete
+                            </span>
+                        </button>
+                    </div>
+                </th>
             </tr>
         </table>
     </div>
@@ -93,7 +115,6 @@
         background-color: #2EA54C;
         color: white;
         border: none;
-        border-radius: 3px;
         margin-right: 10px;
         font-size: 14px;
         padding: 0 10px;
@@ -161,9 +182,54 @@
         background-color: #dddddd;
     }
 
+    .table-titles{
+        font-weight: bold;
+    }
+
+    .actions{
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+    }
+
+    .openBtn{
+        border: none;
+        height: 30px;
+        padding: 0 10px;
+        margin-right: 10px;
+        background-color: #2ea54c;
+        cursor: pointer;
+        color: white;
+    }
+
+    .openBtn:hover{
+        background-color: #2ea54ce3;
+    }
+
+    .deleteBtn{
+        height: 30px;
+        border: none;
+        background-color: #EE4035;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .deleteBtn:hover{
+        background-color: #ee4135b8;
+    }
+
+    #delete-icon{
+        font-size: 20px;
+    }
+    
 </style>
 <script>
 export default {
-    name: 'DashBoard'
+    methods: {
+    redirectTosurveydetails() {
+      this.$router.push('/surveydetails')
+    },
+}
+
 }
 </script>
