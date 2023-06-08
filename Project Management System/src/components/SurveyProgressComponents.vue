@@ -59,10 +59,23 @@ methods: {
                     <span>Survey Return</span>
                 </div>
                 <div class="panel-tables">
-
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th class="table-titles">Completed</th>
+                        </tr>
+                        <tr>
+                            <th>BL Plan Printed</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                    </table>
                 </div>
             </div>
-
         </div>    
     </div>
 </template>
@@ -197,7 +210,10 @@ body{
     justify-content: center;
     width: 100%;
     border-radius: 3px;
-    height: 36px;
+    height: 35px;
+    margin-bottom: 5px;
 }
+
+
 
 </style>
