@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="title">
-            <span>All Surveys</span>
+            <span>Ongoing Surveys</span>
         </div>
 
         <div class="right-panel">
@@ -36,25 +36,6 @@
                 <th>Brgy. Airport, Ormoc City</th>
                 <th>₱20,000.00</th>
                 <th>Ongoing</th>
-                <th>
-                    <div class="actions">
-                        <button class="openBtn" @click="redirectTosurveydetails">
-                            Open
-                        </button>
-                        <button class="deleteBtn">
-                            <span id="delete-icon" class="material-symbols-rounded">
-                                delete
-                            </span>
-                        </button>
-                    </div>
-                </th>
-            </tr>
-            <tr>
-                <th>LOT 6001 - A - 2 , PSD - 08 - D</th>
-                <th>Kyle Nierras</th>
-                <th>Brgy. Salvacion, Ormoc City</th>
-                <th>₱36,000.00</th>
-                <th>Completed</th>
                 <th>
                     <div class="actions">
                         <button class="openBtn" @click="redirectTosurveydetails">

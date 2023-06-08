@@ -94,24 +94,27 @@ body{
 }
 
 .columns{
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
 }
 
 .left-column{
     padding: 20px;
     display: flex;
     flex-direction: column;
-    width: 75%;
     height: 100%;
+    width: auto;    
 }
 
 .right-column{
     padding: 20px;
     display: flex;
     flex-direction: column;
-    width: auto;
     height: 100%;
-    width: 100%;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
 }
 
 .cards{

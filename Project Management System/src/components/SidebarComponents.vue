@@ -11,6 +11,9 @@ export default {
     },
     redirectToallsurveys() {
       this.$router.push('/allsurveys')
+    },
+    redirectToongoingsurveys() {
+      this.$router.push('/ongoingsurveys')
     }
   }
 }
@@ -55,15 +58,15 @@ export default {
                 <span id="lower-icon" class="material-symbols-rounded">
                     format_list_bulleted
                 </span>
-                <span class = "text-panel" :class="{ active: activeComponent === 'dashboard' }">
+                <span class = "text-panel" :class="{ active: activeComponent === 'allsurvey' }">
                     All Surveys
                 </span>
             </div>
-            <div class="panels">
+            <div class="panels" :class="{ active: activeComponent === 'ongoingsurvey' }" @click="redirectToongoingsurveys">
                 <span id="lower-icon" class="material-symbols-rounded">
                     pending_actions
                 </span>
-                <span class = "text-panel" :class="{ active: activeComponent === 'dashboard' }">
+                <span class = "text-panel" :class="{ active: activeComponent === 'ongoing' }">
                     Ongoing Surveys
                 </span>
             </div>
@@ -260,7 +263,7 @@ body{
     background-color: #ddd;
     color: #343A40;
     border-radius: 3px;
-
+    transition: .3s;
 }
 
 .dropdown:hover .dropdown-content{

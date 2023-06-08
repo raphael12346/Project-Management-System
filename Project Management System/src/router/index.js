@@ -24,12 +24,25 @@ const router = createRouter({
     },
 
     {
+      path: '/ongoingsurveys',
+      name: 'ongoingsurveys',
+      component: () => import('../views/OngoingSurveys.vue'),
+      meta: { activeComponent: 'ongoingsurvey' }
+    },
+
+    {
       path: '/surveydetails',
       name: 'surveydetails',
       component: () => import('../views/SurveyDetails.vue'),
       meta: { activeComponent: 'surveydetails' }
-    }
+    },
 
+    {
+      path: '/surveyprogress',
+      name: 'surveyprogress',
+      component: () => import('../views/SurveyProgress.vue'),
+      meta: { activeComponent: 'surveyprogress' }
+    }
   ]
 })
 
