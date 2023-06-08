@@ -26,6 +26,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     padding: 80px;
+    justify-content: center;
 }
 .container{
     width: 100%;
