@@ -40,9 +40,43 @@ methods: {
             </div>
         </div>
         <div class="main-panel">
-
-        </div>
-        
+            <div class="progress-bar-panel">
+                <div class="progress-bar-indicator">
+                    <span>40%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-blue-bar">
+                        <div class="progress-white-bar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-popup-message">
+                
+            </div>
+            <div class="survey-return-panel">
+                <div class="panel-titles">
+                    <span>Survey Return</span>
+                </div>
+                <div class="panel-tables">
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th class="table-titles">Completed</th>
+                        </tr>
+                        <tr>
+                            <th>BL Plan Printed</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>    
     </div>
 </template>
 <style>
@@ -120,4 +154,66 @@ body{
     flex-direction: column;
     padding: 20px;
 }
+
+.progress-bar-panel{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    width: 100%;
+    height: 50px;
+    padding: 0 40px;
+}
+
+.progress-bar-indicator{
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px 0 0 5px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 100%;
+}
+
+.progress-bar{
+    background-color:#343A40;
+    height: 100%;
+    width: 100%;
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.progress-white-bar{
+    background-color:white;
+    height: 23px;
+    border-radius: 20px;
+    width: 40%;
+}
+.progress-blue-bar{
+    background-color:rgba(255, 255, 255, 0.402);
+    height: 23px;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.survey-return-panel{
+    padding-top: 10px;
+}
+
+.panel-titles{
+    background-color: #007BFF;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-radius: 3px;
+    height: 35px;
+    margin-bottom: 5px;
+}
+
+
+
 </style>
