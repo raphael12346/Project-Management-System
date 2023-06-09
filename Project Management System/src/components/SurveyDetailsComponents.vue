@@ -1,16 +1,58 @@
 <script>
 export default {
+    data() {
+    return {
+      name: "Emmanuel G. Orillano",
+      readOnly: true,
+      originalName: "Emmanuel G. Orillano" // Add this data property
+    };
+},
 computed: {
     activeComponent() {
       return this.$route.meta.activeComponent;
     },
 },
 methods: {
+    redirectTosurveydetails() {
+      this.$router.push('/surveydetails')
+    },
     redirectTosurveyprogress() {
       this.$router.push('/surveyprogress')
+    },
+    makeEditable() {
+        var nameInput = document.getElementById("nameInput");
+        nameInput.readOnly = false;
+        nameInput.classList.add("editable");
+        document.getElementsByClassName("edit-button")[0].style.display = "none";
+        document.getElementsByClassName("cancelBtn")[0].style.display = "inline-block";
+        document.getElementsByClassName("updateBtn")[0].style.display = "inline-block";
+    },
+    cancelEdit() {
+        var nameInput = document.getElementById("nameInput");
+        nameInput.readOnly = true;
+        nameInput.value = this.originalName;
+        nameInput.classList.remove("editable");
+        document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
+        document.getElementsByClassName("cancelBtn")[0].style.display = "none";
+        document.getElementsByClassName("updateBtn")[0].style.display = "none";
+    },
+    updateValue() {
+        var nameInput = document.getElementById("nameInput");
+        //var newValue = nameInput.value;
+        // Perform any necessary validation or processing here
+        // For example, you can send the updated value to a server using AJAX
+        //console.log("Updated value:", newValue);
+        this.name = nameInput.value;
+        this.originalName = this.name;
+        // Make the input field read-only again and update the button display
+        nameInput.readOnly = true;
+        nameInput.classList.remove("editable");
+        document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
+        document.getElementsByClassName("cancelBtn")[0].style.display = "none";
+        document.getElementsByClassName("updateBtn")[0].style.display = "none";
     }
   }
-}
+};
 </script>
 <template>
     <div class="header">
@@ -20,7 +62,7 @@ methods: {
 
         <div class="right-panel">
             <div class="editBtn">
-                <button class="edit-button">
+                <button class="edit-button" @click="makeEditable()">
                     <span id ="edit-icon" class="material-symbols-rounded">
                         edit_square
                     </span> 
@@ -68,24 +110,20 @@ methods: {
                                     <span>Schedule of Survey</span>
                                 </div>
                                 <div class="survey-text">
-                                    <input type="date" id="date-input" >
+                                    <input type="date" id="date-input">
                                 </div>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Claimant</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Emmanuel G. Orillano</span>
-                                </div>
+                                <input class="survey-text" id="nameInput" type="text" :value="name" :readonly="readOnly" />        
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Type of Survey</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Consolidation - Subdivision</span>
-                                </div>
+                                <input class="survey-text" type="text" value="Consolidation - Subdivision" readonly>
                             </div>
                         </div>
                         <div class="survey-right">
@@ -93,33 +131,25 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Province</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Leyte</span>
-                                </div>
+                                <input class="survey-text" type="text" value="Leyte" readonly>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Municipality</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Ormoc City</span>
-                                </div>
+                                <input class="survey-text" type="text" value="Ormoc City" readonly>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Barangay</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Airport</span>
-                                </div>
+                                <input class="survey-text" type="text" value="Airport" readonly>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Area</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>7,563 sq. m.</span>
-                                </div>
+                                <input class="survey-text" type="text" value="7,553 sq. m." readonly>
                             </div>
                         </div>
                     </div>
@@ -128,9 +158,7 @@ methods: {
                             <div class="subtitle-survey">
                                 <span>Lot & Survey No.</span>
                             </div>
-                            <div class="survey-text">
-                                <span>LOT 5677 - A - 2 , PSD - 08 - D</span>
-                            </div>
+                            <input class="survey-text" type="text" value="LOT 5677 - A - 2 , PSD - 08 - D" readonly>
                         </div>   
                     </div>
                 </div>
@@ -336,8 +364,8 @@ methods: {
                 </div>
             </div>
             <div class="buttons-panel">
-                <button class="cancelBtn">Cancel</button>
-                <button class="updateBtn">Update</button>
+                <button class="cancelBtn" @click="cancelEdit()">Cancel</button>
+                <button class="updateBtn" @click="updateValue()">Update</button>
             </div>
         </div>
         
@@ -531,11 +559,12 @@ body{
     align-items: center;
     border: 1px var(--border) solid;
     border-left: none;
-    text-align: center;
+    text-align: left;
     padding: 0 5px;
     padding-left: 10px;
     height: 100%;
     border-radius: 0 3px 3px 0;
+    font-size: 15px;
 }
 
 .subtitle-survey{
@@ -634,7 +663,7 @@ body{
 }
 
 .cancelBtn{
-
+    display: none;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
@@ -643,7 +672,7 @@ body{
 }
 
 .updateBtn{
-
+    display: none;
     margin-left: 10px;
     border: none;
     padding: 10px 20px;
@@ -661,7 +690,4 @@ body{
     background-color: #007bffcf;
     transition: .3s;
 }
-
-
-
 </style>

@@ -1,19 +1,23 @@
 <script>
 export default {
-computed: {
+  computed: {
     activeComponent() {
-      return this.$route.meta.activeComponent;
+        return this.$route.meta.activeComponent;
     },
-},
-methods: {
+    progressPercentage() {
+      // Calculate the progress percentage based on your data
+        return 10;
+    },
+  },
+  methods: {
     redirectTosurveydetails() {
-      this.$router.push('/surveydetails')
+        this.$router.push('/surveydetails')
     },
     redirectTosurveyprogress() {
-      this.$router.push('/surveyprogress')
+        this.$router.push('/surveyprogress')
     }
   }
-}
+};
 </script>
 <template>
     <div class="header">
@@ -42,12 +46,11 @@ methods: {
         <div class="main-panel">
             <div class="progress-bar-panel">
                 <div class="progress-bar-indicator">
-                    <span>40%</span>
+                    <span class="percentage">{{ progressPercentage }}%</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-blue-bar">
-                        <div class="progress-white-bar">
-                        </div>
+                        <div class="progress-white-bar" :style="{ width: progressPercentage + '%' }"></div>
                     </div>
                 </div>
             </div>
@@ -59,13 +62,85 @@ methods: {
                     <span>Survey Return</span>
                 </div>
                 <div class="panel-tables">
-                    <table>
+                    <table class="survey-return-table">
                         <tr>
                             <th></th>
                             <th class="table-titles">Completed</th>
                         </tr>
                         <tr>
-                            <th>BL Plan Printed</th>
+                            <th class="SR-names">BL Plan Printed</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">BL Plan Signed</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">E-Survey</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Field Notes & Field Notes Cover</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Certified Copy of Tax Declaration</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Certified Copy of Title</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Transmittal</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Survey Authority</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Geodetic Engineer's Signature</th>
                             <th>
                                 <label class="check-box">
                                     <input type="checkbox">
@@ -214,6 +289,27 @@ body{
     margin-bottom: 5px;
 }
 
+.survey-return-table{
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 45%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.SR-names{
+    text-align: left;
+}
+.survey-return-table th, .survey-return-table td {
+    padding: 2px 16px;
+}
 
+.survey-return-table tr:nth-child(even) {
+    background-color: #dddddd;
+}
 
+.table-titles{
+    font-weight: bold;
+    font-size: 16px;
+    color: #343A40;
+}
 </style>

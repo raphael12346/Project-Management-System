@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="container">
-        <table>
+        <table class="all-survey-table">
             <tr>
                 <th class="table-titles">Lot & Survey No.</th>
                 <th class="table-titles">Client</th>
@@ -165,7 +165,7 @@
         padding: 40px;
     }
 
-    table {
+    .all-survey-table{
         border-collapse: separate;
         border-spacing: 0;
         width: 100%;
@@ -173,12 +173,12 @@
         border-radius: 5px;
     }
 
-    th, td {
+    .all-survey-table th, .all-survey-table td {
         text-align: left;
         padding: 16px;
     }
 
-    tr:nth-child(even) {
+    .all-survey-table tr:nth-child(even) {
         background-color: #dddddd;
     }
 
