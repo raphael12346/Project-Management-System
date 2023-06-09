@@ -30,6 +30,10 @@
 
                 </div>
 
+                <div class="box">
+
+                </div>
+
             </div>
 
         </div>
@@ -39,6 +43,9 @@
                 <h3>View all</h3>
             </div>
             <div class="top3">
+                <div class="box">
+
+                </div>
                 <div class="box">
 
                 </div>
@@ -114,7 +121,7 @@ body{
     height: 100%;
     justify-content: center;
     align-items: center;
-    width: 300px;
+    width: 400px;
 }
 
 .cards{
@@ -177,12 +184,14 @@ h1{
 
 .top3{
     padding: 10px;
-    display: flex
+    display: flex;
+    justify-content: space-between;
 }
 
 .box{
     margin: 10px;
-    width: 300px;
+    min-width: 250px;
+    width: 100%;
     height: 200px;
     background-color: blue;
 }
