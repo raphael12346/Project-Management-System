@@ -38,11 +38,11 @@ methods: {
     },
     updateValue() {
         var nameInput = document.getElementById("nameInput");
-        //var newValue = nameInput.value;
+        var newValue = nameInput.value;
         // Perform any necessary validation or processing here
         // For example, you can send the updated value to a server using AJAX
-        //console.log("Updated value:", newValue);
-        this.name = nameInput.value;
+        console.log("Updated value:", newValue);
+        this.name = newValue;
         this.originalName = this.name;
         // Make the input field read-only again and update the button display
         nameInput.readOnly = true;

@@ -11,7 +11,7 @@
                 </button>
             </div>
             <div class="search-container">
-                <input type="text" placeholder="Search..." name="search">
+                <input type="search" placeholder="Search..." name="search">
                 <button type="submit">
                     <span id="search-icon" class="material-symbols-rounded">
                         search

@@ -55,17 +55,40 @@ export default {
                 </div>
             </div>
             <div class="progress-popup-message">
-                
+                <div class="message-box" id="survey-return-completed">
+                    <span>Survey Return Completed</span>
+                </div>
+                <div class="message-box" id="survey-return-submitted">
+                    <span>Survey Return Submitted</span>
+                </div>
+                <div class="message-box" id="sketch-plan-completed">
+                    <span>Sketch Plan Completed</span>
+                </div>
+                <div class="message-box" id="topographic-plan-completed">
+                    <span>Topographic Plan Completed</span>
+                </div>
+                <div class="message-box" id="caad-application-completed">
+                    <span>CAAD Application Completed</span>
+                </div>
             </div>
             <div class="survey-return-panel">
                 <div class="panel-titles">
                     <span>Survey Return</span>
                 </div>
                 <div class="panel-tables">
-                    <table class="survey-return-table">
+                    <table class="left-table">
                         <tr>
-                            <th></th>
+                            <th class="table-titles">Survey Return and Requirements</th>
                             <th class="table-titles">Completed</th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">LDC of Motherlot and Previous Plan</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
                         </tr>
                         <tr>
                             <th class="SR-names">BL Plan Printed</th>
@@ -149,7 +172,188 @@ export default {
                             </th>
                         </tr>
                     </table>
+                    <table class="right-table">
+                        <tr>
+                            <th class="table-titles">Submittal and Updates</th>
+                            <th class="table-titles">Completed</th>
+                            <th class="table-titles">Date</th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Sent to Evelyn Balo via GrandTours</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Front Desk</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Ivas Transaction ID</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Verifiers</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Records Verifier</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Projection Unit</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Final Verification</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Recommending Approval</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Survey Approval</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Assignment of Survey No.</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="text"></th>
+                        </tr>
+                    </table>
                 </div>
+            </div>
+            <div class="sketch-topographic-panel">
+                <div class="sketch-plan-panel">
+                    <div class="panel-titles">
+                        <span>Sketch Plan</span>
+                    </div>
+                    <div>
+                        <table class="sketch-plan-table">
+                            <tr>
+                                <th></th>
+                                <th class="table-titles">Completed</th>
+                                <th class="table-titles">Date</th>
+                            </tr>
+                            <tr>
+                                <th class="SR-names">Printed</th>
+                                <th>
+                                    <label class="check-box">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th><input class="table-date" type="date"></th>
+                            </tr>
+                            <tr>
+                                <th class="SR-names">Released</th>
+                                <th>
+                                    <label class="check-box">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th><input class="table-date" type="date"></th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="topographic-plan-panel">
+                    <div class="panel-titles">
+                        <span>Topographic Plan</span>
+                    </div>
+                    <table class="sketch-plan-table">
+                        <tr>
+                            <th></th>
+                            <th class="table-titles">Completed</th>
+                            <th class="table-titles">Date</th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Printed</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Released</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date"></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="caap-application-panel">
+                <div class="panel-titles">
+                    <span>CAAD Application</span>
+                </div>
+                
             </div>
         </div>    
     </div>
@@ -236,6 +440,7 @@ body{
     width: 100%;
     height: 50px;
     padding: 0 40px;
+    margin-bottom: 5px;
 }
 
 .progress-bar-indicator{
@@ -274,7 +479,8 @@ body{
 }
 
 .survey-return-panel{
-    padding-top: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .panel-titles{
@@ -289,21 +495,46 @@ body{
     margin-bottom: 5px;
 }
 
-.survey-return-table{
+.panel-tables{
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    justify-content: center;
+}
+
+.left-table, .right-table, .sketch-plan-table, .topographic-plan-table{
     border-collapse: separate;
     border-spacing: 0;
-    width: 45%;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
+.left-table{
+    margin-right: .5%;
+    width: 40%;
+}
+
+.right-table{
+    margin-left: .5%;
+    width: 60%;
+}
+
 .SR-names{
     text-align: left;
+    padding-left: 10px;
 }
-.survey-return-table th, .survey-return-table td {
+.left-table th, .left-table td, 
+.right-table th, .right-table td,
+.sketch-plan-table th, .sketch-plan-table td,
+.topographic-plan-table th, .topographic-plan-table td,
+{
     padding: 2px 16px;
 }
 
-.survey-return-table tr:nth-child(even) {
+.left-table tr:nth-child(even), 
+.right-table tr:nth-child(even),
+.sketch-plan-table tr:nth-child(even),
+.topographic-plan-table tr:nth-child(even){
     background-color: #dddddd;
 }
 
@@ -311,5 +542,65 @@ body{
     font-weight: bold;
     font-size: 16px;
     color: #343A40;
+}
+
+.progress-popup-message{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.message-box{
+    background-color: #343A40;
+    color: white;
+    margin: 5px 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    border-radius:10px;
+    padding: 10px;
+}
+
+#survey-return-completed,
+#survey-return-submitted,
+#sketch-plan-completed,
+#topographic-plan-completed,
+#caad-application-completed{
+    display: none;
+}
+
+.sketch-topographic-panel{
+    margin: 5px 0;
+    display: flex;
+    align-items: top;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.sketch-plan-panel{
+    width: 50%;
+    margin-right: .5%;
+}
+
+.topographic-plan-panel{
+    width: 50%;
+    margin-left: .5%;
+}
+
+.sketch-plan-table, .topograhpic-plan-table{
+    width: 100%;
+}
+
+.table-date{
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 15px;
+    text-align: center;
+}
+
+.caap-application-panel{
+    margin-top: 5px;
 }
 </style>
