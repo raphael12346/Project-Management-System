@@ -2,51 +2,169 @@
 export default {
     data() {
     return {
-      name: "Emmanuel G. Orillano",
-      readOnly: true,
-      originalName: "Emmanuel G. Orillano" // Add this data property
+        newInput: "",
+        isUpdateAction: false,
+        disabled: true,
+        origialTotalAmount: 0,
+        first_Product: 0,
+        originalInputs: {}, // Add this data property
+        originalMultipliers: {},
+        originalMultiplicands: {},
+        title: "",
+        pairs: [
+            { multiplicand: 1, multiplier: 0 },
+            { multiplicand: 0, multiplier: 0 },
+            { multiplicand: 0, multiplier: 0 }
+        ]
     };
 },
 computed: {
     activeComponent() {
-      return this.$route.meta.activeComponent;
+        return this.$route.meta.activeComponent;
     },
+    computeProduct() {
+        return this.pairs.map(pair => pair.multiplicand * pair.multiplier);
+    },
+    firstProduct() {
+        if(this.isUpdateAction)
+        {
+            var product = this.computeProduct[0]
+            this.first_product = product;
+            return product;
+        }
+        return this.first_product;
+    },
+    secondProduct() {
+        if(this.isUpdateAction)
+        {
+            var product = this.computeProduct[1]
+            this.first_product = product;
+            return product;
+        }
+        return this.first_product;
+    },
+    thirdProduct() {
+        if(this.isUpdateAction)
+        {
+            var product = this.computeProduct[2]
+            this.first_product = product;
+            return product;
+        }
+        return this.first_product;
+    },
+    computeTotalAmount() {
+        if(this.isUpdateAction) {
+            var total_amount = this.computeProduct[0] + this.computeProduct[1] + this.computeProduct[2];
+            this.originalTotalAmount = total_amount;
+            return total_amount;    
+        }
+        return this.originalTotalAmount;
+    }
 },
 methods: {
+    updateTitle() {
+        var newTitleElement = document.getElementById('lotInput').value;
+        this.title = newTitleElement;
+    },
     redirectTosurveydetails() {
-      this.$router.push('/surveydetails')
+        this.$router.push('/surveydetails')
     },
     redirectTosurveyprogress() {
-      this.$router.push('/surveyprogress')
+        this.$router.push('/surveyprogress')
     },
-    makeEditable() {
-        var nameInput = document.getElementById("nameInput");
-        nameInput.readOnly = false;
-        nameInput.classList.add("editable");
+    makeEditable() {   
+        var multiplier = document.getElementsByClassName("number-multiplier");
+        for (var i = 0; i < multiplier.length; i++) {
+            var input = multiplier[i];
+            var originalValue = input.value;
+            this.originalMultipliers[input.id] = originalValue;
+            input.disabled = false;
+            input.classList.add("editable");
+        }
+
+        var multiplicand = document.getElementsByClassName("number-multiplicand"); 
+        for (var i = 1; i < multiplicand.length; i++) {
+            var input = multiplicand[i];
+            var originalValue = input.value;
+            this.originalMultiplicands[input.id] = originalValue;
+            input.disabled = false;
+            input.classList.add("editable");    
+        }
+
+        var inputs = document.getElementsByClassName("input-text");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            var originalValue = input.value;
+            this.originalInputs[input.id] = originalValue;
+            input.disabled = false;
+            input.classList.add("editable");
+        }
+        this.isUpdateAction = false;
         document.getElementsByClassName("edit-button")[0].style.display = "none";
         document.getElementsByClassName("cancelBtn")[0].style.display = "inline-block";
         document.getElementsByClassName("updateBtn")[0].style.display = "inline-block";
     },
     cancelEdit() {
-        var nameInput = document.getElementById("nameInput");
-        nameInput.readOnly = true;
-        nameInput.value = this.originalName;
-        nameInput.classList.remove("editable");
+        var inputs = document.getElementsByClassName("input-text");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            var originalValue = this.originalInputs[input.id];
+            input.value = originalValue;
+            input.disabled = true;
+            input.classList.remove("editable");
+        }
+
+        var multiplier = document.getElementsByClassName("number-multiplier");
+        for (var i = 0; i < multiplier.length; i++) {
+            var input = multiplier[i];
+            var originalValue = this.originalMultipliers[input.id];
+            input.value = originalValue;
+            input.disabled = true;
+            input.classList.remove("editable");
+        }
+
+        var multiplicand = document.getElementsByClassName("number-multiplicand");
+        for (var i = 1; i < multiplicand.length; i++) {
+            var input = multiplicand[i];
+            var originalValue = this.originalMultiplicands[input.id];
+            input.value = originalValue;
+            input.disabled = true;
+            input.classList.remove("editable");
+        }
+
+        this.isUpdateAction = false;
         document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
         document.getElementsByClassName("cancelBtn")[0].style.display = "none";
         document.getElementsByClassName("updateBtn")[0].style.display = "none";
     },
     updateValue() {
-        var nameInput = document.getElementById("nameInput");
-        var newValue = nameInput.value;
-        // Perform any necessary validation or processing here
-        // For example, you can send the updated value to a server using AJAX
-        console.log("Updated value:", newValue);
-        this.name = newValue;
-        this.originalName = this.name;
-        // Make the input field read-only again and update the button display
-        nameInput.readOnly = true;
-        nameInput.classList.remove("editable");
+        var multiplier = document.getElementsByClassName("number-multiplier");
+        for (var i = 0; i < multiplier.length; i++) {
+            var newValue = multiplier[i].value;
+            this.newInput = newValue;
+            this.originalMultipliers[multiplier[i].id] = newValue;
+            multiplier[i].disabled = true;
+            multiplier[i].classList.remove("editable");
+        }
+
+        var multiplicand = document.getElementsByClassName("number-multiplicand");
+        for (var i = 1; i < multiplicand.length; i++) {
+            var newValue = multiplicand[i].value;
+            this.newInput = newValue;
+            this.originalMultiplicands[multiplicand[i].id] = newValue;
+            multiplicand[i].disabled = true;
+            multiplicand[i].classList.remove("editable");
+        }
+
+        var inputs = document.getElementsByClassName("input-text");
+        for (var i = 0; i < inputs.length; i++) {
+            var newValue = inputs[i].value;
+            this.newInput = newValue;
+            this.originalInputs[inputs[i].id] = newValue;
+            inputs[i].disabled = true;
+            inputs[i].classList.remove("editable");
+        }
+        this.isUpdateAction = true;
         document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
         document.getElementsByClassName("cancelBtn")[0].style.display = "none";
         document.getElementsByClassName("updateBtn")[0].style.display = "none";
@@ -57,7 +175,7 @@ methods: {
 <template>
     <div class="header">
         <div class="title">
-            <span>LOT 5677 - A - 2 , PSD - 08 - D</span>
+            <span>{{ title }}</span>
         </div>
 
         <div class="right-panel">
@@ -101,29 +219,25 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Transaction Date</span>
                                 </div>
-                                <div class="survey-text">
-                                    <input type="date" id="date-input">  
-                                </div>
+                                <input class="input-text" type="date" id="date-input" :disabled="disabled">
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Schedule of Survey</span>
                                 </div>
-                                <div class="survey-text">
-                                    <input type="date" id="date-input">
-                                </div>
+                                <input class="input-text" type="date" id="date-input" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Claimant</span>
                                 </div>
-                                <input class="survey-text" id="nameInput" type="text" :value="name" :readonly="readOnly" />        
+                                <input class="input-text" id="claimantInput" type="text" :disabled="disabled"/>        
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Type of Survey</span>
                                 </div>
-                                <input class="survey-text" type="text" value="Consolidation - Subdivision" readonly>
+                                <input class="input-text" id="surveyInput" type="text" :disabled="disabled"/>
                             </div>
                         </div>
                         <div class="survey-right">
@@ -131,25 +245,25 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Province</span>
                                 </div>
-                                <input class="survey-text" type="text" value="Leyte" readonly>
+                                <input class="input-text" id="provinceInput" type="text" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Municipality</span>
                                 </div>
-                                <input class="survey-text" type="text" value="Ormoc City" readonly>
+                                <input class="input-text" id="municipalityInput" type="text" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Barangay</span>
                                 </div>
-                                <input class="survey-text" type="text" value="Airport" readonly>
+                                <input class="input-text" id="barangayInput" type="text" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Area</span>
                                 </div>
-                                <input class="survey-text" type="text" value="7,553 sq. m." readonly>
+                                <input class="input-text" id="areaInput" type="text" :disabled="disabled"/>
                             </div>
                         </div>
                     </div>
@@ -158,7 +272,7 @@ methods: {
                             <div class="subtitle-survey">
                                 <span>Lot & Survey No.</span>
                             </div>
-                            <input class="survey-text" type="text" value="LOT 5677 - A - 2 , PSD - 08 - D" readonly>
+                            <input class="input-text" id="lotInput" type="text" :disabled="disabled"/>
                         </div>   
                     </div>
                 </div>
@@ -174,49 +288,37 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Name</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Raphael S. Orillano</span>
-                                </div>
+                                <input class="input-text" id="nameInput" type="text" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Relation to Claimant</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Son</span>
-                                </div>
+                                <input class="input-text" id="relationInput" type="text" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Address</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Brgy. Airport, Ormoc City, Leyte</span>
-                                </div>
+                                <input class="input-text" id="addressInput" type="text" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Mobile No.</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>09563593324</span>
-                                </div>
+                                <input class="input-text" id="mobileInput" type="text" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Email Address</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>raphael.orillano2@gmail.com</span>
-                                </div>
+                                <input class="input-text" id="emailInput" type="email" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Messenger</span>
                                 </div>
-                                <div class="survey-text">
-                                    <span>Raphael Saavedra Orillano</span>
-                                </div>
+                                <input class="input-text" id="messengerInput" type="text" :disabled="disabled"/>
                             </div>
                         </div>
                     </div>
@@ -231,9 +333,7 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Quotation</span>
                                 </div>
-                                <div class="survey-text">
-                                    <input type="file" id="myFile" name="filename">
-                                </div>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>              
                             </div>
                             <div class="quotation-subpanel">
                                 <div class="details-of-pricing-title">
@@ -245,21 +345,17 @@ methods: {
                                     <div class="first-panel-title">
                                         <span>First Hectare</span>
                                     </div>
-                                    <div class="first-panel-value">
-                                        <span>1</span>
-                                    </div>
+                                    <input class="number-multiplicand" id="firstHectareInput" type="number" v-model="pairs[0].multiplicand" :disabled="disabled"/>
                                 </div>
                                 <div class="second-panel">
                                     <span>@</span>
                                 </div>
-                                <div class="third-panel">
-                                    <span>₱12,000</span>
-                                </div>
+                                <input class="number-multiplier" id="firstHectareInput" type="number" v-model="pairs[0].multiplier" :disabled="disabled"/>
                                 <div class="fourth-panel">
                                     <span>=</span>
                                 </div>
                                 <div class="fifth-panel">
-                                    <span>₱12,000</span>
+                                    <span>₱{{ firstProduct }}</span>
                                 </div>
                             </div>
                             <div class="details-of-pricing-subpanel">
@@ -267,97 +363,61 @@ methods: {
                                     <div class="first-panel-title">
                                         <span>Succeeding</span>
                                     </div>
-                                    <div class="first-panel-value">
-                                        <span>7.2</span>
-                                    </div>
+                                    <input class="number-multiplicand" id="succeedingInput" type="number" v-model="pairs[1].multiplicand" :disabled="disabled"/>
                                 </div>
                                 <div class="second-panel">
                                     <span>@</span>
                                 </div>
-                                <div class="third-panel">
-                                    <span>₱5,000</span>
-                                </div>
+                                <input class="number-multiplier" id="succeedingMultiplier" type="number" v-model="pairs[1].multiplier" :disabled="disabled"/>
                                 <div class="fourth-panel">
                                     <span>=</span>
                                 </div>
                                 <div class="fifth-panel">
-                                    <span>₱36,000</span>
+                                    <span>₱{{ secondProduct }}</span>
                                 </div>
                             </div>
                             <div class="details-of-pricing-subpanel">
                                 <div class="first-panel">
-                                    <div class="first-panel-title">
-                                        <span>No. of Lots</span>
-                                    </div>
-                                    <div class="first-panel-value">
-                                        <span>4</span>
-                                    </div>
+                                    <span class="first-panel-title">No. of Lots</span>
+                                    <input class="number-multiplicand" id="noOfLotsInput" type="number" v-model="pairs[2].multiplicand" :disabled="disabled"/>
                                 </div>
-                                <div class="second-panel">
-                                    <span>@</span>
-                                </div>
-                                <div class="third-panel">
-                                    <span>₱10,000</span>
-                                </div>
-                                <div class="fourth-panel">
-                                    <span>=</span>
-                                </div>
+                                <span class="second-panel">@</span>
+                                <input class="number-multiplier" id="noOfLotsMultiplierInput" type="number" v-model="pairs[2].multiplier" :disabled="disabled"/>
+                                <span class="fourth-panel">=</span>
                                 <div class="fifth-panel">
-                                    <span>₱40,000</span>
+                                    <span>₱{{ thirdProduct }}</span>
                                 </div>
                             </div>
                             <div class="survey-information-subpanel">
-                                <div class="subtitle-survey">
-                                    <span>Total Amount</span>
-                                </div>
-                                <div class="survey-text">
-                                    <span>₱88,000</span>
-                                </div>
+                                <span class="subtitle-survey">Total Amount</span>
+                                <span class="total-amount">₱{{ computeTotalAmount }}</span>  
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="survey-information-panel">
-                <div class="survey-info-title">
-                    <span>Survey Attachments</span>
-                </div>
+                <span class="survey-info-title">Survey Attachments</span>
                 <div class="survey-info-details">
                     <div class="survey-top">
                         <div class="survey-left">
                             <div class="survey-information-subpanel">
-                                <div class="subtitle-survey">
-                                    <span>Document</span>
-                                </div>
-                                <div class="survey-text">
-                                    <input type="file" id="myFile" name="filename">
-                                </div>
+                                <span class="subtitle-survey">Document</span>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
-                                <div class="subtitle-survey">
-                                    <span>Photos</span>
-                                </div>
-                                <div class="survey-text">
-                                    <input type="file" id="myFile" name="filename">
-                                </div>
+                                <span class="subtitle-survey">Photos</span>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
                             </div>
                         </div>
                         <div class="survey-right">
                             <div class="survey-information-subpanel">
-                                <div class="subtitle-survey">
-                                    <span>CAD Plan</span>
-                                </div>
-                                <div class="survey-text">
-                                    <input type="file" id="myFile" name="filename">
-                                </div>
+                                <span class="subtitle-survey">CAD Plan</span>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
                             </div>
                             <div class="survey-information-subpanel">
-                                <div class="subtitle-survey">
-                                    <span>eSurvey</span>
-                                </div>
-                                <div class="survey-text">
-                                    <input type="file" id="myFile" name="filename">
-                                </div>
+                                <span class="subtitle-survey">eSurvey</span>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
                             </div>
                         </div>
                     </div>
@@ -365,7 +425,7 @@ methods: {
             </div>
             <div class="buttons-panel">
                 <button class="cancelBtn" @click="cancelEdit()">Cancel</button>
-                <button class="updateBtn" @click="updateValue()">Update</button>
+                <button class="updateBtn" @click="updateValue(); updateTitle()">Update</button>
             </div>
         </div>
         
@@ -392,6 +452,7 @@ body{
     padding-right: 5px;
     padding-bottom: 3px;
 }
+
 .editBtn button{
     display: flex;
     align-items: center;
@@ -440,8 +501,9 @@ body{
 }
 
 #date-input{
-    border: none;
-    height: 28px;
+    border: 1px var(--border) solid;
+    border-left: none;
+    height: 100%;
     width: 100%;
 }
 
@@ -553,7 +615,8 @@ body{
     text-align: center;
 }
 
-.survey-text{
+.input-text{
+    background-color: rgba(255, 255, 255, 0);
     display: flex;
     justify-content: left;
     align-items: center;
@@ -613,23 +676,39 @@ body{
     align-items: center;
 }
 
+.number-multiplicand{
+    display: flex;
+    border: 1px var(--border) solid;
+    height: 100%;
+    border-left: none;
+    border-radius: 0 3px 3px 0;
+    width: 50px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 15px;
+}
+
 .second-panel, .fourth-panel{
     display: flex;
     padding: 2px 10px;
-    border-radius: 3px 0 0 3px;
     justify-content: center;
     align-items: center;
 }
 
-.third-panel, .fifth-panel{    
+.number-multiplier, .fifth-panel{    
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px var(--border) solid;
     text-align: center;
-
     height: 100%;
     border-radius: 3px;
+    font-size: 15px;
+}
+
+.fifth-panel{    
+    padding: 0 20px;
 }
 
 .first-panel-title{
@@ -690,4 +769,25 @@ body{
     background-color: #007bffcf;
     transition: .3s;
 }
+
+.total-amount{
+    border: 1px var(--border) solid;
+    height: 100%;
+    border-left: none;
+    border-radius: 0 3px 3px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/*
+input[type="number"].plain-number-input {
+  -moz-appearance: textfield;
+}*/
+
 </style>

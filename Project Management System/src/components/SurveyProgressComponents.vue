@@ -526,8 +526,7 @@ body{
 .left-table th, .left-table td, 
 .right-table th, .right-table td,
 .sketch-plan-table th, .sketch-plan-table td,
-.topographic-plan-table th, .topographic-plan-table td,
-{
+.topographic-plan-table th, .topographic-plan-table td{
     padding: 2px 16px;
 }
 
