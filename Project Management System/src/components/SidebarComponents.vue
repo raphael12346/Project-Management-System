@@ -72,7 +72,7 @@ export default {
             </div>
         </div>
         <div class="lower">
-            <div class="lower-panels">
+            <div class="panels">
                 <span id="lower-icon" class="material-symbols-rounded">
                     settings
                 </span>
@@ -80,7 +80,7 @@ export default {
                     Settings
                 </span>
             </div>
-            <div class="lower-panels">
+            <div class="panels">
                 <span id="lower-icon" class="material-symbols-rounded">
                     logout
                 </span>
@@ -100,15 +100,17 @@ body{
 }
 
 .sidebar{
-    width: 200px;
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
+    height: 100%;
     width: 260px;
     background-color: #343A40;
-    align-items: top;
-    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+.lower{
+    margin-bottom: 15px;
 }
 
 .top-menu{
@@ -144,21 +146,25 @@ body{
 }
 
 .panels{
-    width: 100%;
+    width: 260px;
     height: 50px;
     display: flex;
     flex-direction: rows;
-    justify-content: center;
+    padding: 0 10px;
 }
 
 .text-panel{
     font-size: 16px;
-    width: 190px;
     color: white;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: left;
+    padding-left: 10px;
+}
+
+#lower-icon{
+    font-size: 28px;
+    margin: 10px;
 }
 
 .material-symbols-rounded{
@@ -171,50 +177,16 @@ body{
     font-size: 50px;
 }
 
-#lower-icon{
-    font-size: 28px;
-    margin: auto;
-}
-
-.lower-panels{
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: rows;
-    justify-content: center;
-}
-
-.lower{
-    position: absolute; 
-    bottom: 0; 
-    width: 260px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-
 .panels:hover{
     background-color:rgba(255, 255, 255, 0.82);
     cursor: pointer;
     border-right: 10px solid #343a404a;
-    padding-left: 10px;
+    transition: .5s;
 }
 
 .panels:hover span{
     color: #343A40;
-}
-
-.lower-panels:hover{
-    background-color:rgba(255, 255, 255, 0.82);
-    cursor: pointer;
-    border-right: 10px solid #343a404a;
-    padding-left: 10px;
-}
-
-.lower-panels:hover span{
-    color: #343A40;
+    transition: .5s;
 }
 
 .dropdown-list{
@@ -275,11 +247,9 @@ body{
     cursor: pointer;
     color: #343A40; 
     border-right: 10px solid #343a404a;
-    padding-left: 10px;
 }
 
 .panels.active span{
     color: #343A40;
 }
-
 </style>

@@ -24,7 +24,7 @@ const mainClass = computed(() => (route.name === 'login' ? 'login-page' : 'non-l
 
 .router-view-container {
   flex: 1;
-  padding-left: 260px; /* Adjust this value to match the width of your sidebar */
+  padding-left: 260px;  /*Adjust this value to match the width of your sidebar */
   
   &.no-sidebar {
     padding-left: 0;

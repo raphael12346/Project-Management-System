@@ -340,11 +340,10 @@ methods: {
                                 </div>
                                 <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>              
                             </div>
-                            <div class="quotation-subpanel">
-                                <div class="details-of-pricing-title">
-                                    <span>Details of Pricing</span>
-                                </div>
+                            <div class="outer-panel">
+                                <span class="details-of-pricing-title">Details of Pricing</span>
                             </div>
+                            
                             <div class="details-of-pricing-subpanel">
                                 <div class="first-panel">
                                     <div class="first-panel-title">
@@ -352,8 +351,8 @@ methods: {
                                     </div>
                                     <input class="number-multiplicand" id="firstHectareInput" type="number" v-model="pairs[0].multiplicand" :disabled="disabled"/>
                                 </div>
-                                <div class="second-panel">
-                                    <span>@</span>
+                                <div >
+                                    <span class="second-panel">@</span>
                                 </div>
                                 <input class="number-multiplier" id="firstHectareMultiplier" type="number" v-model="pairs[0].multiplier" :disabled="disabled"/>
                                 <div class="fourth-panel">
@@ -605,19 +604,17 @@ body{
     margin-left: .5%
 }
 
+.outer-panel{
+    width: 100%;
+    padding: 2px 0;
+}
+
 .survey-information-subpanel{
     display: grid;
     grid-template-columns: auto 1fr;
     width: 100%;
     padding: 2px 0;
     align-items: center;
-}
-.quotation-subpanel{
-    display: grid;
-    width: 100%;
-    padding: 2px 0;
-    align-items: center;
-    text-align: center;
 }
 
 .input-text{
@@ -638,16 +635,24 @@ body{
 .subtitle-survey{
     border: 1px var(--border) solid;
     background-color: var(--grey);
-    padding: 2px 10px;
+    padding: 0 10px;
     width: auto;
     border-radius: 3px 0 0 3px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
+
 .details-of-pricing-title{
     border: 1px var(--border) solid;
-    background-color: var(--grey);
-    padding: 2px 10px;
-    width: auto;
     border-radius: 3px;
+    background-color: var(--grey);
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .survey-info-details{
@@ -666,6 +671,7 @@ body{
     font-size: 20px;
 }
 
+
 .details-of-pricing-subpanel{
     display: grid;
     grid-template-columns: auto auto 1fr auto 1fr;
@@ -675,10 +681,14 @@ body{
 }
  
 .first-panel{
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
     width: 100%;
-    align-items: center;
+    height: 100%;
+    /*
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    */
 }
 
 .number-multiplicand{
@@ -687,7 +697,7 @@ body{
     height: 100%;
     border-left: none;
     border-radius: 0 3px 3px 0;
-    width: 50px;
+    width: 30px;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -703,36 +713,29 @@ body{
 
 .number-multiplier, .fifth-panel{    
     display: flex;
-    justify-content: center;
     align-items: center;
-    border: 1px var(--border) solid;
     text-align: center;
+    border: 1px var(--border) solid;
     height: 100%;
     border-radius: 3px;
     font-size: 15px;
+    width: 100%;
 }
 
-.fifth-panel{    
-    padding: 0 20px;
+.fifth-panel{   
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    /* padding: 0 20px; */
 }
 
 .first-panel-title{
     border: 1px var(--border) solid;
     background-color: var(--grey);
     padding: 2px 10px;
-    width: auto;
+    width: 108px;
+    height: 30px;
     border-radius: 3px 0 0 3px;
-}
-.first-panel-value{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px var(--border) solid;
-    border-left: none;
-    text-align: center;
-    height: 100%;
-    border-radius: 0 3px 3px 0;
-    width: 35px;
 }
 
 #myFile{
