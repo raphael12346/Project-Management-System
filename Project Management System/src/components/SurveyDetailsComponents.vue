@@ -74,6 +74,9 @@ methods: {
     redirectTosurveyprogress() {
         this.$router.push('/surveyprogress')
     },
+    redirectTopaymentprogress() {
+        this.$router.push('/paymentprogress')
+    },
     makeEditable() {   
         var multiplier = document.getElementsByClassName("number-multiplier");
         for (var i = 0; i < multiplier.length; i++) {
@@ -203,8 +206,8 @@ methods: {
                     Survey Progress
                 </span>
             </div>
-            <div class="panel-tab">
-                <span class = "tab-text">
+            <div class="panel-tab" :class="{ active: activeComponent === 'paymentprogress' }" @click="redirectTopaymentprogress">
+                <span class = "tab-text" :class="{ active: activeComponent === 'paymentprogress' }" @click="redirectTopaymentprogress">
                     Payment Progress
                 </span>
             </div>

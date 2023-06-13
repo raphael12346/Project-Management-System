@@ -118,6 +118,9 @@ export default {
         },
         redirectTosurveyprogress() {
             this.$router.push('/surveyprogress')
+        },
+        redirectTopaymentprogress() {
+            this.$router.push('paymentprogress')
         }
     }
 };
@@ -135,13 +138,13 @@ export default {
                     Survey Details
                 </span>
             </div>
-            <div class="panel-tab" :class="{ active: activeComponent === 'surveyprogress' }" @click="redirectTosurveyprogress">
-                <span class = "tab-text" :class="{ active: activeComponent === 'surveyprogress' }" @click="redirectTosurveyprogress">
+            <div class="panel-tab" :class="{ active: activeComponent === 'surveyprogress' }">
+                <span class = "tab-text" :class="{ active: activeComponent === 'surveyprogress' }">
                     Survey Progress
                 </span>
             </div>
-            <div class="panel-tab">
-                <span class = "tab-text">
+            <div class="panel-tab" :class="{ active: activeComponent === 'paymentprogress' }" @click="redirectTopaymentprogress">
+                <span class = "tab-text" :class="{ active: activeComponent === 'paymentprogress' }" @click="redirectTopaymentprogress">
                     Payment Progress
                 </span>
             </div>

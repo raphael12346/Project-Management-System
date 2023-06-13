@@ -42,6 +42,13 @@ const router = createRouter({
       name: 'surveyprogress',
       component: () => import('../views/SurveyProgress.vue'),
       meta: { activeComponent: 'surveyprogress' }
+    },
+
+    {
+      path: '/paymentprogress',
+      name: 'paymentprogress',
+      component: () => import('../views/PaymentProgress.vue'),
+      meta: { activeComponent: 'paymentprogress' }
     }
   ]
 })
