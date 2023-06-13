@@ -5,8 +5,10 @@ export default {
         newInput: "",
         isUpdateAction: false,
         disabled: true,
-        origialTotalAmount: 0,
-        first_Product: 0,
+        originalTotalAmount: 0,
+        first_product: 0,
+        second_product: 0,
+        third_product: 0,
         originalInputs: {}, // Add this data property
         originalMultipliers: {},
         originalMultiplicands: {},
@@ -28,7 +30,7 @@ computed: {
     firstProduct() {
         if(this.isUpdateAction)
         {
-            var product = this.computeProduct[0]
+            var product = this.computeProduct[0];
             this.first_product = product;
             return product;
         }
@@ -37,20 +39,20 @@ computed: {
     secondProduct() {
         if(this.isUpdateAction)
         {
-            var product = this.computeProduct[1]
-            this.first_product = product;
+            var product = this.computeProduct[1];
+            this.second_product = product;
             return product;
         }
-        return this.first_product;
+        return this.second_product;
     },
     thirdProduct() {
         if(this.isUpdateAction)
         {
-            var product = this.computeProduct[2]
-            this.first_product = product;
+            var product = this.computeProduct[2];
+            this.third_product = product;
             return product;
         }
-        return this.first_product;
+        return this.third_product;
     },
     computeTotalAmount() {
         if(this.isUpdateAction) {
@@ -350,7 +352,7 @@ methods: {
                                 <div class="second-panel">
                                     <span>@</span>
                                 </div>
-                                <input class="number-multiplier" id="firstHectareInput" type="number" v-model="pairs[0].multiplier" :disabled="disabled"/>
+                                <input class="number-multiplier" id="firstHectareMultiplier" type="number" v-model="pairs[0].multiplier" :disabled="disabled"/>
                                 <div class="fourth-panel">
                                     <span>=</span>
                                 </div>
@@ -382,7 +384,7 @@ methods: {
                                     <input class="number-multiplicand" id="noOfLotsInput" type="number" v-model="pairs[2].multiplicand" :disabled="disabled"/>
                                 </div>
                                 <span class="second-panel">@</span>
-                                <input class="number-multiplier" id="noOfLotsMultiplierInput" type="number" v-model="pairs[2].multiplier" :disabled="disabled"/>
+                                <input class="number-multiplier" id="noOfLotsMultiplier" type="number" v-model="pairs[2].multiplier" :disabled="disabled"/>
                                 <span class="fourth-panel">=</span>
                                 <div class="fifth-panel">
                                     <span>₱{{ thirdProduct }}</span>

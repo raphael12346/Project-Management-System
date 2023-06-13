@@ -1,22 +1,125 @@
 <script>
 export default {
-  computed: {
-    activeComponent() {
-        return this.$route.meta.activeComponent;
+    data() { 
+        return {
+            surveyReturnToggle: true,
+            sketchPlanToggle: true,
+            topographicPlanToggle: true,
+            caadApplicationToggle: true,
+            surveyReturnCheckboxes: {
+                //Survey Return and Requirements
+                ldcOfMotherlot: false,
+                blPlanPrinted: false,
+                blPlanSigned: false,
+                eSurvey: false,
+                fieldNotesFieldNotesCover: false,
+                certifiedCopyOfTaxDeclaration: false,
+                certifiedCopyOfTitle: false,
+                transmittal: false,
+                surveyAuthority: false,
+                geodeticEngineerSignature: false,
+                //Submittal and Updates
+                sentToEvelynBaloviaGrandTours: false,		
+                frontDesk: false,		
+                ivasTransactionID: false,		
+                verifiers: false,		
+                recordsVerifier: false,		
+                projectionUnit: false,		
+                finalVerification: false,		
+                recommendingApproval: false,		
+                surveyApproval: false,		
+                assignmentofSurveyNo: false,
+            },
+            sketchPlanCheckboxes: {
+                //Sketch Plan
+                printedSP: false,
+                releasedSP: false,
+            },
+            topographicPlanCheckboxes: {
+                //Topographic Plan
+                printedTP: false,
+                releasedTP: false,
+            },
+            caadApplicationCheckboxes: {
+                //CAAD Application Requirements
+                filledUpForms: false,	
+                vicinityMap: false,	
+                traverseComputations: false,	
+                officialReceipt: false,	
+                landTitle: false,	
+                elevationsDrawings: false,
+                //CAAD Application Submittal and Updates
+                sentToCAAPOffice: false,
+                approved: false,
+                received: false,
+                released: false
+            }
+        };
     },
-    progressPercentage() {
-      // Calculate the progress percentage based on your data
-        return 10;
+    watch: {
+        /*
+        surveyReturnToggle(newVal) {
+            for (const key in this.surveyReturnCheckboxes) {
+            this.surveyReturnCheckboxes[key] = newVal;
+            }
+        },
+        sketchPlanToggle(newVal) {
+            for (const key in this.sketchPlanCheckboxes) {
+            this.sketchPlanCheckboxes[key] = newVal;
+            }
+        },*/
     },
-  },
-  methods: {
-    redirectTosurveydetails() {
-        this.$router.push('/surveydetails')
+    computed: {
+        activeComponent() {
+            return this.$route.meta.activeComponent;
+        },
+        progressPercentage() {
+            let ctr = 0;
+            let surveyReturnPercentage = 0;
+            let sketchPlanPercentage = 0;
+            let topographicPlanPercentage = 0;
+            let caadApplicationPercentage = 0;
+            if(this.surveyReturnToggle) {
+                const totalCheckboxes = Object.keys(this.surveyReturnCheckboxes).length;
+                const checkedCheckboxes = Object.values(this.surveyReturnCheckboxes).filter((value) => value).length;
+                surveyReturnPercentage = ((checkedCheckboxes / totalCheckboxes) * 100);
+                ctr++;
+            }
+            if(this.sketchPlanToggle) {
+                const totalCheckboxes = Object.keys(this.sketchPlanCheckboxes).length;
+                const checkedCheckboxes = Object.values(this.sketchPlanCheckboxes).filter((value) => value).length;
+                sketchPlanPercentage = ((checkedCheckboxes / totalCheckboxes) * 100);
+                ctr++;
+            }
+            if(this.topographicPlanToggle) {
+                const totalCheckboxes = Object.keys(this.topographicPlanCheckboxes).length;
+                const checkedCheckboxes = Object.values(this.topographicPlanCheckboxes).filter((value) => value).length;
+                topographicPlanPercentage =((checkedCheckboxes / totalCheckboxes) * 100);
+                ctr++;
+            }
+            if(this.caadApplicationToggle) {
+                const totalCheckboxes = Object.keys(this.caadApplicationCheckboxes).length;
+                const checkedCheckboxes = Object.values(this.caadApplicationCheckboxes).filter((value) => value).length;
+                caadApplicationPercentage = ((checkedCheckboxes / totalCheckboxes) * 100);
+                ctr++;
+            }
+            if (ctr > 0) {
+                const totalPercentage = surveyReturnPercentage + sketchPlanPercentage + topographicPlanPercentage + caadApplicationPercentage;
+                const averagePercentage = totalPercentage / ctr;
+                //return averagePercentage.toFixed(2);
+                return Math.round(averagePercentage);
+            }
+            return 0;
+        },
     },
-    redirectTosurveyprogress() {
-        this.$router.push('/surveyprogress')
+    methods: {
+        redirectTosurveydetails() {
+            this.$router.push('/surveydetails')
+        },
+        redirectTosurveyprogress() {
+            this.$router.push('/surveyprogress')
+        }
     }
-  }
 };
 </script>
 <template>
@@ -72,8 +175,14 @@ export default {
                 </div>
             </div>
             <div class="survey-return-panel">
-                <div class="panel-titles">
+                <div class="panel-titles" :class="{ 'off': !surveyReturnToggle }">
                     <span>Survey Return</span>
+                    <div class="toggle-switch">
+                        <label class="switch">
+                            <input type="checkbox" v-model="surveyReturnToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                 </div>
                 <div class="panel-tables">
                     <table class="left-table">
@@ -85,7 +194,7 @@ export default {
                             <th class="SR-names">LDC of Motherlot and Previous Plan</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.ldcOfMotherlot" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -94,7 +203,7 @@ export default {
                             <th class="SR-names">BL Plan Printed</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.blPlanPrinted" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -103,7 +212,7 @@ export default {
                             <th class="SR-names">BL Plan Signed</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.blPlanSigned" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -112,7 +221,7 @@ export default {
                             <th class="SR-names">E-Survey</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.eSurvey" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -121,7 +230,7 @@ export default {
                             <th class="SR-names">Field Notes & Field Notes Cover</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.fieldNotesFieldNotesCover" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -130,7 +239,7 @@ export default {
                             <th class="SR-names">Certified Copy of Tax Declaration</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.certifiedCopyOfTaxDeclaration" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -139,7 +248,7 @@ export default {
                             <th class="SR-names">Certified Copy of Title</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.certifiedCopyOfTitle" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -148,7 +257,7 @@ export default {
                             <th class="SR-names">Transmittal</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.transmittal" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -157,7 +266,7 @@ export default {
                             <th class="SR-names">Survey Authority</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.surveyAuthority" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -166,7 +275,7 @@ export default {
                             <th class="SR-names">Geodetic Engineer's Signature</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.geodeticEngineerSignature" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
@@ -182,109 +291,115 @@ export default {
                             <th class="SR-names">Sent to Evelyn Balo via GrandTours</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.sentToEvelynBaloviaGrandTours" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Front Desk</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.frontDesk" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Ivas Transaction ID</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.ivasTransactionID" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Verifiers</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.verifiers" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Records Verifier</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.recordsVerifier" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Projection Unit</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.projectionUnit" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Final Verification</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.finalVerification" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Recommending Approval</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.recommendingApproval" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Survey Approval</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.surveyApproval" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!surveyReturnToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Assignment of Survey No.</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="surveyReturnCheckboxes.assignmentofSurveyNo" :disabled="!surveyReturnToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="text"></th>
+                            <th><input class="table-date" type="text" :disabled="!surveyReturnToggle"></th>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="sketch-topographic-panel">
                 <div class="sketch-plan-panel">
-                    <div class="panel-titles">
+                    <div class="panel-titles" :class="{ 'off': !sketchPlanToggle }">
                         <span>Sketch Plan</span>
+                        <div class="toggle-switch">
+                        <label class="switch">
+                            <input type="checkbox" v-model="sketchPlanToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                     </div>
                     <div>
                         <table class="sketch-plan-table">
@@ -297,28 +412,34 @@ export default {
                                 <th class="SR-names">Printed</th>
                                 <th>
                                     <label class="check-box">
-                                        <input type="checkbox">
+                                        <input type="checkbox" v-model="sketchPlanCheckboxes.printedSP" :disabled="!sketchPlanToggle">
                                         <span class="checkmark"></span>
                                     </label>
                                 </th>
-                                <th><input class="table-date" type="date"></th>
+                                <th><input class="table-date" type="date" :disabled="!sketchPlanToggle"></th>
                             </tr>
                             <tr>
                                 <th class="SR-names">Released</th>
                                 <th>
                                     <label class="check-box">
-                                        <input type="checkbox">
+                                        <input type="checkbox" v-model="sketchPlanCheckboxes.releasedSP" :disabled="!sketchPlanToggle"> 
                                         <span class="checkmark"></span>
                                     </label>
                                 </th>
-                                <th><input class="table-date" type="date"></th>
+                                <th><input class="table-date" type="date" :disabled="!sketchPlanToggle"></th>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="topographic-plan-panel">
-                    <div class="panel-titles">
+                    <div class="panel-titles" :class="{ 'off': !topographicPlanToggle }">
                         <span>Topographic Plan</span>
+                        <div class="toggle-switch">
+                        <label class="switch">
+                            <input type="checkbox" v-model="topographicPlanToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                     </div>
                     <table class="sketch-plan-table">
                         <tr>
@@ -330,30 +451,144 @@ export default {
                             <th class="SR-names">Printed</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="topographicPlanCheckboxes.printedTP" :disabled="!topographicPlanToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!topographicPlanToggle"></th>
                         </tr>
                         <tr>
                             <th class="SR-names">Released</th>
                             <th>
                                 <label class="check-box">
-                                    <input type="checkbox">
+                                    <input type="checkbox" v-model="topographicPlanCheckboxes.releasedTP" :disabled="!topographicPlanToggle">
                                     <span class="checkmark"></span>
                                 </label>
                             </th>
-                            <th><input class="table-date" type="date"></th>
+                            <th><input class="table-date" type="date" :disabled="!topographicPlanToggle"></th>
                         </tr>
                     </table>
                 </div>
             </div>
-            <div class="caap-application-panel">
-                <div class="panel-titles">
+            <div class="survey-return-panel">
+                <div class="panel-titles" :class="{ 'off': !caadApplicationToggle }">
                     <span>CAAD Application</span>
+                    <div class="toggle-switch">
+                        <label class="switch">
+                            <input type="checkbox" v-model="caadApplicationToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                 </div>
-                
+                <div class="panel-tables">
+                    <table class="left-table">
+                        <tr>
+                            <th class="table-titles">Requirements</th>
+                            <th class="table-titles">Completed</th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Filled-Up Forms</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.filledUpForms" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Vicinity Map</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.vicinityMap" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Traverse Computations</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.traverseComputations" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Official Receipt</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.officialReceipt" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Land Title</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.landTitle" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Elevations Drawings</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.elevationsDrawings" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                        </tr>
+                    </table>
+                    <table class="right-table">
+                        <tr>
+                            <th class="table-titles">Submittal and Updates</th>
+                            <th class="table-titles">Completed</th>
+                            <th class="table-titles">Date</th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Sent to CAAP Office</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.sentToCAAPOffice" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date" :disabled="!caadApplicationToggle"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Approved</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.approved" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date" :disabled="!caadApplicationToggle"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Received</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.received" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date" :disabled="!caadApplicationToggle"></th>
+                        </tr>
+                        <tr>
+                            <th class="SR-names">Released</th>
+                            <th>
+                                <label class="check-box">
+                                    <input type="checkbox" v-model="caadApplicationCheckboxes.released" :disabled="!caadApplicationToggle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th><input class="table-date" type="date" :disabled="!caadApplicationToggle"></th>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>    
     </div>
@@ -470,6 +705,7 @@ body{
     height: 23px;
     border-radius: 20px;
     width: 40%;
+    transition: 1s;
 }
 .progress-blue-bar{
     background-color:rgba(255, 255, 255, 0.402);
@@ -484,15 +720,23 @@ body{
 }
 
 .panel-titles{
-    background-color: #007BFF;
-    color: white;
     display: flex;
     align-items: center;
+    background-color: #007BFF;
+    color: white;
     justify-content: center;
     width: 100%;
-    border-radius: 3px;
     height: 35px;
+    border-radius: 3px;
     margin-bottom: 5px;
+    padding-left: 42px;
+    padding-right: 8px;
+}
+
+.panel-titles span{
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .panel-tables{
@@ -602,4 +846,76 @@ body{
 .caap-application-panel{
     margin-top: 5px;
 }
+
+.toggle-switch{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: rgba(255, 255, 255, 0.100) ;
+ 
+}
+
+input:focus + .slider {
+     box-shadow: 0 0 1px  rgba(255, 255, 255, 0.100) ;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(14px);
+    -ms-transform: translateX(14px);
+    transform: translateX(14px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.panel-titles.off {
+  background-color:#007bffa4;
+}
+
 </style>
