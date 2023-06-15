@@ -1,73 +1,13 @@
 <script>
 export default {
+    props: ['parent'],
+    created(){
+        console.log(this.parent);
+    },
     data() { 
         return {
-            surveyReturnToggle: true,
-            sketchPlanToggle: true,
-            topographicPlanToggle: true,
-            caadApplicationToggle: true,
-            surveyReturnCheckboxes: {
-                //Survey Return and Requirements
-                ldcOfMotherlot: false,
-                blPlanPrinted: false,
-                blPlanSigned: false,
-                eSurvey: false,
-                fieldNotesFieldNotesCover: false,
-                certifiedCopyOfTaxDeclaration: false,
-                certifiedCopyOfTitle: false,
-                transmittal: false,
-                surveyAuthority: false,
-                geodeticEngineerSignature: false,
-                //Submittal and Updates
-                sentToEvelynBaloviaGrandTours: false,		
-                frontDesk: false,		
-                ivasTransactionID: false,		
-                verifiers: false,		
-                recordsVerifier: false,		
-                projectionUnit: false,		
-                finalVerification: false,		
-                recommendingApproval: false,		
-                surveyApproval: false,		
-                assignmentofSurveyNo: false,
-            },
-            sketchPlanCheckboxes: {
-                //Sketch Plan
-                printedSP: false,
-                releasedSP: false,
-            },
-            topographicPlanCheckboxes: {
-                //Topographic Plan
-                printedTP: false,
-                releasedTP: false,
-            },
-            caadApplicationCheckboxes: {
-                //CAAD Application Requirements
-                filledUpForms: false,	
-                vicinityMap: false,	
-                traverseComputations: false,	
-                officialReceipt: false,	
-                landTitle: false,	
-                elevationsDrawings: false,
-                //CAAD Application Submittal and Updates
-                sentToCAAPOffice: false,
-                approved: false,
-                received: false,
-                released: false
-            }
+            
         };
-    },
-    watch: {
-        /*
-        surveyReturnToggle(newVal) {
-            for (const key in this.surveyReturnCheckboxes) {
-            this.surveyReturnCheckboxes[key] = newVal;
-            }
-        },
-        sketchPlanToggle(newVal) {
-            for (const key in this.sketchPlanCheckboxes) {
-            this.sketchPlanCheckboxes[key] = newVal;
-            }
-        },*/
     },
     computed: {
         activeComponent() {
@@ -75,40 +15,6 @@ export default {
         },
         progressPercentage() {
             let ctr = 0;
-            let surveyReturnPercentage = 0;
-            let sketchPlanPercentage = 0;
-            let topographicPlanPercentage = 0;
-            let caadApplicationPercentage = 0;
-            if(this.surveyReturnToggle) {
-                const totalCheckboxes = Object.keys(this.surveyReturnCheckboxes).length;
-                const checkedCheckboxes = Object.values(this.surveyReturnCheckboxes).filter((value) => value).length;
-                surveyReturnPercentage = ((checkedCheckboxes / totalCheckboxes) * 100);
-                ctr++;
-            }
-            if(this.sketchPlanToggle) {
-                const totalCheckboxes = Object.keys(this.sketchPlanCheckboxes).length;
-                const checkedCheckboxes = Object.values(this.sketchPlanCheckboxes).filter((value) => value).length;
-                sketchPlanPercentage = ((checkedCheckboxes / totalCheckboxes) * 100);
-                ctr++;
-            }
-            if(this.topographicPlanToggle) {
-                const totalCheckboxes = Object.keys(this.topographicPlanCheckboxes).length;
-                const checkedCheckboxes = Object.values(this.topographicPlanCheckboxes).filter((value) => value).length;
-                topographicPlanPercentage =((checkedCheckboxes / totalCheckboxes) * 100);
-                ctr++;
-            }
-            if(this.caadApplicationToggle) {
-                const totalCheckboxes = Object.keys(this.caadApplicationCheckboxes).length;
-                const checkedCheckboxes = Object.values(this.caadApplicationCheckboxes).filter((value) => value).length;
-                caadApplicationPercentage = ((checkedCheckboxes / totalCheckboxes) * 100);
-                ctr++;
-            }
-            if (ctr > 0) {
-                const totalPercentage = surveyReturnPercentage + sketchPlanPercentage + topographicPlanPercentage + caadApplicationPercentage;
-                const averagePercentage = totalPercentage / ctr;
-                //return averagePercentage.toFixed(2);
-                return Math.round(averagePercentage);
-            }
             return 0;
         },
     },
@@ -119,13 +25,13 @@ export default {
         redirectTosurveyprogress() {
             this.$router.push('/surveyprogress')
         }
-    }
+    },
 };
 </script>
 <template>
     <div class="header">
         <div class="title">
-            <span>LOT 5677 - A - 2 , PSD - 08 - D</span>
+            <span>{{ parent }}</span>
         </div>
     </div>
     <div class="container">
@@ -157,8 +63,59 @@ export default {
                     </div>
                 </div>
             </div>
-
-            
+            <div class="payment-panel">
+                <div class="top-panel">
+                    <div class="left-panel">
+                        <div class="subpanels">
+                            <span class="subpanel-title">Payee</span>
+                            <input class="subpanel-input" type="text">
+                        </div>
+                    </div>
+                    <div class="right-panel">
+                        <div class="subpanels">
+                            <span class="subpanel-title">O.R. #</span>
+                            <input class="subpanel-input" type="text">
+                        </div>
+                    </div>                    
+                </div>
+                <div class="middle-panel">
+                    <div class="left-panel">
+                        <div class="subpanels">
+                            <div class="subpanel-title">
+                                <span>Total Amount</span>
+                            </div>
+                            <span class="subpanel-input"></span>
+                        </div>
+                    </div>
+                    <button class="addBtn">Add Partial Payment</button>   
+                </div>
+                <div class="bottom-panel">
+                    <div class="left-panel">
+                        <div class="subpanels">
+                            <span class="subpanel-title">Down Payment</span>
+                            <input class="subpanel-input" type="text">
+                        </div>
+                        <div class="subpanels">
+                            <span class="subpanel-title">Partial Payment</span>
+                            <input class="subpanel-input" type="text">
+                        </div>
+                        <div class="subpanels">
+                            <span class="subpanel-title">Balance</span>
+                            <input class="subpanel-input" type="text" disabled>
+                        </div>
+                    </div>
+                    <div class="right-panel">
+                        <div class="subpanels">
+                            <span class="subpanel-title">Date</span>
+                            <input class="subpanel-input" type="date">
+                        </div>
+                        <div class="subpanels">
+                            <span class="subpanel-title">Date</span>
+                            <input class="subpanel-input" type="date">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>    
     </div>
 </template>
@@ -280,6 +237,83 @@ body{
     background-color:rgba(255, 255, 255, 0.402);
     height: 23px;
     border-radius: 20px;
+    width: 100%;
+}
+
+.payment-panel{
+    margin: 0 100px;
+}
+
+.top-panel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.subpanels{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    width: 100%;
+    padding: 3px 0;
+}
+
+.subpanel-title{
+    border: 1px var(--border) solid;
+    background-color: var(--grey);
+    padding: 0 10px;
+    width: auto;
+    border-radius: 3px 0 0 3px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    height: 40px;
+}
+
+.subpanel-input{
+    border: 1px var(--border) solid;
+    border-left: none;
+    border-radius: 0 3px 3px 0;
+    font-size: 15px;
+    padding: 0 10px;
+    height: 100%;
+    width: auto;
+}
+
+.addBtn{
+    height: 40px;
+    border: none;
+    color: white;
+    background-color: #2ea54ce3;
+    font-size: 14px;
+    padding: 0 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+.bottom-panel{
+    display: flex;
+    justify-content: center;
+    align-items: top;
+}
+
+.left-panel, .right-panel{
+    width: 50%;
+}
+
+.left-panel{
+    margin-right: .5%;
+}
+
+.right-panel{
+    margin-left: .5%;
+}
+
+.middle-panel{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
     width: 100%;
 }
 </style>

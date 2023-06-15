@@ -1,5 +1,9 @@
 <script>
+import PaymentProgressComponents from './PaymentProgressComponents.vue';
 export default {
+    components: {
+        PaymentProgressComponents
+    },
     data() {
     return {
         newInput: "",
@@ -12,7 +16,7 @@ export default {
         originalInputs: {}, // Add this data property
         originalMultipliers: {},
         originalMultiplicands: {},
-        title: "",
+        title: "Page Title",
         pairs: [
             { multiplicand: 1, multiplier: 0 },
             { multiplicand: 0, multiplier: 0 },

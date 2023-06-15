@@ -1,13 +1,26 @@
-<script setup>
-    import { ref } from 'vue';
-
-    const attributes = ref([
-    {
-        highlight: true,
-        dates: new Date(),
+<script>
+export default {
+    data() {
+    return {
+        attributes: [ 
+        {
+            highlight: true,
+            dates: new Date(),
+        },
+        ],
+    };
     },
-    ]);  
+    methods: {
+        redirectToallsurveys() {
+            this.$router.push('/allsurveys');
+        },
+        redirectToongoingsurveys() {
+            this.$router.push('/ongoingsurveys');
+        },
+    },
+};
 </script>
+
 
 <template>
     <div class="header">
@@ -32,8 +45,8 @@
                 </div>
             </div>
             <div class="view-all-panel">
-                <span class="ongoing-surveys-text">Ongoing Surveys</span>
-                <span class="view-all-text">View all</span>
+                <span class="ongoing-surveys-text">All Surveys</span>
+                <span class="view-all-text" @click="redirectToallsurveys">View all</span>
             </div>
             <div class="ongoing-surveys-boxes-panel">
                 <div class="box"></div>
@@ -41,8 +54,8 @@
                 <div class="box"></div>
             </div>
             <div class="view-all-panel">
-                <span class="ongoing-surveys-text">Completed Surveys</span>
-                <span class="view-all-text">View all</span>
+                <span class="ongoing-surveys-text">Ongoing Surveys</span>
+                <span class="view-all-text" @click="redirectToongoingsurveys">View all</span>
             </div>
             <div class="ongoing-surveys-boxes-panel">
                 <div class="box"></div>
@@ -152,6 +165,7 @@ body{
 
 .view-all-text{
     color: #007BFF;
+    cursor: pointer;
 }
 
 .ongoing-surveys-boxes-panel{

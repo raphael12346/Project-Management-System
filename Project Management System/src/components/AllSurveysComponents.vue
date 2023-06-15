@@ -1,3 +1,12 @@
+<script>
+export default {
+    methods: {
+        redirectTosurveydetails() {
+        this.$router.push('/surveydetails')
+        },
+    }   
+}
+</script>
 <template>
     <div class="header">
         <div class="title">
@@ -223,13 +232,3 @@
     }
     
 </style>
-<script>
-export default {
-    methods: {
-    redirectTosurveydetails() {
-      this.$router.push('/surveydetails')
-    },
-}
-
-}
-</script>
