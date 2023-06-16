@@ -128,7 +128,7 @@ export default {
 <template>
     <div class="header">
         <div class="title">
-            <span>LOT 5677 - A - 2 , PSD - 08 - D</span>
+            <span>Survey Progress</span>
         </div>
     </div>
     <div class="container">
