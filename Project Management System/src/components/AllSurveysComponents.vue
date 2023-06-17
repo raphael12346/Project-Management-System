@@ -79,6 +79,120 @@ export default {
             </tr>
         </table>
     </div>
+<<<<<<< Updated upstream
+=======
+    <div class="add-container" v-show="createNewSurvey">
+        <div class="form">
+            <form>
+                <div class="surveyinformationpanel">
+                    <div class="surveyinformationtitle">
+                        <span>Survey Information</span>
+                    </div>
+                    <div class="surveyinformationsubpanel-top">
+                        <div class="surveyinformationsubpanel-left">
+                            <div class="surveyinformationsubpanels">
+                                <span>Transaction Date</span>
+                                <input type="date" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Schedule of Survey</span>
+                                <input type="date" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Claimant</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Type of Survey</span>
+                                <input type="text" required/>
+                                
+                            </div>
+                        </div>
+                        <div class="surveyinformationsubpanel-right">
+                            <div class="surveyinformationsubpanels">
+                                <span>Province</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Municipality</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Barangay</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Area</span>
+                                <input type="text" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="surveyinformationsubpanel-bottom">
+                        <div class="surveyinformationsubpanels">
+                                <span>Lot & Survey No.</span>
+                                <input type="text" required/>
+                            </div>
+                    </div>
+                </div>
+                <div class="clientdetailspanel">
+                    <div class="surveyinformationtitle">
+                        <span>Client Details</span>
+                    </div>
+                    <div class="surveyinformationsubpanel-top">
+                        <div class="surveyinformationsubpanel-left">
+                            <div class="surveyinformationsubpanels">
+                                <span>Name</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Relation to Claimant</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Address</span>
+                                <input type="text" required/>
+                            </div>
+                        </div>
+                        <div class="surveyinformationsubpanel-right">
+                            <div class="surveyinformationsubpanels">
+                                <span>Mobile No.</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Email Adress</span>
+                                <input type="text" required/>
+                            </div>
+                            <div class="surveyinformationsubpanels">
+                                <span>Messenger</span>
+                                <input type="text" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button class="form-cancelBtn" @click="createNewSurvey = !createNewSurvey">Cancel</button>
+                    <button type="submit" class="form-addSurveyBtn">Add Survey</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+<style>
+body{
+    background-color: #F4F4F4;
+}
+.header{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding-left: 40px;
+    padding-right: 20px;
+    color: #007BFF;
+    background-color: white;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    height: 80px;
+}
+>>>>>>> Stashed changes
     
     </template>
     <style>
