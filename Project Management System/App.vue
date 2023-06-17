@@ -3,13 +3,9 @@ import { computed } from 'vue'
 import { useRoute, RouterView } from 'vue-router'
 import sidebar from '@/components/SidebarComponents.vue'
 
-// Use plugin with optional defaults
-//app.use(VCalendar, {})
-
-
 const route = useRoute()
 const showSidebar = computed(() => route.name !== 'login')
-const mainClass = computed(() => (route.name === 'login' ? 'login-page' : 'non-login-page'))
+
 </script>
 
 <template>
@@ -21,7 +17,7 @@ const mainClass = computed(() => (route.name === 'login' ? 'login-page' : 'non-l
   </div>
 </template>
 
-<style lang="scss" scoped> 
+<style lang="scss" > 
 .app {
 	display: flex;
 }

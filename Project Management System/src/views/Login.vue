@@ -8,7 +8,7 @@ import LoginComponent from '../components/LoginComponents.vue'
     </main>
 </template>
 
-<style>
+<style scoped>
 
 
 </style>

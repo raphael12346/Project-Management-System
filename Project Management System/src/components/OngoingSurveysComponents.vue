@@ -52,8 +52,8 @@
         </table>
     </div>
     
-    </template>
-    <style>
+</template>
+<style scoped>
     body{
         background-color: #F4F4F4;
     }

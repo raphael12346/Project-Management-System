@@ -1,13 +1,7 @@
-import './assets/main.css'
-import 'v-calendar/style.css';
+// firebase.js
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from '../App.vue'
-import router from './router/index.js'
-import VCalendar from 'v-calendar';
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,9 +15,8 @@ const firebaseConfig = {
   appId: "1:1017788362160:web:e997723bab2e82af1d3a75"
 };
 
-const app = createApp(App)
-app.use(VCalendar, {})
-app.use(createPinia())
-app.use(router)
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-app.mount('#app')
+export default firebase;

@@ -13,7 +13,14 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/Dashboard.vue'),
-      meta: { activeComponent: 'dashboard' }
+      meta: { activeComponent: 'dashboard' },
+      beforeRouteLeave(to, from, next) {
+        // Reset the body style to its default state
+        document.body.style = '';
+    
+        // Proceed to the next route
+        next();
+      }
     },
 
     {
@@ -50,7 +57,8 @@ const router = createRouter({
       component: () => import('../views/PaymentProgress.vue'),
       meta: { activeComponent: 'paymentprogress' }
     }
-  ]
+  ],
 })
+
 
 export default router

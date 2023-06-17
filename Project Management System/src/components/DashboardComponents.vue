@@ -1,26 +1,25 @@
-<script>
-export default {
-    data() {
-    return {
-        attributes: [ 
-        {
-            highlight: true,
-            dates: new Date(),
-        },
-        ],
-    };
-    },
-    methods: {
-        redirectToallsurveys() {
-            this.$router.push('/allsurveys');
-        },
-        redirectToongoingsurveys() {
-            this.$router.push('/ongoingsurveys');
-        },
-    },
-};
-</script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const attributes = ref([
+  {
+    highlight: true,
+    dates: new Date(),
+  },
+]);
+
+const router = useRouter();
+
+const redirectToallsurveys = () => {
+  router.push('/allsurveys');
+};
+
+const redirectToongoingsurveys = () => {
+  router.push('/ongoingsurveys');
+};
+
+</script>
 
 <template>
     <div class="header">
@@ -71,10 +70,7 @@ export default {
         </div>
     </div>
 </template>
-<style>
-body{
-    background-color: #F4F4F4;
-}
+<style scoped>
 .header{
     display: flex;
     align-items: center;
