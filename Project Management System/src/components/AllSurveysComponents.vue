@@ -1,16 +1,15 @@
 <script>
 export default {
-    data() {
-        return {
-            createNewSurvey: false
-        }
-
-    },
     methods: {
         redirectTosurveydetails() {
         this.$router.push('/surveydetails')
         },
-    }   
+    },
+    data() {
+        return {
+            createNewSurvey: false
+        }
+    }
 }
 </script>
 <template>
@@ -18,7 +17,6 @@ export default {
         <div class="title">
             <span>All Surveys</span>
         </div>
-
         <div class="right-panel">
             <div class="createBtn">
                 <button class="create-button" @click="createNewSurvey = !createNewSurvey"> 
@@ -109,6 +107,7 @@ export default {
                             <div class="surveyinformationsubpanels">
                                 <span>Type of Survey</span>
                                 <input type="text" required/>
+                                
                             </div>
                         </div>
                         <div class="surveyinformationsubpanel-right">
@@ -184,6 +183,7 @@ export default {
 body{
     background-color: #F4F4F4;
 }
+
 .header{
     display: flex;
     align-items: center;
@@ -194,18 +194,18 @@ body{
     background-color: white;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
     height: 80px;
-}
-    
+} 
+  
 .title{
     margin: auto;
     margin-left: 0px;
 }
 
 .title span{
-        font-weight: bold;
+    font-weight: bold;
     font-size: 30px;
 }
-    
+
 .right-panel{
     display: flex;
     align-items: center;
@@ -260,7 +260,7 @@ body{
     background-color: #343a40dd;
     cursor: pointer;
 }
-    
+
 #search-icon{
     font-size: 26px;
     margin: 5px;
@@ -332,7 +332,7 @@ body{
 
 .add-container{
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.595);
     height: 100%;
     width: 100%; 
     top: 0;
@@ -340,6 +340,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;  
+    transition: opacity 2s;
 }
 
 .form{
@@ -348,7 +349,7 @@ body{
     height: auto;
     padding: 30px;
 }
-    
+
 .surveyinformationtitle{
     display: flex;
     align-items: center;
