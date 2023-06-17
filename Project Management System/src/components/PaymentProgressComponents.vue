@@ -24,6 +24,7 @@ export default {
                 downPaymentOR: 0,
                 finalPaymentOR: 0,
             },
+            originalPaymentRows: [],
             paymentRows: [
                 { amount: 0, date: "", orNumber: 0 }
             ],
@@ -69,11 +70,13 @@ export default {
             this.downPaymentOR = this.originalORs.downPaymentOR;
             this.finalPaymentOR = this.originalORs.finalPaymentOR;
 
+            this.paymentRows = JSON.parse(JSON.stringify(this.originalPaymentRows));
+
             this.makeEditable = false;
         },
         toggleEditable() {
             if (!this.makeEditable) {
-                // Payment
+                //Payment
                 this.originalValues.downPayment = this.downPayment;
                 this.originalValues.finalPayment = this.finalPayment;
                 // Date
@@ -82,6 +85,8 @@ export default {
                 //OR#
                 this.originalORs.downPaymentOR = this.downPaymentOR;
                 this.originalORs.finalPaymentOR = this.finalPaymentOR;
+
+                this.originalPaymentRows = JSON.parse(JSON.stringify(this.paymentRows));
             }
             this.makeEditable = !this.makeEditable;
         },
@@ -106,9 +111,7 @@ export default {
         <div class="right-panel">
             <div class="editBtn-payment">
                 <button class="edit-button-payment" @click="toggleEditable" v-show="!makeEditable">
-                    <span id ="edit-icon" class="material-symbols-rounded">
-                        edit_square
-                    </span> 
+                    <span id ="edit-icon" class="material-symbols-rounded">edit_square</span> 
                     Edit    
                 </button>
             </div>
@@ -175,7 +178,7 @@ export default {
                     </tr>       
                     <tr v-for="(row, index) in paymentRows" :key="index">
                     <template v-if="index !== 0">
-                        <th class="pb-title">Payment {{ index + 1}}:</th>
+                        <th class="pb-title">Payment {{ index + 1 }}:</th>
                         <th><input class="amount" type="number" v-model.lazy="row.amount" :disabled="!makeEditable" /></th>
                         <th><input class="transact-date" type="date" v-model.lazy="row.date" :disabled="!makeEditable" /></th>
                         <th><input class="or-number" type="number" v-model.lazy="row.orNumber" :disabled="!makeEditable" /></th>
