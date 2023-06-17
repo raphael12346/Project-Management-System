@@ -201,6 +201,7 @@
 
     #delete-icon{
         font-size: 20px;
+        color: white;
     }
     
 </style>

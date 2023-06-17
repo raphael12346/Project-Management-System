@@ -92,7 +92,7 @@ export default {
     </div>
 </template>
     
-<style scoped>
+<style >
 body{
     align-items: center;
     height: 100vh; /* Adjust the height as needed */

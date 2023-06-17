@@ -2,8 +2,8 @@
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import 'firebase/compat/firestore';
+import { doc } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,8 +15,8 @@ const firebaseConfig = {
   appId: "1:1017788362160:web:e997723bab2e82af1d3a75"
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
 
-export default firebase;
+const firebasedb = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+export { db, firebasedb };

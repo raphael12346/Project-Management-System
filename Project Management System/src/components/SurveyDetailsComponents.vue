@@ -1,182 +1,252 @@
-<script>
-export default {
-    data() {
-    return {
-        newInput: "",
-        isUpdateAction: false,
-        disabled: true,
-        originalTotalAmount: 0,
-        first_product: 0,
-        second_product: 0,
-        third_product: 0,
-        originalInputs: {}, // Add this data property
-        originalMultipliers: {},
-        originalMultiplicands: {},
-        title: "Survey Details",
-        pairs: [
-            { multiplicand: 1, multiplier: 0 },
-            { multiplicand: 0, multiplier: 0 },
-            { multiplicand: 0, multiplier: 0 }
-        ]
-    };
-},
-computed: {
-    activeComponent() {
-        return this.$route.meta.activeComponent;
-    },
-    computeProduct() {
-        return this.pairs.map(pair => pair.multiplicand * pair.multiplier);
-    },
-    firstProduct() {
-        if(this.isUpdateAction)
-        {
-            var product = this.computeProduct[0];
-            this.first_product = product;
-            return product;
-        }
-        return this.first_product;
-    },
-    secondProduct() {
-        if(this.isUpdateAction)
-        {
-            var product = this.computeProduct[1];
-            this.second_product = product;
-            return product;
-        }
-        return this.second_product;
-    },
-    thirdProduct() {
-        if(this.isUpdateAction)
-        {
-            var product = this.computeProduct[2];
-            this.third_product = product;
-            return product;
-        }
-        return this.third_product;
-    },
-    computeTotalAmount() {
-        if(this.isUpdateAction) {
-            var total_amount = this.computeProduct[0] + this.computeProduct[1] + this.computeProduct[2];
-            this.originalTotalAmount = total_amount;
-            return total_amount;    
-        }
-        return this.originalTotalAmount;
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { db } from "../firebase.js";
+import { getDoc } from 'firebase/firestore';
+
+
+//Firestore Database
+const transactionDate = ref('');
+const scheduleOfSurvey = ref('');
+const claimant = ref('');
+const typeOfSurvey = ref('');
+const province = ref('');
+const municipality = ref('');
+const barangay = ref('');
+const area = ref('');
+const lotAndSurveyNo = ref('');
+const clientName = ref('');
+const relationToClaimant = ref('');
+const address = ref('');
+const mobileNo = ref('');
+const emailAddress = ref('');
+const messenger = ref('');
+
+onMounted(async () => {
+  try {
+    const Survey_Information = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Survey_Information');
+    const docSnapshotSI = await getDoc(Survey_Information);
+
+    const Client_Details = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Client_Details');
+    const docSnapshotCD = await getDoc(Client_Details);
+
+    if (docSnapshotSI.exists()) {
+    const data = docSnapshotSI.data();
+    transactionDate.value = data.transactionDate;
+    scheduleOfSurvey.value = data.scheduleOfSurvey;
+    claimant.value = data.claimant;
+    typeOfSurvey.value = data.claimant;
+    province.value = data.claimant;
+    municipality.value = data.municipality;
+    barangay.value = data.barangay;
+    area.value = data.area;
+    lotAndSurveyNo.value = data.lotAndSurveyNo;
+    } else {
+      // Document does not exist
+      console.log('Document does not exist.');
     }
-},
-methods: {
-    updateTitle() {
-        var newTitleElement = document.getElementById('lotInput').value;
-        this.title = newTitleElement;
-    },
-    redirectTosurveydetails() {
-        this.$router.push('/surveydetails')
-    },
-    redirectTosurveyprogress() {
-        this.$router.push('/surveyprogress')
-    },
-    redirectTopaymentprogress() {
-        this.$router.push('/paymentprogress')
-    },
-    makeEditable() {   
-        var multiplier = document.getElementsByClassName("number-multiplier");
-        for (var i = 0; i < multiplier.length; i++) {
-            var input = multiplier[i];
-            var originalValue = input.value;
-            this.originalMultipliers[input.id] = originalValue;
-            input.disabled = false;
-            input.classList.add("editable");
-        }
 
-        var multiplicand = document.getElementsByClassName("number-multiplicand"); 
-        for (var i = 1; i < multiplicand.length; i++) {
-            var input = multiplicand[i];
-            var originalValue = input.value;
-            this.originalMultiplicands[input.id] = originalValue;
-            input.disabled = false;
-            input.classList.add("editable");    
-        }
-
-        var inputs = document.getElementsByClassName("input-text");
-        for (var i = 0; i < inputs.length; i++) {
-            var input = inputs[i];
-            var originalValue = input.value;
-            this.originalInputs[input.id] = originalValue;
-            input.disabled = false;
-            input.classList.add("editable");
-        }
-        this.isUpdateAction = false;
-        document.getElementsByClassName("edit-button")[0].style.display = "none";
-        document.getElementsByClassName("cancelBtn")[0].style.display = "inline-block";
-        document.getElementsByClassName("updateBtn")[0].style.display = "inline-block";
-    },
-    cancelEdit() {
-        var inputs = document.getElementsByClassName("input-text");
-        for (var i = 0; i < inputs.length; i++) {
-            var input = inputs[i];
-            var originalValue = this.originalInputs[input.id];
-            input.value = originalValue;
-            input.disabled = true;
-            input.classList.remove("editable");
-        }
-
-        var multiplier = document.getElementsByClassName("number-multiplier");
-        for (var i = 0; i < multiplier.length; i++) {
-            var input = multiplier[i];
-            var originalValue = this.originalMultipliers[input.id];
-            input.value = originalValue;
-            input.disabled = true;
-            input.classList.remove("editable");
-        }
-
-        var multiplicand = document.getElementsByClassName("number-multiplicand");
-        for (var i = 1; i < multiplicand.length; i++) {
-            var input = multiplicand[i];
-            var originalValue = this.originalMultiplicands[input.id];
-            input.value = originalValue;
-            input.disabled = true;
-            input.classList.remove("editable");
-        }
-
-        this.isUpdateAction = false;
-        document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
-        document.getElementsByClassName("cancelBtn")[0].style.display = "none";
-        document.getElementsByClassName("updateBtn")[0].style.display = "none";
-    },
-    updateValue() {
-        var multiplier = document.getElementsByClassName("number-multiplier");
-        for (var i = 0; i < multiplier.length; i++) {
-            var newValue = multiplier[i].value;
-            this.newInput = newValue;
-            this.originalMultipliers[multiplier[i].id] = newValue;
-            multiplier[i].disabled = true;
-            multiplier[i].classList.remove("editable");
-        }
-
-        var multiplicand = document.getElementsByClassName("number-multiplicand");
-        for (var i = 1; i < multiplicand.length; i++) {
-            var newValue = multiplicand[i].value;
-            this.newInput = newValue;
-            this.originalMultiplicands[multiplicand[i].id] = newValue;
-            multiplicand[i].disabled = true;
-            multiplicand[i].classList.remove("editable");
-        }
-
-        var inputs = document.getElementsByClassName("input-text");
-        for (var i = 0; i < inputs.length; i++) {
-            var newValue = inputs[i].value;
-            this.newInput = newValue;
-            this.originalInputs[inputs[i].id] = newValue;
-            inputs[i].disabled = true;
-            inputs[i].classList.remove("editable");
-        }
-        this.isUpdateAction = true;
-        document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
-        document.getElementsByClassName("cancelBtn")[0].style.display = "none";
-        document.getElementsByClassName("updateBtn")[0].style.display = "none";
+    if (docSnapshotCD.exists()) {
+    const data = docSnapshotCD.data();
+    clientName.value = data.clientName;
+    relationToClaimant.value = data.relationToClaimant;
+    address.value = data.address;
+    mobileNo.value = data.mobileNo;
+    emailAddress.value = data.emailAddress;
+    messenger.value = data.messenger;
+    } else {
+      // Document does not exist
+      console.log('Document does not exist.');
     }
+  } catch (error) {
+    console.error('Error fetching document:', error);
   }
-};
+});
+
+//Logic in template
+const newInput = ref("");
+const isUpdateAction = ref(false);
+const disabled = ref(true);
+const originalTotalAmount = ref(0);
+const first_product = ref(0);
+const second_product = ref(0);
+const third_product = ref(0);
+const originalInputs = ref({});
+const originalMultipliers = ref({});
+const originalMultiplicands = ref({});
+const title = ref("Survey Details");
+const pairs = ref([
+  { multiplicand: 1, multiplier: 0 },
+  { multiplicand: 0, multiplier: 0 },
+  { multiplicand: 0, multiplier: 0 }
+]);
+
+const router = useRouter();
+
+const computeProduct = computed(() =>
+  pairs.value.map(pair => pair.multiplicand * pair.multiplier)
+);
+
+const firstProduct = computed(() => {
+  if (isUpdateAction.value) {
+    const product = computeProduct.value[0];
+    first_product.value = product;
+    return product;
+  }
+  return first_product.value;
+});
+
+const secondProduct = computed(() => {
+  if (isUpdateAction.value) {
+    const product = computeProduct.value[1];
+    second_product.value = product;
+    return product;
+  }
+  return second_product.value;
+});
+
+const thirdProduct = computed(() => {
+  if (isUpdateAction.value) {
+    const product = computeProduct.value[2];
+    third_product.value = product;
+    return product;
+  }
+  return third_product.value;
+});
+
+const computeTotalAmount = computed(() => {
+  if (isUpdateAction.value) {
+    const total_amount =
+      computeProduct.value[0] +
+      computeProduct.value[1] +
+      computeProduct.value[2];
+    originalTotalAmount.value = total_amount;
+    return total_amount;
+  }
+  return originalTotalAmount.value;
+});
+
+function updateTitle() {
+  const newTitleElement = document.getElementById('lotInput').value;
+  title.value = newTitleElement;
+}
+
+function redirectTosurveydetails() {
+  router.push('/surveydetails');
+}
+
+function redirectTosurveyprogress() {
+  router.push('/surveyprogress');
+}
+
+function redirectTopaymentprogress() {
+  router.push('/paymentprogress');
+}
+
+function makeEditable() {
+  const multiplier = document.getElementsByClassName("number-multiplier");
+  for (let i = 0; i < multiplier.length; i++) {
+    const input = multiplier[i];
+    const originalValue = input.value;
+    originalMultipliers.value[input.id] = originalValue;
+    input.disabled = false;
+    input.classList.add("editable");
+  }
+
+  const multiplicand = document.getElementsByClassName("number-multiplicand");
+  for (let i = 1; i < multiplicand.length; i++) {
+    const input = multiplicand[i];
+    const originalValue = input.value;
+    originalMultiplicands.value[input.id] = originalValue;
+    input.disabled = false;
+    input.classList.add("editable");
+  }
+
+  const inputs = document.getElementsByClassName("input-text");
+  for (let i = 0; i < inputs.length; i++) {
+    const input = inputs[i];
+    const originalValue = input.value;
+    originalInputs.value[input.id] = originalValue;
+    input.disabled = false;
+    input.classList.add("editable");
+  }
+
+  isUpdateAction.value = false;
+  document.getElementsByClassName("edit-button")[0].style.display = "none";
+  document.getElementsByClassName("cancelBtn")[0].style.display = "inline-block";
+  document.getElementsByClassName("updateBtn")[0].style.display = "inline-block";
+}
+
+function cancelEdit() {
+  const inputs = document.getElementsByClassName("input-text");
+  for (let i = 0; i < inputs.length; i++) {
+    const input = inputs[i];
+    const originalValue = originalInputs.value[input.id];
+    input.value = originalValue;
+    input.disabled = true;
+    input.classList.remove("editable");
+  }
+
+  const multiplier = document.getElementsByClassName("number-multiplier");
+  for (let i = 0; i < multiplier.length; i++) {
+    const input = multiplier[i];
+    const originalValue = originalMultipliers.value[input.id];
+    input.value = originalValue;
+    input.disabled = true;
+    input.classList.remove("editable");
+  }
+
+  const multiplicand = document.getElementsByClassName("number-multiplicand");
+  for (let i = 1; i < multiplicand.length; i++) {
+    const input = multiplicand[i];
+    const originalValue = originalMultiplicands.value[input.id];
+    input.value = originalValue;
+    input.disabled = true;
+    input.classList.remove("editable");
+  }
+
+  isUpdateAction.value = false;
+  document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
+  document.getElementsByClassName("cancelBtn")[0].style.display = "none";
+  document.getElementsByClassName("updateBtn")[0].style.display = "none";
+}
+
+function updateValue() {
+  const multiplier = document.getElementsByClassName("number-multiplier");
+  for (let i = 0; i < multiplier.length; i++) {
+    const newValue = multiplier[i].value;
+    newInput.value = newValue;
+    originalMultipliers.value[multiplier[i].id] = newValue;
+    multiplier[i].disabled = true;
+    multiplier[i].classList.remove("editable");
+  }
+
+  const multiplicand = document.getElementsByClassName("number-multiplicand");
+  for (let i = 1; i < multiplicand.length; i++) {
+    const newValue = multiplicand[i].value;
+    newInput.value = newValue;
+    originalMultiplicands.value[multiplicand[i].id] = newValue;
+    multiplicand[i].disabled = true;
+    multiplicand[i].classList.remove("editable");
+  }
+
+  const inputs = document.getElementsByClassName("input-text");
+  for (let i = 0; i < inputs.length; i++) {
+    const newValue = inputs[i].value;
+    newInput.value = newValue;
+    originalInputs.value[inputs[i].id] = newValue;
+    inputs[i].disabled = true;
+    inputs[i].classList.remove("editable");
+  }
+
+  isUpdateAction.value = true;
+  document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
+  document.getElementsByClassName("cancelBtn")[0].style.display = "none";
+  document.getElementsByClassName("updateBtn")[0].style.display = "none";
+}
+
 </script>
+
 <template>
     <div class="header">
         <div class="title">
@@ -224,25 +294,25 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Transaction Date</span>
                                 </div>
-                                <input class="input-text" type="date" id="date-input" :disabled="disabled">
+                                <input class="input-text" type="date" id="date-input" :disabled="disabled" v-model="transactionDate">
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Schedule of Survey</span>
                                 </div>
-                                <input class="input-text" type="date" id="date-input" :disabled="disabled"/>
+                                <input class="input-text" type="date" id="date-input" :disabled="disabled" v-model="scheduleOfSurvey"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Claimant</span>
                                 </div>
-                                <input class="input-text" id="claimantInput" type="text" :disabled="disabled"/>        
+                                <input class="input-text" id="claimantInput" type="text" :disabled="disabled" v-model="claimant"/>        
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Type of Survey</span>
                                 </div>
-                                <input class="input-text" id="surveyInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="surveyInput" type="text" :disabled="disabled" v-model="typeOfSurvey"/>
                             </div>
                         </div>
                         <div class="survey-right">
@@ -250,25 +320,25 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Province</span>
                                 </div>
-                                <input class="input-text" id="provinceInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="provinceInput" type="text" :disabled="disabled" v-model="province"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Municipality</span>
                                 </div>
-                                <input class="input-text" id="municipalityInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="municipalityInput" type="text" :disabled="disabled" v-model="municipality"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Barangay</span>
                                 </div>
-                                <input class="input-text" id="barangayInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="barangayInput" type="text" :disabled="disabled" v-model="barangay"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Area</span>
                                 </div>
-                                <input class="input-text" id="areaInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="areaInput" type="text" :disabled="disabled" v-model="area"/>
                             </div>
                         </div>
                     </div>
@@ -277,7 +347,7 @@ methods: {
                             <div class="subtitle-survey">
                                 <span>Lot & Survey No.</span>
                             </div>
-                            <input class="input-text" id="lotInput" type="text" :disabled="disabled"/>
+                            <input class="input-text" id="lotInput" type="text" :disabled="disabled" v-model="lotAndSurveyNo"/>
                         </div>   
                     </div>
                 </div>
@@ -293,37 +363,37 @@ methods: {
                                 <div class="subtitle-survey">
                                     <span>Name</span>
                                 </div>
-                                <input class="input-text" id="nameInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="nameInput" type="text" :disabled="disabled" v-model="clientName"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Relation to Claimant</span>
                                 </div>
-                                <input class="input-text" id="relationInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="relationInput" type="text" :disabled="disabled" v-model="relationToClaimant"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Address</span>
                                 </div>
-                                <input class="input-text" id="addressInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="addressInput" type="text" :disabled="disabled" v-model="address"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Mobile No.</span>
                                 </div>
-                                <input class="input-text" id="mobileInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="mobileInput" type="text" :disabled="disabled" v-model="mobileNo"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Email Address</span>
                                 </div>
-                                <input class="input-text" id="emailInput" type="email" :disabled="disabled"/>
+                                <input class="input-text" id="emailInput" type="email" :disabled="disabled" v-model="emailAddress"/>
                             </div>
                             <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Messenger</span>
                                 </div>
-                                <input class="input-text" id="messengerInput" type="text" :disabled="disabled"/>
+                                <input class="input-text" id="messengerInput" type="text" :disabled="disabled" v-model="messenger"/>
                             </div>
                         </div>
                     </div>

@@ -1,187 +1,245 @@
-<script>
-export default {
-    methods: {
-        redirectTosurveydetails() {
-        this.$router.push('/surveydetails')
-        },
-    },
-    
-    data() {
-        return {
-            createNewSurvey: false
-        }
-    }
-}
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { db } from "../firebase.js";
+
+// Declare form data variables
+const transactionDate = ref('');
+const scheduleOfSurvey = ref('');
+const claimant = ref('');
+const typeOfSurvey = ref('');
+const province = ref('');
+const municipality = ref('');
+const barangay = ref('');
+const area = ref('');
+const lotAndSurveyNo = ref('');
+const clientName = ref('');
+const relationToClaimant = ref('');
+const address = ref('');
+const mobileNo = ref('');
+const emailAddress = ref('');
+const messenger = ref('');
+
+// Adding the data
+const submitform = () => {
+  const project = lotAndSurveyNo.value;
+  // Submit to Firebase
+  db.collection(project)
+    .doc("Survey_Information")
+    .set({
+      transactionDate: transactionDate.value,
+      scheduleOfSurvey: scheduleOfSurvey.value ,
+      claimant: claimant.value,
+      typeOfSurvey: typeOfSurvey.value,
+      province: province.value,
+      municipality: municipality.value,
+      barangay: barangay.value,
+      area: area.value,
+      lotAndSurveyNo: lotAndSurveyNo.value,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+
+    db.collection(project)
+    .doc("Client_Details")
+    .set({
+      clientName: clientName.value,
+      relationToClaimant: relationToClaimant.value,
+      address: address.value,
+      mobileNo: mobileNo.value,
+      emailAddress: emailAddress.value,
+      messenger: messenger.value,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+};
+
+
+const createNewSurvey = ref(false);
+const router = useRouter();
+
+const redirectTosurveydetails = () => {
+  router.push('/surveydetails');
+};
 </script>
+
 <template>
     <div class="header">
-        <div class="title">
-            <span>All Surveys</span>
+      <div class="title">
+        <span>All Surveys</span>
+      </div>
+      <div class="right-panel">
+        <div class="createBtn">
+          <button class="create-button" @click="createNewSurvey = !createNewSurvey">
+            Create a New Survey
+          </button>
         </div>
-        <div class="right-panel">
-            <div class="createBtn">
-                <button class="create-button" @click="createNewSurvey = !createNewSurvey"> 
-                Create a New Survey
-                </button>
-            </div>
-            <div class="search-container">
-                <input type="search" placeholder="Search..." name="search">
-                <button type="submit">
-                    <span id="search-icon" class="material-symbols-rounded">
-                        search
-                    </span>
-                </button>
-            </div>
+        <div class="search-container">
+          <input type="search" placeholder="Search..." name="search">
+          <button type="submit">
+            <span id="search-icon" class="material-symbols-rounded">
+              search
+            </span>
+          </button>
         </div>
+      </div>
     </div>
     <div class="container">
-        <table class="all-survey-table">
-            <tr>
-                <th class="table-titles">Lot & Survey No.</th>
-                <th class="table-titles">Client</th>
-                <th class="table-titles">Property Location</th>
-                <th class="table-titles">Total Amount</th>
-                <th class="table-titles">Status</th>
-                <th class="table-titles">Action</th>
-            </tr>
-            <tr>
-                <th>LOT 5677 - A - 2 , PSD - 08 - D</th>
-                <th>Raphael S. Orillano</th>
-                <th>Brgy. Airport, Ormoc City</th>
-                <th>₱20,000.00</th>
-                <th>Ongoing</th>
-                <th>
-                    <div class="actions">
-                        <button class="openBtn" @click="redirectTosurveydetails">
-                            Open
-                        </button>
-                        <button class="deleteBtn">
-                            <span id="delete-icon" class="material-symbols-rounded">
-                                delete
-                            </span>
-                        </button>
-                    </div>
-                </th>
-            </tr>
-            <tr>
-                <th>LOT 6001 - A - 2 , PSD - 08 - D</th>
-                <th>Kyle Nierras</th>
-                <th>Brgy. Salvacion, Ormoc City</th>
-                <th>₱36,000.00</th>
-                <th>Completed</th>
-                <th>
-                    <div class="actions">
-                        <button class="openBtn" @click="redirectTosurveydetails">
-                            Open
-                        </button>
-                        <button class="deleteBtn">
-                            <span id="delete-icon" class="material-symbols-rounded">
-                                delete
-                            </span>
-                        </button>
-                    </div>
-                </th>
-            </tr>
-        </table>
+      <table class="all-survey-table">
+        <tr>
+          <th class="table-titles">Lot & Survey No.</th>
+          <th class="table-titles">Client</th>
+          <th class="table-titles">Property Location</th>
+          <th class="table-titles">Total Amount</th>
+          <th class="table-titles">Status</th>
+          <th class="table-titles">Action</th>
+        </tr>
+        <tr>
+          <th>LOT 5677 - A - 2 , PSD - 08 - D</th>
+          <th>Raphael S. Orillano</th>
+          <th>Brgy. Airport, Ormoc City</th>
+          <th>₱20,000.00</th>
+          <th>Ongoing</th>
+          <th>
+            <div class="actions">
+              <button class="openBtn" @click="redirectTosurveydetails">
+                Open
+              </button>
+              <button class="deleteBtn">
+                <span id="delete-icon" class="material-symbols-rounded">
+                  delete
+                </span>
+              </button>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th>LOT 6001 - A - 2 , PSD - 08 - D</th>
+          <th>Kyle Nierras</th>
+          <th>Brgy. Salvacion, Ormoc City</th>
+          <th>₱36,000.00</th>
+          <th>Completed</th>
+          <th>
+            <div class="actions">
+              <button class="openBtn" @click="redirectTosurveydetails">
+                Open
+              </button>
+              <button class="deleteBtn">
+                <span id="delete-icon" class="material-symbols-rounded">
+                  delete
+                </span>
+              </button>
+            </div>
+          </th>
+        </tr>
+      </table>
     </div>
     <div class="add-container" v-show="createNewSurvey">
-        <div class="form">
-            <form>
-                <div class="surveyinformationpanel">
-                    <div class="surveyinformationtitle">
-                        <span>Survey Information</span>
-                    </div>
-                    <div class="surveyinformationsubpanel-top">
-                        <div class="surveyinformationsubpanel-left">
-                            <div class="surveyinformationsubpanels">
-                                <span>Transaction Date</span>
-                                <input type="date" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Schedule of Survey</span>
-                                <input type="date" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Claimant</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Type of Survey</span>
-                                <input type="text" required/>
-                                
-                            </div>
-                        </div>
-                        <div class="surveyinformationsubpanel-right">
-                            <div class="surveyinformationsubpanels">
-                                <span>Province</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Municipality</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Barangay</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Area</span>
-                                <input type="text" required/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="surveyinformationsubpanel-bottom">
-                        <div class="surveyinformationsubpanels">
-                                <span>Lot & Survey No.</span>
-                                <input type="text" required/>
-                            </div>
-                    </div>
+      <div class="form">
+        <form @submit.prevent="submitform">
+          <div class="surveyinformationpanel">
+            <div class="surveyinformationtitle">
+              <span>Survey Information</span>
+            </div>
+            <div class="surveyinformationsubpanel-top">
+              <div class="surveyinformationsubpanel-left">
+                <div class="surveyinformationsubpanels">
+                  <span>Transaction Date</span>
+                  <input type="date" v-model="transactionDate" />
                 </div>
-                <div class="clientdetailspanel">
-                    <div class="surveyinformationtitle">
-                        <span>Client Details</span>
-                    </div>
-                    <div class="surveyinformationsubpanel-top">
-                        <div class="surveyinformationsubpanel-left">
-                            <div class="surveyinformationsubpanels">
-                                <span>Name</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Relation to Claimant</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Address</span>
-                                <input type="text" required/>
-                            </div>
-                        </div>
-                        <div class="surveyinformationsubpanel-right">
-                            <div class="surveyinformationsubpanels">
-                                <span>Mobile No.</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Email Adress</span>
-                                <input type="text" required/>
-                            </div>
-                            <div class="surveyinformationsubpanels">
-                                <span>Messenger</span>
-                                <input type="text" required/>
-                            </div>
-                        </div>
-                    </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Schedule of Survey</span>
+                  <input type="date" v-model="scheduleOfSurvey" />
                 </div>
-                <div class="form-buttons">
-                    <button class="form-cancelBtn" @click="createNewSurvey = !createNewSurvey">Cancel</button>
-                    <button type="submit" class="form-addSurveyBtn">Add Survey</button>
+                <div class="surveyinformationsubpanels">
+                  <span>Claimant</span>
+                  <input type="text" v-model="claimant" />
                 </div>
-            </form>
-        </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Type of Survey</span>
+                  <input type="text" v-model="typeOfSurvey" />
+                </div>
+              </div>
+              <div class="surveyinformationsubpanel-right">
+                <div class="surveyinformationsubpanels">
+                  <span>Province</span>
+                  <input type="text" v-model="province" />
+                </div>
+                <div class="surveyinformationsubpanels" >
+                  <span>Municipality</span>
+                  <input type="text" v-model="municipality"/>
+                </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Barangay</span>
+                  <input type="text" v-model="barangay"/>
+                </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Area</span>
+                  <input type="text" v-model="area"/>
+                </div>
+              </div>
+            </div>
+            <div class="surveyinformationsubpanel-bottom">
+              <div class="surveyinformationsubpanels">
+                <span>Lot & Survey No.</span>
+                <input type="text" v-model="lotAndSurveyNo"/>
+              </div>
+            </div>
+          </div>
+          <div class="clientdetailspanel">
+            <div class="surveyinformationtitle">
+              <span>Client Details</span>
+            </div>
+            <div class="surveyinformationsubpanel-top">
+              <div class="surveyinformationsubpanel-left">
+                <div class="surveyinformationsubpanels">
+                  <span>Name</span>
+                  <input type="text" v-model="clientName"/>
+                </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Relation to Claimant</span>
+                  <input type="text" v-model="relationToClaimant"/>
+                </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Address</span>
+                  <input type="text" v-model="address"/>
+                </div>
+              </div>
+              <div class="surveyinformationsubpanel-right">
+                <div class="surveyinformationsubpanels">
+                  <span>Mobile No.</span>
+                  <input type="text" v-model="mobileNo"/>
+                </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Email Adress</span>
+                  <input type="text" v-model="emailAddress"/>
+                </div>
+                <div class="surveyinformationsubpanels">
+                  <span>Messenger</span>
+                  <input type="text" v-model="messenger"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-buttons">
+            <button class="form-cancelBtn" @click="createNewSurvey = !createNewSurvey">Cancel</button>
+            <button type="submit" class="form-addSurveyBtn">Add Survey</button>
+          </div>
+        </form>
+      </div>
     </div>
 </template>
-<style scoped>
+  
 
+<style scoped>
 .header{
     display: flex;
     align-items: center;
@@ -326,6 +384,7 @@ export default {
 
 #delete-icon{
     font-size: 20px;
+    color: white;
 }
 
 .add-container{
