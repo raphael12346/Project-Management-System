@@ -5,6 +5,7 @@ export default {
         this.$router.push('/surveydetails')
         },
     },
+    
     data() {
         return {
             createNewSurvey: false
