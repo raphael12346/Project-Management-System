@@ -1,8 +1,170 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { db } from "../firebase.js";
+import { db, storage } from "../firebase.js";
 import { getDoc } from 'firebase/firestore';
+
+
+const SurveyAttachmentseSurveyFile = (event) => {
+  const project = lotAndSurveyNo.value;
+  const file = event.target.files[0];
+  const fileName = file.name;
+  const filePath = `${project}/eSurvey/${fileName}`;
+  const storageRef = storage.ref().child(filePath);
+  const uploadTask = storageRef.put(file);
+
+  uploadTask
+    .then((snapshot) => {
+      return Promise.all([snapshot.ref.getDownloadURL(), fileName]);
+    })
+    .then(([downloadURL, fileName]) => {
+      // Get the existing Survey_Attachments data
+      return db.collection(project).doc('Survey_Attachments').get()
+        .then((doc) => {
+          // Update the document with the new data without overwriting existing data
+          return db.collection(project).doc('Survey_Attachments').set({
+            ...doc.data(),
+            SurveyAttachmentseSurveyURL: downloadURL,
+            SurveyAttachmentseSurveyFileName: fileName
+          });
+        });
+    })
+    .then(() => {
+      console.log('Successfully uploaded and saved the URL and file name');
+    })
+    .catch((error) => {
+      console.log('Failed to upload or save the URL and file name:', error);
+    });
+};
+
+const SurveyAttachmentsQuatationFile = (event) => {
+  const project = lotAndSurveyNo.value;
+  const file = event.target.files[0];
+  const fileName = file.name;
+  const filePath = `${project}/Quatation/${fileName}`;
+  const storageRef = storage.ref().child(filePath);
+  const uploadTask = storageRef.put(file);
+
+  uploadTask
+    .then((snapshot) => {
+      return Promise.all([snapshot.ref.getDownloadURL(), fileName]);
+    })
+    .then(([downloadURL, fileName]) => {
+      // Get the existing Survey_Attachments data
+      return db.collection(project).doc('Survey_Attachments').get()
+        .then((doc) => {
+          // Update the document with the new data without overwriting existing data
+          return db.collection(project).doc('Survey_Attachments').set({
+            ...doc.data(),
+            SurveyAttachmentsQuatationURL: downloadURL,
+            SurveyAttachmentsQuatationFileName: fileName
+          });
+        });
+    })
+    .then(() => {
+      console.log('Successfully uploaded and saved the URL and file name');
+    })
+    .catch((error) => {
+      console.log('Failed to upload or save the URL and file name:', error);
+    });
+};
+
+const handleAutoCADUpload = (event) => {
+  const project = lotAndSurveyNo.value;
+  const file = event.target.files[0];
+  const fileName = file.name;
+  const filePath = `${project}/CAD/${fileName}`;
+  const storageRef = storage.ref().child(filePath);
+  const uploadTask = storageRef.put(file);
+
+  uploadTask
+    .then((snapshot) => {
+      return Promise.all([snapshot.ref.getDownloadURL(), fileName]);
+    })
+    .then(([downloadURL, fileName]) => {
+      // Get the existing Survey_Attachments data
+      return db.collection(project).doc('Survey_Attachments').get()
+        .then((doc) => {
+          // Update the document with the new data without overwriting existing data
+          return db.collection(project).doc('Survey_Attachments').set({
+            ...doc.data(),
+            SurveyAttachmentsCadUrl: downloadURL,
+            SurveyAttachmentsCadFileName: fileName
+          });
+        });
+    })
+    .then(() => {
+      console.log('Successfully uploaded and saved the URL and file name');
+    })
+    .catch((error) => {
+      console.log('Failed to upload or save the URL and file name:', error);
+    });
+};
+
+const Survey_Attachments_Doc = (event) => {
+  const project = lotAndSurveyNo.value;
+  const file = event.target.files[0];
+  const fileName = file.name;
+  const filePath = `${project}/Documents/${fileName}`;
+  const storageRef = storage.ref().child(filePath);
+  const uploadTask = storageRef.put(file);
+
+  uploadTask
+    .then((snapshot) => {
+      return Promise.all([snapshot.ref.getDownloadURL(), fileName]);
+    })
+    .then(([downloadURL, fileName]) => {
+      // Get the existing Survey_Attachments data
+      return db.collection(project).doc('Survey_Attachments').get()
+        .then((doc) => {
+          // Update the document with the new data without overwriting existing data
+          return db.collection(project).doc('Survey_Attachments').set({
+            ...doc.data(),
+            SurveyAttachmentsDocUrl: downloadURL,
+            SurveyAttachmentsDocFileName: fileName
+          });
+        });
+    })
+    .then(() => {
+      console.log('Successfully uploaded and saved the URL and file name');
+    })
+    .catch((error) => {
+      console.log('Failed to upload or save the URL and file name:', error);
+    });
+};
+
+const SurveyAttachmentsPhoto = (event) => {
+  const project = lotAndSurveyNo.value;
+  const file1 = event.target.files[0];
+  const fileName = file1.name;
+  const filePath = `${project}/Photo/${fileName}`;
+  const storageRef = storage.ref().child(filePath);
+  const uploadTask = storageRef.put(file1);
+
+  uploadTask
+    .then((snapshot) => {
+      return Promise.all([snapshot.ref.getDownloadURL(), fileName]);
+    })
+    .then(([downloadURL, fileName]) => {
+      // Get the existing Survey_Attachments data
+      return db.collection(project).doc('Survey_Attachments').get()
+        .then((doc) => {
+          // Update the document with the new data without overwriting existing data
+          return db.collection(project).doc('Survey_Attachments').set({
+            ...doc.data(),
+            SurveyAttachmentsPhotoUrl: downloadURL,
+            SurveyAttachmentsPhotoFileName: fileName
+          });
+        });
+    })
+    .then(() => {
+      console.log('Successfully uploaded and saved the URL and file name');
+    })
+    .catch((error) => {
+      console.log('Failed to upload or save the URL and file name:', error);
+    });
+};
+
 
 
 //Firestore Database
@@ -21,6 +183,53 @@ const address = ref('');
 const mobileNo = ref('');
 const emailAddress = ref('');
 const messenger = ref('');
+const SurveyAttachmentsPhotoFileName = ref('');
+const SurveyAttachmentsDocFileName = ref('');
+const SurveyAttachmentsCadFileName = ref('');
+const SurveyAttachmentsQuatationFileName = ref('');
+const SurveyAttachmentseSurveyFileName = ref('');
+
+
+const submitform = () => {
+  const project = lotAndSurveyNo.value;
+  // Submit to Firebase
+  db.collection(project)
+    .doc("Survey_Information")
+    .set({
+      transactionDate: transactionDate.value,
+      scheduleOfSurvey: scheduleOfSurvey.value ,
+      claimant: claimant.value,
+      typeOfSurvey: typeOfSurvey.value,
+      province: province.value,
+      municipality: municipality.value,
+      barangay: barangay.value,
+      area: area.value,
+      lotAndSurveyNo: lotAndSurveyNo.value,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+
+    db.collection(project)
+    .doc("Client_Details")
+    .set({
+      clientName: clientName.value,
+      relationToClaimant: relationToClaimant.value,
+      address: address.value,
+      mobileNo: mobileNo.value,
+      emailAddress: emailAddress.value,
+      messenger: messenger.value,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+};
 
 onMounted(async () => {
   try {
@@ -30,30 +239,45 @@ onMounted(async () => {
     const Client_Details = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Client_Details');
     const docSnapshotCD = await getDoc(Client_Details);
 
+    const Survey_Attachments = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Survey_Attachments');
+    const docSnapshotSA = await getDoc(Survey_Attachments);
+
     if (docSnapshotSI.exists()) {
-    const data = docSnapshotSI.data();
-    transactionDate.value = data.transactionDate;
-    scheduleOfSurvey.value = data.scheduleOfSurvey;
-    claimant.value = data.claimant;
-    typeOfSurvey.value = data.claimant;
-    province.value = data.claimant;
-    municipality.value = data.municipality;
-    barangay.value = data.barangay;
-    area.value = data.area;
-    lotAndSurveyNo.value = data.lotAndSurveyNo;
+      const data = docSnapshotSI.data();
+      transactionDate.value = data.transactionDate;
+      scheduleOfSurvey.value = data.scheduleOfSurvey;
+      claimant.value = data.claimant;
+      typeOfSurvey.value = data.claimant;
+      province.value = data.claimant;
+      municipality.value = data.municipality;
+      barangay.value = data.barangay;
+      area.value = data.area;
+      lotAndSurveyNo.value = data.lotAndSurveyNo;
+    } else {
+      // Document does not exist
+      console.log('Document does not exist.');
+    }
+
+    if (docSnapshotSA.exists()) {
+      const data = docSnapshotSA.data();
+      SurveyAttachmentsPhotoFileName.value = data.SurveyAttachmentsPhotoFileName;
+      SurveyAttachmentsDocFileName.value = data.SurveyAttachmentsDocFileName;
+      SurveyAttachmentsCadFileName.value = data.SurveyAttachmentsCadFileName;
+      SurveyAttachmentsQuatationFileName.value  = data.SurveyAttachmentsQuatationFileName;
+      SurveyAttachmentseSurveyFileName.value  = data.SurveyAttachmentseSurveyFileName;
     } else {
       // Document does not exist
       console.log('Document does not exist.');
     }
 
     if (docSnapshotCD.exists()) {
-    const data = docSnapshotCD.data();
-    clientName.value = data.clientName;
-    relationToClaimant.value = data.relationToClaimant;
-    address.value = data.address;
-    mobileNo.value = data.mobileNo;
-    emailAddress.value = data.emailAddress;
-    messenger.value = data.messenger;
+      const data = docSnapshotCD.data();
+      clientName.value = data.clientName;
+      relationToClaimant.value = data.relationToClaimant;
+      address.value = data.address;
+      mobileNo.value = data.mobileNo;
+      emailAddress.value = data.emailAddress;
+      messenger.value = data.messenger;
     } else {
       // Document does not exist
       console.log('Document does not exist.');
@@ -62,6 +286,7 @@ onMounted(async () => {
     console.error('Error fetching document:', error);
   }
 });
+
 
 //Logic in template
 const newInput = ref("");
@@ -243,6 +468,8 @@ function updateValue() {
   document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
   document.getElementsByClassName("cancelBtn")[0].style.display = "none";
   document.getElementsByClassName("updateBtn")[0].style.display = "none";
+
+  submitform();
 }
 
 </script>
@@ -408,7 +635,8 @@ function updateValue() {
                                 <div class="subtitle-survey">
                                     <span>Quotation</span>
                                 </div>
-                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>              
+                                <input class="input-text" type="file" id="myFile" name="filename"  :disabled="disabled" @change="SurveyAttachmentsQuatationFile"/>   
+                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsQuatationFileName}}</span>           
                             </div>
                             <div class="outer-panel">
                                 <span class="details-of-pricing-title">Details of Pricing</span>
@@ -477,21 +705,25 @@ function updateValue() {
                         <div class="survey-left">
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">Document</span>
-                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="Survey_Attachments_Doc"/>
+                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsDocFileName}}</span>
                             </div>
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">Photos</span>
-                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="SurveyAttachmentsPhoto"/>
+                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsPhotoFileName}}</span>
                             </div>
                         </div>
                         <div class="survey-right">
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">CAD Plan</span>
-                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="handleAutoCADUpload"/>
+                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsCadFileName}}</span>
                             </div>
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">eSurvey</span>
-                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled"/>
+                                <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="SurveyAttachmentseSurveyFile"/>
+                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentseSurveyFileName}}</span>
                             </div>
                         </div>
                     </div>
@@ -606,6 +838,7 @@ body{
 .survey-top{
     display: flex;
     align-items: center;
+    align-items: flex-start;
 }
 
 .survey-bottom{
@@ -867,5 +1100,8 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"].plain-number-input {
   -moz-appearance: textfield;
 }*/
+.uploadStatus{
+    color: red;
+}
 
 </style>

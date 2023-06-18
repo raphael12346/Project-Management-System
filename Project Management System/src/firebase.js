@@ -3,7 +3,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { doc } from 'firebase/firestore';
+import "firebase/compat/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,6 +17,8 @@ const firebaseConfig = {
 
 
 const firebasedb = firebase.initializeApp(firebaseConfig);
+const storage = firebase.storage()
 const db = firebase.firestore();
 
-export { db, firebasedb };
+
+export { db, firebasedb, storage };
