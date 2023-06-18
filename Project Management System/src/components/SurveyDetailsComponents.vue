@@ -1,9 +1,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { db, storage } from "../firebase.js";
 import { getDoc } from 'firebase/firestore';
 
+//Retrieve File Name
 const SurveyAttachmentseSurveyFile = (event) => {
   const project = lotAndSurveyNo.value;
   const file = event.target.files[0];
@@ -164,6 +165,31 @@ const SurveyAttachmentsPhoto = (event) => {
     });
 };
 
+//Create Download Link
+const  SurveyAttachmentseSurveyFileUrl = () => {
+  // Method 1: Using window.open()
+  window.open(SurveyAttachmentseSurveyURL.value, '_blank'); // Opens the link in a new tab
+}
+
+const  SurveyAttachmentsDocFileUrl = () => {
+  // Method 1: Using window.open()
+  window.open(SurveyAttachmentsDocUrl.value, '_blank'); // Opens the link in a new tab
+}
+
+const  SurveyAttachmentsCadFileUrl = () => {
+  // Method 1: Using window.open()
+  window.open(SurveyAttachmentsCadUrl.value, '_blank'); // Opens the link in a new tab
+}
+
+const  SurveyAttachmentsPhotoFileUrl = () => {
+  // Method 1: Using window.open()
+  window.open(SurveyAttachmentsPhotoUrl.value, '_blank'); // Opens the link in a new tab
+}
+
+const  SurveyAttachmentsQuatationFileUrl = () => {
+  // Method 1: Using window.open()
+  window.open(SurveyAttachmentsQuatationURL.value, '_blank'); // Opens the link in a new tab
+}
 
 //Firestore Database
 const transactionDate = ref('');
@@ -181,12 +207,40 @@ const address = ref('');
 const mobileNo = ref('');
 const emailAddress = ref('');
 const messenger = ref('');
+
+//Declaration of Quotation
+const firstHectare = ref('1');
+const firstHectareMul = ref('');
+const succeeding = ref('');
+const succeedingMul = ref('');
+const noOfLots = ref('');
+const noOfLotsMul = ref('');
+
+const firstHectareProduct = computed(() => firstHectare.value * firstHectareMul.value);
+const succeedingProduct = computed(() => succeeding.value * succeedingMul.value);
+const noOfLotsProduct = computed(() => noOfLots.value * noOfLotsMul.value);
+
+const firstHectareProductfb = ref('');
+const succeedingProductfb = ref('');
+const noOfLotsProductfb = ref('');
+
+const totalAmountfb = ref('');
+
+const totalAmount = computed(() => firstHectareProduct.value + succeedingProduct.value + noOfLotsProduct.value);
+
+//Declaration of Survey Attachment File Names
 const SurveyAttachmentsPhotoFileName = ref('');
 const SurveyAttachmentsDocFileName = ref('');
 const SurveyAttachmentsCadFileName = ref('');
 const SurveyAttachmentsQuatationFileName = ref('');
 const SurveyAttachmentseSurveyFileName = ref('');
 
+//Declaration of Survey Attachment URL
+const SurveyAttachmentsPhotoUrl = ref('');
+const SurveyAttachmentsDocUrl = ref('');
+const SurveyAttachmentsCadUrl = ref('');
+const SurveyAttachmentsQuatationURL = ref('');
+const SurveyAttachmentseSurveyURL = ref('');
 
 const submitform = () => {
   const project = lotAndSurveyNo.value;
@@ -227,10 +281,30 @@ const submitform = () => {
     .catch((error) => {
       console.error("Error writing document: ", error);
     });
+
+    db.collection(project)
+    .doc("Quotation")
+    .set({
+      firstHectareMul: firstHectareMul.value,
+      succeeding: succeeding.value,
+      succeedingMul: succeedingMul.value,
+      noOfLots: noOfLots.value,
+      noOfLotsMul: noOfLotsMul.value,
+      firstHectareProduct: firstHectareProduct.value,
+      succeedingProduct: succeedingProduct.value,
+      noOfLotsProduct: noOfLotsProduct.value,
+      totalAmount: totalAmount.value,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
 };
 
-onMounted(async () => {
-  try {
+const initializeComponent = async () =>{
+    try {
     const Survey_Information = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Survey_Information');
     const docSnapshotSI = await getDoc(Survey_Information);
 
@@ -240,13 +314,16 @@ onMounted(async () => {
     const Survey_Attachments = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Survey_Attachments');
     const docSnapshotSA = await getDoc(Survey_Attachments);
 
+    const Quotation = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Quotation');
+    const docSnapshotQ = await getDoc(Quotation);
+
     if (docSnapshotSI.exists()) {
       const data = docSnapshotSI.data();
       transactionDate.value = data.transactionDate;
       scheduleOfSurvey.value = data.scheduleOfSurvey;
       claimant.value = data.claimant;
-      typeOfSurvey.value = data.claimant;
-      province.value = data.claimant;
+      typeOfSurvey.value = data.typeOfSurvey;
+      province.value = data.province;
       municipality.value = data.municipality;
       barangay.value = data.barangay;
       area.value = data.area;
@@ -258,11 +335,20 @@ onMounted(async () => {
 
     if (docSnapshotSA.exists()) {
       const data = docSnapshotSA.data();
+      //Retrieve Suvery Attachments File Names
       SurveyAttachmentsPhotoFileName.value = data.SurveyAttachmentsPhotoFileName;
       SurveyAttachmentsDocFileName.value = data.SurveyAttachmentsDocFileName;
       SurveyAttachmentsCadFileName.value = data.SurveyAttachmentsCadFileName;
       SurveyAttachmentsQuatationFileName.value  = data.SurveyAttachmentsQuatationFileName;
       SurveyAttachmentseSurveyFileName.value  = data.SurveyAttachmentseSurveyFileName;
+
+      //Retrieve Suvery Attachments URL
+      SurveyAttachmentsPhotoUrl.value = data.SurveyAttachmentsPhotoUrl;
+      SurveyAttachmentsDocUrl.value = data.SurveyAttachmentsDocUrl;
+      SurveyAttachmentsCadUrl.value = data.SurveyAttachmentsCadUrl;
+      SurveyAttachmentsQuatationURL.value  = data.SurveyAttachmentsQuatationURL;
+      SurveyAttachmentseSurveyURL.value  = data.SurveyAttachmentseSurveyURL;
+
     } else {
       // Document does not exist
       console.log('Document does not exist.');
@@ -280,74 +366,44 @@ onMounted(async () => {
       // Document does not exist
       console.log('Document does not exist.');
     }
+
+    if (docSnapshotQ.exists()) {
+        const data = docSnapshotQ.data();
+        firstHectareMul.value = data.firstHectareMul;
+        succeeding.value = data.succeeding;
+        succeedingMul.value = data.succeedingMul;
+        noOfLots.value = data.noOfLots;
+        noOfLotsMul.value = data.noOfLotsMul;
+        firstHectareProductfb.value = data.firstHectareProduct;
+        succeedingProductfb.value = data.succeedingProduct;
+        noOfLotsProductfb.value = data.noOfLotsProduct;
+        totalAmountfb.value = data.totalAmount;
+    } else {
+      // Document does not exist
+      console.log('Document does not exist.');
+    }
   } catch (error) {
     console.error('Error fetching document:', error);
   }
-});
 
+}
+
+onMounted(initializeComponent);
 
 //Logic in template
 const newInput = ref("");
 const isUpdateAction = ref(false);
 const disabled = ref(true);
 const originalTotalAmount = ref(0);
-const first_product = ref(0);
-const second_product = ref(0);
-const third_product = ref(0);
 const originalInputs = ref({});
 const originalMultipliers = ref({});
 const originalMultiplicands = ref({});
 const title = ref("Survey Details");
-const pairs = ref([
-  { multiplicand: 1, multiplier: 0 },
-  { multiplicand: 0, multiplier: 0 },
-  { multiplicand: 0, multiplier: 0 }
-]);
 
 const router = useRouter();
+const route = useRoute();
 
-const computeProduct = computed(() =>
-  pairs.value.map(pair => pair.multiplicand * pair.multiplier)
-);
-
-const firstProduct = computed(() => {
-  if (isUpdateAction.value) {
-    const product = computeProduct.value[0];
-    first_product.value = product;
-    return product;
-  }
-  return first_product.value;
-});
-
-const secondProduct = computed(() => {
-  if (isUpdateAction.value) {
-    const product = computeProduct.value[1];
-    second_product.value = product;
-    return product;
-  }
-  return second_product.value;
-});
-
-const thirdProduct = computed(() => {
-  if (isUpdateAction.value) {
-    const product = computeProduct.value[2];
-    third_product.value = product;
-    return product;
-  }
-  return third_product.value;
-});
-
-const computeTotalAmount = computed(() => {
-  if (isUpdateAction.value) {
-    const total_amount =
-      computeProduct.value[0] +
-      computeProduct.value[1] +
-      computeProduct.value[2];
-    originalTotalAmount.value = total_amount;
-    return total_amount;
-  }
-  return originalTotalAmount.value;
-});
+const activeComponent = computed(() => route.meta.activeComponent);
 
 function updateTitle() {
   const newTitleElement = document.getElementById('lotInput').value;
@@ -370,8 +426,6 @@ function makeEditable() {
   const multiplier = document.getElementsByClassName("number-multiplier");
   for (let i = 0; i < multiplier.length; i++) {
     const input = multiplier[i];
-    const originalValue = input.value;
-    originalMultipliers.value[input.id] = originalValue;
     input.disabled = false;
     input.classList.add("editable");
   }
@@ -379,8 +433,6 @@ function makeEditable() {
   const multiplicand = document.getElementsByClassName("number-multiplicand");
   for (let i = 1; i < multiplicand.length; i++) {
     const input = multiplicand[i];
-    const originalValue = input.value;
-    originalMultiplicands.value[input.id] = originalValue;
     input.disabled = false;
     input.classList.add("editable");
   }
@@ -388,8 +440,6 @@ function makeEditable() {
   const inputs = document.getElementsByClassName("input-text");
   for (let i = 0; i < inputs.length; i++) {
     const input = inputs[i];
-    const originalValue = input.value;
-    originalInputs.value[input.id] = originalValue;
     input.disabled = false;
     input.classList.add("editable");
   }
@@ -400,12 +450,11 @@ function makeEditable() {
   document.getElementsByClassName("updateBtn")[0].style.display = "inline-block";
 }
 
-function cancelEdit() {
+const cancelEdit = async ()  => {
+  await initializeComponent();
   const inputs = document.getElementsByClassName("input-text");
   for (let i = 0; i < inputs.length; i++) {
     const input = inputs[i];
-    const originalValue = originalInputs.value[input.id];
-    input.value = originalValue;
     input.disabled = true;
     input.classList.remove("editable");
   }
@@ -413,8 +462,6 @@ function cancelEdit() {
   const multiplier = document.getElementsByClassName("number-multiplier");
   for (let i = 0; i < multiplier.length; i++) {
     const input = multiplier[i];
-    const originalValue = originalMultipliers.value[input.id];
-    input.value = originalValue;
     input.disabled = true;
     input.classList.remove("editable");
   }
@@ -422,8 +469,6 @@ function cancelEdit() {
   const multiplicand = document.getElementsByClassName("number-multiplicand");
   for (let i = 1; i < multiplicand.length; i++) {
     const input = multiplicand[i];
-    const originalValue = originalMultiplicands.value[input.id];
-    input.value = originalValue;
     input.disabled = true;
     input.classList.remove("editable");
   }
@@ -434,12 +479,10 @@ function cancelEdit() {
   document.getElementsByClassName("updateBtn")[0].style.display = "none";
 }
 
-function updateValue() {
+const updateValue = async () => {
   const multiplier = document.getElementsByClassName("number-multiplier");
   for (let i = 0; i < multiplier.length; i++) {
     const newValue = multiplier[i].value;
-    newInput.value = newValue;
-    originalMultipliers.value[multiplier[i].id] = newValue;
     multiplier[i].disabled = true;
     multiplier[i].classList.remove("editable");
   }
@@ -447,8 +490,6 @@ function updateValue() {
   const multiplicand = document.getElementsByClassName("number-multiplicand");
   for (let i = 1; i < multiplicand.length; i++) {
     const newValue = multiplicand[i].value;
-    newInput.value = newValue;
-    originalMultiplicands.value[multiplicand[i].id] = newValue;
     multiplicand[i].disabled = true;
     multiplicand[i].classList.remove("editable");
   }
@@ -456,8 +497,6 @@ function updateValue() {
   const inputs = document.getElementsByClassName("input-text");
   for (let i = 0; i < inputs.length; i++) {
     const newValue = inputs[i].value;
-    newInput.value = newValue;
-    originalInputs.value[inputs[i].id] = newValue;
     inputs[i].disabled = true;
     inputs[i].classList.remove("editable");
   }
@@ -466,8 +505,8 @@ function updateValue() {
   document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
   document.getElementsByClassName("cancelBtn")[0].style.display = "none";
   document.getElementsByClassName("updateBtn")[0].style.display = "none";
-
   submitform();
+  await initializeComponent();
 }
 
 </script>
@@ -629,12 +668,12 @@ function updateValue() {
                     </div>
                     <div class="survey-info-details">
                         <div class="survey-center">
-                            <div class="survey-information-subpanel">
+                            <div class="quotation-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Quotation</span>
                                 </div>
                                 <input class="input-text" type="file" id="myFile" name="filename"  :disabled="disabled" @change="SurveyAttachmentsQuatationFile"/>   
-                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsQuatationFileName}}</span>           
+                                <span class="uploadStatus" @click="SurveyAttachmentsQuatationFileUrl">File Uploaded:{{SurveyAttachmentsQuatationFileName}}</span>           
                             </div>
                             <div class="outer-panel">
                                 <span class="details-of-pricing-title">Details of Pricing</span>
@@ -645,17 +684,17 @@ function updateValue() {
                                     <div class="first-panel-title">
                                         <span>First Hectare</span>
                                     </div>
-                                    <input class="number-multiplicand" id="firstHectareInput" type="number" v-model="pairs[0].multiplicand" :disabled="disabled"/>
+                                    <input class="number-multiplicand" id="firstHectareInput" type="number" v-model="firstHectare" :disabled="disabled"/>
                                 </div>
                                 <div >
                                     <span class="second-panel">@</span>
                                 </div>
-                                <input class="number-multiplier" id="firstHectareMultiplier" type="number" v-model="pairs[0].multiplier" :disabled="disabled"/>
+                                <input class="number-multiplier" id="firstHectareMultiplier" type="number" v-model="firstHectareMul" :disabled="disabled"/>
                                 <div class="fourth-panel">
                                     <span>=</span>
                                 </div>
                                 <div class="fifth-panel">
-                                    <span>₱{{ firstProduct }}</span>
+                                    <span>₱{{ firstHectareProductfb }}</span>
                                 </div>
                             </div>
                             <div class="details-of-pricing-subpanel">
@@ -663,34 +702,34 @@ function updateValue() {
                                     <div class="first-panel-title">
                                         <span>Succeeding</span>
                                     </div>
-                                    <input class="number-multiplicand" id="succeedingInput" type="number" v-model="pairs[1].multiplicand" :disabled="disabled"/>
+                                    <input class="number-multiplicand" id="succeedingInput" type="number" v-model="succeeding" :disabled="disabled"/>
                                 </div>
                                 <div class="second-panel">
                                     <span>@</span>
                                 </div>
-                                <input class="number-multiplier" id="succeedingMultiplier" type="number" v-model="pairs[1].multiplier" :disabled="disabled"/>
+                                <input class="number-multiplier" id="succeedingMultiplier" type="number" v-model="succeedingMul" :disabled="disabled"/>
                                 <div class="fourth-panel">
                                     <span>=</span>
                                 </div>
                                 <div class="fifth-panel">
-                                    <span>₱{{ secondProduct }}</span>
+                                    <span>₱{{ succeedingProductfb }}</span>
                                 </div>
                             </div>
                             <div class="details-of-pricing-subpanel">
                                 <div class="first-panel">
                                     <span class="first-panel-title">No. of Lots</span>
-                                    <input class="number-multiplicand" id="noOfLotsInput" type="number" v-model="pairs[2].multiplicand" :disabled="disabled"/>
+                                    <input class="number-multiplicand" id="noOfLotsInput" type="number" v-model="noOfLots" :disabled="disabled"/>
                                 </div>
                                 <span class="second-panel">@</span>
-                                <input class="number-multiplier" id="noOfLotsMultiplier" type="number" v-model="pairs[2].multiplier" :disabled="disabled"/>
+                                <input class="number-multiplier" id="noOfLotsMultiplier" type="number" v-model="noOfLotsMul" :disabled="disabled"/>
                                 <span class="fourth-panel">=</span>
                                 <div class="fifth-panel">
-                                    <span>₱{{ thirdProduct }}</span>
+                                    <span>₱{{ noOfLotsProductfb }}</span>
                                 </div>
                             </div>
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">Total Amount</span>
-                                <span class="total-amount">₱{{ computeTotalAmount }}</span>  
+                                <span class="total-amount">₱{{ totalAmountfb }}</span>  
                             </div>
                         </div>
                     </div>
@@ -704,24 +743,24 @@ function updateValue() {
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">Document</span>
                                 <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="Survey_Attachments_Doc"/>
-                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsDocFileName}}</span>
+                                <span class="uploadStatus" @click="SurveyAttachmentsDocFileUrl">File Uploaded:{{SurveyAttachmentsDocFileName}}</span>
                             </div>
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">Photos</span>
                                 <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="SurveyAttachmentsPhoto"/>
-                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsPhotoFileName}}</span>
+                                <span class="uploadStatus" @click="SurveyAttachmentsPhotoFileUrl">File Uploaded:{{SurveyAttachmentsPhotoFileName}}</span>
                             </div>
                         </div>
                         <div class="survey-right">
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">CAD Plan</span>
                                 <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="handleAutoCADUpload"/>
-                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentsCadFileName}}</span>
+                                <span class="uploadStatus" @click="SurveyAttachmentsCadFileUrl">File Uploaded:{{SurveyAttachmentsCadFileName}}</span>
                             </div>
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">eSurvey</span>
                                 <input class="input-text" type="file" id="myFile" name="filename" :disabled="disabled" @change="SurveyAttachmentseSurveyFile"/>
-                                <span class="uploadStatus">File Uploaded:{{SurveyAttachmentseSurveyFileName}}</span>
+                                <span class="uploadStatus" @click="SurveyAttachmentseSurveyFileUrl">File Uploaded:{{SurveyAttachmentseSurveyFileName}}</span>
                             </div>
                         </div>
                     </div>
@@ -735,6 +774,8 @@ function updateValue() {
         
     </div>
 </template>
+
+
 <style scoped>
 body{
     background-color: #F4F4F4;
@@ -913,6 +954,14 @@ body{
 .survey-information-subpanel{
     display: grid;
     grid-template-columns: auto 1fr;
+    width: 100%;
+    padding: 2px 0;
+    align-items: center;
+}
+
+.quotation-subpanel{
+    display: grid;
+    grid-template-columns: auto auto 1fr;
     width: 100%;
     padding: 2px 0;
     align-items: center;
@@ -1100,6 +1149,8 @@ input[type="number"].plain-number-input {
 }*/
 .uploadStatus{
     color: red;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 </style>
