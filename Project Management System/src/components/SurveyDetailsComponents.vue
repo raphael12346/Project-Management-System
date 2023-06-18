@@ -391,13 +391,8 @@ const initializeComponent = async () =>{
 onMounted(initializeComponent);
 
 //Logic in template
-const newInput = ref("");
 const isUpdateAction = ref(false);
 const disabled = ref(true);
-const originalTotalAmount = ref(0);
-const originalInputs = ref({});
-const originalMultipliers = ref({});
-const originalMultiplicands = ref({});
 const title = ref("Survey Details");
 
 const router = useRouter();
@@ -668,7 +663,7 @@ const updateValue = async () => {
                     </div>
                     <div class="survey-info-details">
                         <div class="survey-center">
-                            <div class="quotation-subpanel">
+                            <div class="survey-information-subpanel">
                                 <div class="subtitle-survey">
                                     <span>Quotation</span>
                                 </div>
@@ -694,7 +689,7 @@ const updateValue = async () => {
                                     <span>=</span>
                                 </div>
                                 <div class="fifth-panel">
-                                    <span>₱{{ firstHectareProductfb }}</span>
+                                    <span>₱{{ firstHectareProductfb }}.00</span>
                                 </div>
                             </div>
                             <div class="details-of-pricing-subpanel">
@@ -712,7 +707,7 @@ const updateValue = async () => {
                                     <span>=</span>
                                 </div>
                                 <div class="fifth-panel">
-                                    <span>₱{{ succeedingProductfb }}</span>
+                                    <span>₱{{ succeedingProductfb }}.00</span>
                                 </div>
                             </div>
                             <div class="details-of-pricing-subpanel">
@@ -724,12 +719,12 @@ const updateValue = async () => {
                                 <input class="number-multiplier" id="noOfLotsMultiplier" type="number" v-model="noOfLotsMul" :disabled="disabled"/>
                                 <span class="fourth-panel">=</span>
                                 <div class="fifth-panel">
-                                    <span>₱{{ noOfLotsProductfb }}</span>
+                                    <span>₱{{ noOfLotsProductfb }}.00</span>
                                 </div>
                             </div>
                             <div class="survey-information-subpanel">
                                 <span class="subtitle-survey">Total Amount</span>
-                                <span class="total-amount">₱{{ totalAmountfb }}</span>  
+                                <span class="total-amount">₱{{ totalAmountfb }}.00</span>  
                             </div>
                         </div>
                     </div>
@@ -770,8 +765,7 @@ const updateValue = async () => {
                 <button class="cancelBtn" @click="cancelEdit()">Cancel</button>
                 <button class="updateBtn" @click="updateValue(); updateTitle()">Update</button>
             </div>
-        </div>
-        
+        </div>    
     </div>
 </template>
 
@@ -954,14 +948,6 @@ body{
 .survey-information-subpanel{
     display: grid;
     grid-template-columns: auto 1fr;
-    width: 100%;
-    padding: 2px 0;
-    align-items: center;
-}
-
-.quotation-subpanel{
-    display: grid;
-    grid-template-columns: auto auto 1fr;
     width: 100%;
     padding: 2px 0;
     align-items: center;
@@ -1152,5 +1138,6 @@ input[type="number"].plain-number-input {
     cursor: pointer;
     text-decoration: underline;
 }
+
 
 </style>
