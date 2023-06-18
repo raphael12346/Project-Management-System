@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import { db, storage } from "../firebase.js";
 import { getDoc } from 'firebase/firestore';
 
-
 const SurveyAttachmentseSurveyFile = (event) => {
   const project = lotAndSurveyNo.value;
   const file = event.target.files[0];
@@ -164,7 +163,6 @@ const SurveyAttachmentsPhoto = (event) => {
       console.log('Failed to upload or save the URL and file name:', error);
     });
 };
-
 
 
 //Firestore Database
