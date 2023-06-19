@@ -70,6 +70,7 @@ const redirectToongoingsurveys = () => {
         </div>
     </div>
 </template>
+
 <style scoped>
 .header{
     display: flex;

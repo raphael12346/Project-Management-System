@@ -34,7 +34,6 @@ const generateRandomString =(length) => {
   return randomString;
 }
 
-
 const open = (index) => {
   db.collection("Current_Id")
     .doc("currentid")
@@ -147,8 +146,6 @@ const getalldoc = () => {
     });
     projects.value = projectData;
   });
-
-  console.log(projects);
 };
 
 const getdocss = () => {
