@@ -1,108 +1,172 @@
-<script>
-export default {
-    data() { 
-        return {
-            totalAmount: 10000,
-            balanceAmount: 0,
-            downPayment: 0,
-            finalPayment: 0,
-            downPaymentDate: "",
-            finalPaymentDate: "",
-            downPaymentOR: 0,
-            finalPaymentOR: 0,
-            makeEditable: false,
-            addPayment: false,
-            originalValues: {
-                downPayment: 0,
-                finalPayment: 0,
-            },
-            originalDates: {
-                downPaymentDate: "",
-                finalPaymentDate: "",
-            },
-            originalORs: {
-                downPaymentOR: 0,
-                finalPaymentOR: 0,
-            },
-            originalPaymentRows: [],
-            paymentRows: [
-                { amount: 0, date: "", orNumber: 0 }
-            ],
-        };  
-    },
-    computed: {
-        activeComponent() {
-            return this.$route.meta.activeComponent;
-        },
-        progressPercentage() {
-            if(this.totalAmount !== this.balanceAmount)
-                return Math.round((1 - (this.balanceAmount / this.totalAmount)) * 100);
-            return 0;
-        },
-        computeBalance() {
-            const paymentAmounts = this.paymentRows.reduce(
-                (total, row) => total + parseFloat(row.amount),
-                0
-            );
-            this.balanceAmount = this.totalAmount - (this.downPayment + this.finalPayment + paymentAmounts);          
-            return this.balanceAmount;
-        },
-  
-    },
-    methods: {
-        redirectTosurveydetails() {
-            this.$router.push('/surveydetails')
-        },
-        redirectTosurveyprogress() {
-            this.$router.push('/surveyprogress')
-        },
-        updateValues() {
-            this.makeEditable = !this.makeEditable;
-        },
-        cancelChanges() {
-            // Payment
-            this.downPayment = this.originalValues.downPayment;
-            this.finalPayment = this.originalValues.finalPayment;
-            // Date
-            this.downPaymentDate = this.originalDates.downPaymentDate;
-            this.finalPaymentDate = this.originalDates.finalPaymentDate;
-            //OR#
-            this.downPaymentOR = this.originalORs.downPaymentOR;
-            this.finalPaymentOR = this.originalORs.finalPaymentOR;
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { db } from "../firebase.js";
+import { getDoc } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-            this.paymentRows = JSON.parse(JSON.stringify(this.originalPaymentRows));
+const userId = ref('')
 
-            this.makeEditable = false;
-        },
-        toggleEditable() {
-            if (!this.makeEditable) {
-                //Payment
-                this.originalValues.downPayment = this.downPayment;
-                this.originalValues.finalPayment = this.finalPayment;
-                // Date
-                this.originalDates.downPaymentDate = this.downPaymentDate;
-                this.originalDates.finalPaymentDate = this.finalPaymentDate;
-                //OR#
-                this.originalORs.downPaymentOR = this.downPaymentOR;
-                this.originalORs.finalPaymentOR = this.finalPaymentOR;
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    userId.value = user.uid.toString(); // Convert to string
+    console.log(userId.value);
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});
 
-                this.originalPaymentRows = JSON.parse(JSON.stringify(this.paymentRows));
-            }
-            this.makeEditable = !this.makeEditable;
-        },
-        addPaymentRow() {
-            if (this.paymentRows.length < 4) {
-                this.paymentRows.push({ amount: 0, date: "", orNumber: 0 });
-            }
-        },
-        removePaymentRow() {
-            if (this.paymentRows.length != 0) {
-                this.paymentRows.pop({ amount: 0, date: "", orNumber: 0 });
-            }
-        },
-    },
+const totalAmount = ref(10000);
+const balanceAmount = ref(0);
+const downPayment = ref(0);
+const finalPayment = ref(0);
+const downPaymentDate = ref("");
+const finalPaymentDate = ref("");
+const downPaymentOR = ref(0);
+const finalPaymentOR = ref(0);
+const makeEditable = ref(false);
+const paymentRows = ref([
+    { amount: 0, date: "", orNumber: 0 }
+]);
+
+const submitform = () => {
+    const project = "LOT 1500";
+    // Submit to Firebase
+    db.collection("Users")
+    .doc(userId.value)
+    .collection("Projects")
+    .doc(project)
+    .collection("Documents")
+    .doc("Payment")
+    .set({
+        totalAmount: totalAmount.value,
+        balanceAmount: balanceAmount.value,
+        downPayment: downPayment.value,
+        finalPayment: finalPayment.value,
+        downPaymentDate: downPaymentDate.value,
+        finalPaymentDate: finalPaymentDate.value,
+        downPaymentOR: downPaymentOR.value,
+        finalPaymentOR: finalPaymentOR.value,
+        paymentRows: paymentRows.value,
+    })
+    .then(() => {
+        console.log("Document successfully written!");
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+    });
 };
+
+const initializeComponent = async () =>{
+    if (!userId.value) {
+        // User ID is not available yet, wait for it
+        return;
+    }
+    try {
+    const Payment = db.collection("Users").doc(userId.value).collection("Projects").doc("LOT 1500").collection("Documents").doc('Payment');
+    const docSnapshotP = await getDoc(Payment);
+
+    if (docSnapshotP.exists()) {   
+        const data = docSnapshotP.data();
+        totalAmount.value = data.totalAmount;
+        balanceAmount.value = data.balanceAmount;
+        downPayment.value = data.downPayment;
+        finalPayment.value = data.finalPayment;
+        downPaymentDate.value = data.downPaymentDate;
+        finalPaymentDate.value = data.finalPaymentDate;
+        downPaymentOR.value = data.downPaymentOR;
+        finalPaymentOR.value = data.finalPaymentOR;
+        paymentRows.value = data.paymentRows || [];
+    } else {
+        // Document does not exist
+        console.log('Document does not exist.');
+    }
+
+    } catch (error) {
+        console.error('Error fetching document:', error);
+    }
+}
+
+onMounted(async () => {
+  // Wait for onAuthStateChanged callback to set the userId
+  await new Promise(resolve => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userId.value = user.uid.toString();
+        unsubscribe();
+        resolve();
+      }
+    });
+  });
+
+  // Now that userId is set, initialize the component
+  await initializeComponent();
+});
+
+const route = useRoute();
+const router = useRouter();
+
+const activeComponent = computed(() => route.meta.activeComponent);
+
+const redirectTosurveydetails = () => {
+    router.push('/surveydetails');
+};
+
+const redirectTosurveyprogress = () => {
+    router.push('/surveyprogress');
+};
+
+const updateValues = async () => {
+    makeEditable.value = !makeEditable.value;
+    submitform();
+    await initializeComponent();
+};
+
+const cancelChanges = async () => {
+    await initializeComponent();
+    makeEditable.value = false;
+};
+
+const toggleEditable = () => {
+    makeEditable.value = !makeEditable.value;
+};
+
+const addPaymentRow = async () => {
+    if (paymentRows.value.length < 4) {
+        paymentRows.value.push({ amount: 0, date: "", orNumber: 0 });
+    }
+    submitform();
+    await initializeComponent();
+};
+
+const removePaymentRow = async () => {
+    if (paymentRows.value.length !== 0) {
+        paymentRows.value.pop({ amount: 0, date: "", orNumber: 0 });
+    }
+    submitform();
+    await initializeComponent();
+};
+
+const progressPercentage = computed(() => {
+    if (totalAmount.value !== balanceAmount.value) {
+        return Math.round((1 - (balanceAmount.value / totalAmount.value)) * 100);
+    }
+    return 0;
+});
+
+const computeBalance = computed(() => {
+    const paymentAmounts = paymentRows.value.reduce(
+        (total, row) => total + parseFloat(row.amount),
+        0
+    );
+    balanceAmount.value = totalAmount.value - (downPayment.value + finalPayment.value + paymentAmounts);
+    return balanceAmount.value;
+});
 </script>
+
 <template>
     <div class="header">
         <div class="title">
@@ -177,12 +241,10 @@ export default {
                         <th><input class="or-number" type="number" v-model.lazy="downPaymentOR" :disabled="!makeEditable"/></th>
                     </tr>       
                     <tr v-for="(row, index) in paymentRows" :key="index">
-                    <template v-if="index !== 0">
-                        <th class="pb-title">Payment {{ index + 1 }}:</th>
+                        <th class="pb-title">Partial Payment</th>
                         <th><input class="amount" type="number" v-model.lazy="row.amount" :disabled="!makeEditable" /></th>
                         <th><input class="transact-date" type="date" v-model.lazy="row.date" :disabled="!makeEditable" /></th>
                         <th><input class="or-number" type="number" v-model.lazy="row.orNumber" :disabled="!makeEditable" /></th>
-                    </template>
                     </tr>         
                     <tr>
                         <th class="pb-title">Final Payment:</th>

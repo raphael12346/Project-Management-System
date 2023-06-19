@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { db } from "../firebase.js";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs } from 'firebase/firestore';
 
 // Declare form data variables
 const transactionDate = ref('');
@@ -20,13 +22,43 @@ const mobileNo = ref('');
 const emailAddress = ref('');
 const messenger = ref('');
 
+const projects = ref([]);
+
+const generateRandomString =(length) => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+  return randomString;
+}
+
+
+const open = (index) => {
+  db.collection("Current_Id")
+    .doc("currentid")
+    .update({
+      currentId: index,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+
+    router.push(`/surveydetails`);
+}
+
 // Adding the data
 const submitform = () => {
-  const project = lotAndSurveyNo.value;
   // Submit to Firebase
-  db.collection(project)
-    .doc("Survey_Information")
-    .set({
+  const randomNum = ref(generateRandomString(10));
+
+  db.collection("Projects")
+    .add({
+      docId: randomNum.value,
       transactionDate: transactionDate.value,
       scheduleOfSurvey: scheduleOfSurvey.value ,
       claimant: claimant.value,
@@ -36,17 +68,6 @@ const submitform = () => {
       barangay: barangay.value,
       area: area.value,
       lotAndSurveyNo: lotAndSurveyNo.value,
-    })
-    .then(() => {
-      console.log("Document successfully written!");
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-
-    db.collection(project)
-    .doc("Client_Details")
-    .set({
       clientName: clientName.value,
       relationToClaimant: relationToClaimant.value,
       address: address.value,
@@ -60,18 +81,101 @@ const submitform = () => {
     .catch((error) => {
       console.error("Error writing document: ", error);
     });
+
+    createNewSurvey = !createNewSurvey
 };
 
+const deleteProject = (userId) => {
+  db.collection('Projects')
+      .where('docId', '==', userId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete()
+            .then(() => {
+              console.log('Document successfully deleted!');
+            })
+            .catch((error) => {
+              console.error('Error deleting document:', error);
+            });
+        });
+      })
+      .catch((error) => {
+        console.error('Error getting documents:', error);
+      });
+    projects.value.splice(userId, 1)
+};
+
+const fetchProjects = () => {
+const auth = getAuth();
+onAuthStateChanged(auth, async (user)  => {
+  const userId = ref('')
+  if (user) {
+    userId.value = user.uid.toString(); // Convert to string
+
+    console.log(userId.value);
+
+    const querySnapshot = await getDocs(collection(db, 'Users', userId.value, 'Projects'));
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, ' => ', doc.data());
+        console.log(userId.value);
+    });
+
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
+}
+
+const startup = async () => {
+  db.collection("Project").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+    });
+});
+}
+
+const getalldoc = () => {
+  db.collection("Projects").get().then((querySnapshot) => {
+    const projectData = [];
+    querySnapshot.forEach((doc) => {
+      projectData.push(doc.data());
+    });
+    projects.value = projectData;
+  });
+
+  console.log(projects);
+};
+
+const getdocss = () => {
+  db.collection("Projects").where("userId", "==", "IC3ZBaTxsaaNN9yCWSSZYYrMAO63")
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            console.log(querySnapshot);
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+}
+
+// Call the fetchProjects method when the component is mounted
+
+onMounted(getalldoc);
 
 const createNewSurvey = ref(false);
 const router = useRouter();
 
-const redirectTosurveydetails = () => {
-  router.push('/surveydetails');
-};
 </script>
 
-<template>
+<template>  
     <div class="header">
       <div class="title">
         <span>All Surveys</span>
@@ -93,58 +197,37 @@ const redirectTosurveydetails = () => {
       </div>
     </div>
     <div class="container">
+    
       <table class="all-survey-table">
-        <tr>
-          <th class="table-titles">Lot & Survey No.</th>
-          <th class="table-titles">Client</th>
-          <th class="table-titles">Property Location</th>
-          <th class="table-titles">Total Amount</th>
-          <th class="table-titles">Status</th>
-          <th class="table-titles">Action</th>
-        </tr>
-        <tr>
-          <th>LOT 5677 - A - 2 , PSD - 08 - D</th>
-          <th>Raphael S. Orillano</th>
-          <th>Brgy. Airport, Ormoc City</th>
-          <th>₱20,000.00</th>
-          <th>Ongoing</th>
-          <th>
-            <div class="actions">
-              <button class="openBtn" @click="redirectTosurveydetails">
-                Open
-              </button>
-              <button class="deleteBtn">
-                <span id="delete-icon" class="material-symbols-rounded">
-                  delete
-                </span>
-              </button>
-            </div>
-          </th>
-        </tr>
-        <tr>
-          <th>LOT 6001 - A - 2 , PSD - 08 - D</th>
-          <th>Kyle Nierras</th>
-          <th>Brgy. Salvacion, Ormoc City</th>
-          <th>₱36,000.00</th>
-          <th>Completed</th>
-          <th>
-            <div class="actions">
-              <button class="openBtn" @click="redirectTosurveydetails">
-                Open
-              </button>
-              <button class="deleteBtn">
-                <span id="delete-icon" class="material-symbols-rounded">
-                  delete
-                </span>
-              </button>
-            </div>
-          </th>
-        </tr>
-      </table>
+    <tr>
+      <th class="table-titles">Lot & Survey No.</th>
+      <th class="table-titles">Client</th>
+      <th class="table-titles">Property Location</th>
+      <th class="table-titles">Total Amount</th>
+      <th class="table-titles">Status</th>
+      <th class="table-titles">Action</th>
+    </tr>
+    <tr v-for="(project, projectId) in projects" :key="projectId">
+      <th>{{ project.lotAndSurveyNo }}</th>
+      <th>{{ project.clientName }}</th>
+      <th>{{ project.propertyLocation }}</th>
+      <th>{{ project.totalAmount }}</th>
+      <th>{{ project.status }}</th>
+      <th>
+        <div class="actions">
+          <button class="openBtn" @click="open(project.docId)">Open</button>
+          <button class="deleteBtn" @click="deleteProject(project.docId)">
+            <span id="delete-icon" class="material-symbols-rounded">delete</span>
+          </button>
+        </div>
+      </th>
+    </tr>
+  </table>
+
     </div>
     <div class="add-container" v-show="createNewSurvey">
       <div class="form">
-        <form @submit.prevent="submitform">
+        <form @submit.prevent="">
           <div class="surveyinformationpanel">
             <div class="surveyinformationtitle">
               <span>Survey Information</span>
@@ -231,13 +314,13 @@ const redirectTosurveydetails = () => {
           </div>
           <div class="form-buttons">
             <button class="form-cancelBtn" @click="createNewSurvey = !createNewSurvey">Cancel</button>
-            <button type="submit" class="form-addSurveyBtn">Add Survey</button>
+            <button type="submit" class="form-addSurveyBtn" @click="submitform">Add Survey</button>
           </div>
         </form>
       </div>
     </div>
+    
 </template>
-  
 
 <style scoped>
 .header{

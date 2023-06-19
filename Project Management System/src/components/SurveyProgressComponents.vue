@@ -1,8 +1,23 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { db } from "../firebase.js";
 import { getDoc } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const userId = ref('')
+
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    userId.value = user.uid.toString(); // Convert to string
+    console.log(userId.value);
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});
 
 //Toggles and Percentage
 const surveyReturnToggle = ref(true);
@@ -124,9 +139,13 @@ const caadApplicationCheckboxes = [
 ];
 
 const submitform = () => {
-    const project = "LOT 5677 - A - 2, PSD - 08 - A";
+    const project = "LOT 1500";
     // Submit to Firebase
-    db.collection(project)
+    db.collection("Users")
+    .doc(userId.value)
+    .collection("Projects")
+    .doc(project)
+    .collection("Documents")
     .doc("Survey_Return")
     .set({
         ldcOfMotherlotAndPreviousPlan: ldcOfMotherlotAndPreviousPlan.value,
@@ -169,7 +188,11 @@ const submitform = () => {
         console.error("Error writing document: ", error);
     });
 
-    db.collection(project)
+    db.collection("Users")
+    .doc(userId.value)
+    .collection("Projects")
+    .doc(project)
+    .collection("Documents")
     .doc("Sketch_Plan")
     .set({
         printedSP: printedSP.value,
@@ -185,7 +208,11 @@ const submitform = () => {
         console.error("Error writing document: ", error);
     });
 
-    db.collection(project)
+    db.collection("Users")
+    .doc(userId.value)
+    .collection("Projects")
+    .doc(project)
+    .collection("Documents")
     .doc("Topographic_Plan")
     .set({
         printedTP: printedTP.value,
@@ -201,7 +228,11 @@ const submitform = () => {
         console.error("Error writing document: ", error);
     });
 
-    db.collection(project)
+    db.collection("Users")
+    .doc(userId.value)
+    .collection("Projects")
+    .doc(project)
+    .collection("Documents")
     .doc("CAAD_Application")
     .set({
         filledUpForms: filledUpForms.value,
@@ -228,7 +259,11 @@ const submitform = () => {
         console.error("Error writing document: ", error);
     });
 
-    db.collection(project)
+    db.collection("Users")
+    .doc(userId.value)
+    .collection("Projects")
+    .doc(project)
+    .collection("Documents")
     .doc("Toggles_Percentage")
     .set({
         surveyReturnToggle: surveyReturnToggle.value,
@@ -246,20 +281,29 @@ const submitform = () => {
 };
 
 const initializeComponent = async () =>{
+    if (!userId.value) {
+        // User ID is not available yet, wait for it
+        return;
+    }
     try {
-    const Survey_Return = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Survey_Return');
+        const projectDoc = db
+      .collection('Users')
+      .doc(userId.value)
+      .collection('Projects')
+      .doc("LOT 1500");
+    const Survey_Return = projectDoc.collection('Documents').doc('Survey_Return');
     const docSnapshotSR = await getDoc(Survey_Return);
 
-    const Sketch_Plan = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Sketch_Plan');
+    const Sketch_Plan = projectDoc.collection('Documents').doc('Sketch_Plan');
     const docSnapshotSP = await getDoc(Sketch_Plan);
 
-    const Topographic_Plan = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Topographic_Plan');
+    const Topographic_Plan = projectDoc.collection('Documents').doc('Topographic_Plan');
     const docSnapshotTP = await getDoc(Topographic_Plan);
 
-    const CAAD_Application = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('CAAD_Application');
+    const CAAD_Application = projectDoc.collection('Documents').doc('CAAD_Application');
     const docSnapshotCA = await getDoc(CAAD_Application);
 
-    const Toggles_Percentage = db.collection("LOT 5677 - A - 2, PSD - 08 - A").doc('Toggles_Percentage');
+    const Toggles_Percentage = projectDoc.collection('Documents').doc('Toggles_Percentage');
     const docSnapshotTogPer = await getDoc(Toggles_Percentage);
 
     if (docSnapshotSR.exists()) {   
@@ -367,7 +411,21 @@ const initializeComponent = async () =>{
 
 }
 
-onMounted(initializeComponent);
+onMounted(async () => {
+  // Wait for onAuthStateChanged callback to set the userId
+  await new Promise(resolve => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userId.value = user.uid.toString();
+        unsubscribe();
+        resolve();
+      }
+    });
+  });
+  
+  // Now that userId is set, initialize the component
+  await initializeComponent();
+});
 
 const route = useRoute();
 const router = useRouter();
