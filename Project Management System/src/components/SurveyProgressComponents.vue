@@ -2,22 +2,6 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { db } from "../firebase.js";
-import { getDoc } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-const userId = ref('')
-
-const auth = getAuth();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    userId.value = user.uid.toString(); // Convert to string
-    console.log(userId.value);
-    // ...
-  } else {
-    // User is signed out
-    // ...
-  }
-});
 
 //Toggles and Percentage
 const surveyReturnToggle = ref(true);
@@ -139,293 +123,220 @@ const caadApplicationCheckboxes = [
 ];
 
 const submitform = () => {
-    const project = "LOT 1500";
-    // Submit to Firebase
-    db.collection("Users")
-    .doc(userId.value)
-    .collection("Projects")
-    .doc(project)
-    .collection("Documents")
-    .doc("Survey_Return")
-    .set({
-        ldcOfMotherlotAndPreviousPlan: ldcOfMotherlotAndPreviousPlan.value,
-        blPlanPrinted: blPlanPrinted.value,
-        blPlanSigned: blPlanSigned.value,
-        eSurvey: eSurvey.value,
-        fieldNotesFieldNotesCover: fieldNotesFieldNotesCover.value,
-        certifiedCopyOfTaxDeclaration: certifiedCopyOfTaxDeclaration.value,
-        certifiedCopyOfTitle: certifiedCopyOfTitle.value,
-        transmittal: transmittal.value,
-        surveyAuthority: surveyAuthority.value,
-        geodeticEngineersSignature: geodeticEngineersSignature.value,
 
-        sentToEvelynBaloviaGrandTours: sentToEvelynBaloviaGrandTours.value,
-        frontDesk: frontDesk.value,
-        ivasTransactionID: ivasTransactionID.value,
-        verifiers: verifiers.value,
-        recordsVerifier: recordsVerifier.value,
-        projectionUnit: projectionUnit.value,
-        finalVerification: finalVerification.value,
-        recommendingApproval: recommendingApproval.value,
-        surveyApproval: surveyApproval.value,
-        assignmentofSurveyNo: assignmentofSurveyNo.value,
+    const docId = ref("");
+    const collectionName = 'Current_Id';
+    const documentId = 'currentid';
 
-        sentToEvelynBaloviaGrandToursDate: sentToEvelynBaloviaGrandToursDate.value,
-        frontDeskDate: frontDeskDate.value,
-        ivasTransactionIDDate: ivasTransactionIDDate.value,
-        verifiersDate: verifiersDate.value,
-        recordsVerifierDate: recordsVerifierDate.value,
-        projectionUnitDate: projectionUnitDate.value,
-        finalVerificationDate: finalVerificationDate.value,
-        recommendingApprovalDate: recommendingApprovalDate.value,
-        surveyApprovalDate: surveyApprovalDate.value,
-        assignmentofSurveyNoDate: assignmentofSurveyNoDate.value,
-    })
-    .then(() => {
-        console.log("Document successfully written!");
-    })
-    .catch((error) => {
-        console.error("Error writing document: ", error);
-    });
+    const documentRef = db.collection(collectionName).doc(documentId);
+    
+    documentRef.get()
+    .then((doc) => {
+      if (doc.exists) {
+        // Document exists, retrieve the data
+        const data = doc.data();
+        docId.value = data.documentId;
+        console.log(docId.value)
+        db.collection("Projects")
+        .doc(docId.value)
+        .update({
+            docId: docId.value,
+            //Survey Return
+            ldcOfMotherlotAndPreviousPlan: ldcOfMotherlotAndPreviousPlan.value,
+            blPlanPrinted: blPlanPrinted.value,
+            blPlanSigned: blPlanSigned.value,
+            eSurvey: eSurvey.value,
+            fieldNotesFieldNotesCover: fieldNotesFieldNotesCover.value,
+            certifiedCopyOfTaxDeclaration: certifiedCopyOfTaxDeclaration.value,
+            certifiedCopyOfTitle: certifiedCopyOfTitle.value,
+            transmittal: transmittal.value,
+            surveyAuthority: surveyAuthority.value,
+            geodeticEngineersSignature: geodeticEngineersSignature.value,
+            
+            sentToEvelynBaloviaGrandTours: sentToEvelynBaloviaGrandTours.value,
+            frontDesk: frontDesk.value,
+            ivasTransactionID: ivasTransactionID.value,
+            verifiers: verifiers.value,
+            recordsVerifier: recordsVerifier.value,
+            projectionUnit: projectionUnit.value,
+            finalVerification: finalVerification.value,
+            recommendingApproval: recommendingApproval.value,
+            surveyApproval: surveyApproval.value,
+            assignmentofSurveyNo: assignmentofSurveyNo.value,
+            
+            // sentToEvelynBaloviaGrandToursDate: sentToEvelynBaloviaGrandToursDate.value,
+            // frontDeskDate: frontDeskDate.value,
+            // ivasTransactionIDDate: ivasTransactionIDDate.value,
+            // verifiersDate: verifiersDate.value,
+            // recordsVerifierDate: recordsVerifierDate.value,
+            // projectionUnitDate: projectionUnitDate.value,
+            // finalVerificationDate: finalVerificationDate.value,
+            // recommendingApprovalDate: recommendingApprovalDate.value,
+            // surveyApprovalDate: surveyApprovalDate.value,
+            // assignmentofSurveyNoDate: assignmentofSurveyNoDate.value,
+            //Sketch Plan
+            printedSP: printedSP.value,
+            releasedSP: releasedSP.value,
 
-    db.collection("Users")
-    .doc(userId.value)
-    .collection("Projects")
-    .doc(project)
-    .collection("Documents")
-    .doc("Sketch_Plan")
-    .set({
-        printedSP: printedSP.value,
-        releasedSP: releasedSP.value,
+            // printedSPDate: printedSPDate.value,
+            // releasedSPDate: releasedSPDate.value,
+            //Topographic Plan
+            printedTP: printedTP.value,
+            releasedTP: releasedTP.value,
 
-        printedSPDate: printedSPDate.value,
-        releasedSPDate: releasedSPDate.value,
-    })
-    .then(() => {
-        console.log("Document successfully written!");
-    })
-    .catch((error) => {
-        console.error("Error writing document: ", error);
-    });
+            // printedTPDate: printedTPDate.value,
+            // releasedTPDate: releasedTPDate.value,
+            //CAAD Application
+            filledUpForms: filledUpForms.value,
+            vicinityMap: vicinityMap.value,
+            traverseComputations: traverseComputations.value,
+            officialReceipt: officialReceipt.value,
+            landTitle: landTitle.value,
+            elevationsDrawings: elevationsDrawings.value,
 
-    db.collection("Users")
-    .doc(userId.value)
-    .collection("Projects")
-    .doc(project)
-    .collection("Documents")
-    .doc("Topographic_Plan")
-    .set({
-        printedTP: printedTP.value,
-        releasedTP: releasedTP.value,
+            sentToCAAPOffice: sentToCAAPOffice.value,
+            approved: approved.value,
+            received: received.value,
+            released: released.value,
 
-        printedTPDate: printedTPDate.value,
-        releasedTPDate: releasedTPDate.value,
-    })
-    .then(() => {
-        console.log("Document successfully written!");
-    })
-    .catch((error) => {
-        console.error("Error writing document: ", error);
-    });
-
-    db.collection("Users")
-    .doc(userId.value)
-    .collection("Projects")
-    .doc(project)
-    .collection("Documents")
-    .doc("CAAD_Application")
-    .set({
-        filledUpForms: filledUpForms.value,
-        vicinityMap: vicinityMap.value,
-        traverseComputations: traverseComputations.value,
-        officialReceipt: officialReceipt.value,
-        landTitle: landTitle.value,
-        elevationsDrawings: elevationsDrawings.value,
-
-        sentToCAAPOffice: sentToCAAPOffice.value,
-        approved: approved.value,
-        received: received.value,
-        released: released.value,
-
-        sentToCAAPOfficeDate: sentToCAAPOfficeDate.value,
-        approvedDate: approvedDate.value,
-        receivedDate: receivedDate.value,
-        releasedDate: releasedDate.value,
-    })
-    .then(() => {
-        console.log("Document successfully written!");
+            // sentToCAAPOfficeDate: sentToCAAPOfficeDate.value,
+            // approvedDate: approvedDate.value,
+            // receivedDate: receivedDate.value,
+            // releasedDate: releasedDate.value,
+            //toggles
+            surveyReturnToggle: surveyReturnToggle.value,
+            sketchPlanToggle: sketchPlanToggle.value,
+            topographicPlanToggle: topographicPlanToggle.value,
+            caadApplicationToggle: caadApplicationToggle.value,
+            surveyProgressPercentage: surveyProgressPercentage.value,
+        })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+        
+      } else {
+        // Document does not exist
+        console.log('Document does not exist.');
+      }
     })
     .catch((error) => {
-        console.error("Error writing document: ", error);
-    });
-
-    db.collection("Users")
-    .doc(userId.value)
-    .collection("Projects")
-    .doc(project)
-    .collection("Documents")
-    .doc("Toggles_Percentage")
-    .set({
-        surveyReturnToggle: surveyReturnToggle.value,
-        sketchPlanToggle: sketchPlanToggle.value,
-        topographicPlanToggle: topographicPlanToggle.value,
-        caadApplicationToggle: caadApplicationToggle.value,
-        surveyProgressPercentage: surveyProgressPercentage.value,
-    })
-    .then(() => {
-        console.log("Document successfully written!");
-    })
-    .catch((error) => {
-        console.error("Error writing document: ", error);
+      console.log('Error getting document:', error);
     });
 };
 
-const initializeComponent = async () =>{
-    if (!userId.value) {
-        // User ID is not available yet, wait for it
-        return;
-    }
-    try {
-        const projectDoc = db
-      .collection('Users')
-      .doc(userId.value)
-      .collection('Projects')
-      .doc("LOT 1500");
-    const Survey_Return = projectDoc.collection('Documents').doc('Survey_Return');
-    const docSnapshotSR = await getDoc(Survey_Return);
+const getAllDoc = () => {
+  const docId = ref("");
+  const collectionName = 'Current_Id';
+  const documentId = 'currentid';
 
-    const Sketch_Plan = projectDoc.collection('Documents').doc('Sketch_Plan');
-    const docSnapshotSP = await getDoc(Sketch_Plan);
+  // Get a reference to the document
+  const documentRef = db.collection(collectionName).doc(documentId);
 
-    const Topographic_Plan = projectDoc.collection('Documents').doc('Topographic_Plan');
-    const docSnapshotTP = await getDoc(Topographic_Plan);
+  // Retrieve the data from the document
+  documentRef.get()
+    .then((doc) => {
+      if (doc.exists) {
+        // Document exists, retrieve the data
+        const data = doc.data();
+        docId.value = data.currentId;
 
-    const CAAD_Application = projectDoc.collection('Documents').doc('CAAD_Application');
-    const docSnapshotCA = await getDoc(CAAD_Application);
+        db.collection("Projects").where("docId", "==", docId.value)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                const data = doc.data();
+                console.log(data)
+                docId.value = data.docId;
+                //Survey Return
+                ldcOfMotherlotAndPreviousPlan.value = Boolean(data.ldcOfMotherlotAndPreviousPlan);
+                blPlanPrinted.value = Boolean(data.blPlanPrinted);
+                blPlanSigned.value = Boolean(data.blPlanSigned);
+                eSurvey.value = Boolean(data.eSurvey);
+                fieldNotesFieldNotesCover.value = Boolean(data.fieldNotesFieldNotesCover);
+                certifiedCopyOfTaxDeclaration.value = Boolean(data.certifiedCopyOfTaxDeclaration);
+                certifiedCopyOfTitle.value = Boolean(data.certifiedCopyOfTitle);
+                transmittal.value = Boolean(data.transmittal);
+                surveyAuthority.value = Boolean(data.surveyAuthority);
+                geodeticEngineersSignature.value = Boolean(data.geodeticEngineersSignature);
 
-    const Toggles_Percentage = projectDoc.collection('Documents').doc('Toggles_Percentage');
-    const docSnapshotTogPer = await getDoc(Toggles_Percentage);
+                sentToEvelynBaloviaGrandTours.value = Boolean(data.sentToEvelynBaloviaGrandTours);
+                frontDesk.value = Boolean(data.frontDesk);
+                ivasTransactionID.value = Boolean(data.ivasTransactionID);
+                verifiers.value = Boolean(data.verifiers);
+                recordsVerifier.value = Boolean(data.recordsVerifier);
+                projectionUnit.value = Boolean(data.projectionUnit);
+                finalVerification.value = Boolean(data.finalVerification);
+                recommendingApproval.value = Boolean(data.recommendingApproval);
+                surveyApproval.value = Boolean(data.surveyApproval);
+                assignmentofSurveyNo.value = Boolean(data.assignmentofSurveyNo);
 
-    if (docSnapshotSR.exists()) {   
-        const data = docSnapshotSR.data();
-        ldcOfMotherlotAndPreviousPlan.value = Boolean(data.ldcOfMotherlotAndPreviousPlan);
-        blPlanPrinted.value = Boolean(data.blPlanPrinted);
-        blPlanSigned.value = Boolean(data.blPlanSigned);
-        eSurvey.value = Boolean(data.eSurvey);
-        fieldNotesFieldNotesCover.value = Boolean(data.fieldNotesFieldNotesCover);
-        certifiedCopyOfTaxDeclaration.value = Boolean(data.certifiedCopyOfTaxDeclaration);
-        certifiedCopyOfTitle.value = Boolean(data.certifiedCopyOfTitle);
-        transmittal.value = Boolean(data.transmittal);
-        surveyAuthority.value = Boolean(data.surveyAuthority);
-        geodeticEngineersSignature.value = Boolean(data.geodeticEngineersSignature);
+                sentToEvelynBaloviaGrandToursDate.value = data.sentToEvelynBaloviaGrandToursDate;
+                frontDeskDate.value = data.frontDeskDate;
+                ivasTransactionIDDate.value = data.ivasTransactionIDDate;
+                verifiersDate.value = data.verifiersDate;
+                recordsVerifierDate.value = data.recordsVerifierDate;
+                projectionUnitDate.value = data.projectionUnitDate;
+                finalVerificationDate.value = data.finalVerificationDate;
+                recommendingApprovalDate.value = data.recommendingApprovalDate;
+                surveyApprovalDate.value = data.surveyApprovalDate;
+                assignmentofSurveyNoDate.value = data.assignmentofSurveyNoDate;
+                //Sketch Plan
+                printedSP.value = Boolean(data.printedSP);
+                releasedSP.value = Boolean(data.releasedSP);
 
-        sentToEvelynBaloviaGrandTours.value = Boolean(data.sentToEvelynBaloviaGrandTours);
-        frontDesk.value = Boolean(data.frontDesk);
-        ivasTransactionID.value = Boolean(data.ivasTransactionID);
-        verifiers.value = Boolean(data.verifiers);
-        recordsVerifier.value = Boolean(data.recordsVerifier);
-        projectionUnit.value = Boolean(data.projectionUnit);
-        finalVerification.value = Boolean(data.finalVerification);
-        recommendingApproval.value = Boolean(data.recommendingApproval);
-        surveyApproval.value = Boolean(data.surveyApproval);
-        assignmentofSurveyNo.value = Boolean(data.assignmentofSurveyNo);
+                printedSPDate.value = data.printedSPDate;
+                releasedSPDate.value = data.releasedSPDate;
+                //Topographic Plan
+                printedTP.value = Boolean(data.printedTP);
+                releasedTP.value = Boolean(data.releasedTP);
 
-        sentToEvelynBaloviaGrandToursDate.value = data.sentToEvelynBaloviaGrandToursDate;
-        frontDeskDate.value = data.frontDeskDate;
-        ivasTransactionIDDate.value = data.ivasTransactionIDDate;
-        verifiersDate.value = data.verifiersDate;
-        recordsVerifierDate.value = data.recordsVerifierDate;
-        projectionUnitDate.value = data.projectionUnitDate;
-        finalVerificationDate.value = data.finalVerificationDate;
-        recommendingApprovalDate.value = data.recommendingApprovalDate;
-        surveyApprovalDate.value = data.surveyApprovalDate;
-        assignmentofSurveyNoDate.value = data.assignmentofSurveyNoDate;
-    } else {
+                printedTPDate.value = data.printedTPDate;
+                releasedTPDate.value = data.releasedTPDate;
+                //CAAD Application
+                filledUpForms.value = Boolean(data.filledUpForms);
+                vicinityMap.value = Boolean(data.vicinityMap);
+                traverseComputations.value = Boolean(data.traverseComputations);
+                officialReceipt.value = Boolean(data.officialReceipt);
+                landTitle.value = Boolean(data.landTitle);
+                elevationsDrawings.value = Boolean(data.elevationsDrawings);
+
+                sentToCAAPOffice.value = Boolean(data.sentToCAAPOffice);
+                approved.value = Boolean(data.approved);
+                received.value = Boolean(data.received);
+                released.value = Boolean(data.released);
+
+                sentToCAAPOfficeDate.value = data.sentToCAAPOfficeDate;
+                approvedDate.value = data.approvedDate;
+                receivedDate.value = data.receivedDate;
+                releasedDate.value = data.releasedDate;
+                //toggles
+                surveyReturnToggle.value = Boolean(data.surveyReturnToggle);
+                sketchPlanToggle.value = Boolean(data.sketchPlanToggle);
+                topographicPlanToggle.value = Boolean(data.topographicPlanToggle);
+                caadApplicationToggle.value = Boolean(data.caadApplicationToggle);
+
+                surveyProgressPercentage.value = data.surveyProgressPercentage;
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+        
+      } else {
         // Document does not exist
         console.log('Document does not exist.');
-    }
-
-    if (docSnapshotSP.exists()) {
-        const data = docSnapshotSP.data();
-        printedSP.value = Boolean(data.printedSP);
-        releasedSP.value = Boolean(data.releasedSP);
-
-        printedSPDate.value = data.printedSPDate;
-        releasedSPDate.value = data.releasedSPDate;
-    } else {
-        // Document does not exist
-        console.log('Document does not exist.');
-    }
-
-    if (docSnapshotTP.exists()) {
-        const data = docSnapshotTP.data();
-        printedTP.value = Boolean(data.printedTP);
-        releasedTP.value = Boolean(data.releasedTP);
-
-        printedTPDate.value = data.printedTPDate;
-        releasedTPDate.value = data.releasedTPDate;
-    } else {
-        // Document does not exist
-        console.log('Document does not exist.');
-    }
-
-    if (docSnapshotCA.exists()) {
-        const data = docSnapshotCA.data();
-        filledUpForms.value = Boolean(data.filledUpForms);
-        vicinityMap.value = Boolean(data.vicinityMap);
-        traverseComputations.value = Boolean(data.traverseComputations);
-        officialReceipt.value = Boolean(data.officialReceipt);
-        landTitle.value = Boolean(data.landTitle);
-        elevationsDrawings.value = Boolean(data.elevationsDrawings);
-
-        sentToCAAPOffice.value = Boolean(data.sentToCAAPOffice);
-        approved.value = Boolean(data.approved);
-        received.value = Boolean(data.received);
-        released.value = Boolean(data.released);
-
-        sentToCAAPOfficeDate.value = data.sentToCAAPOfficeDate;
-        approvedDate.value = data.approvedDate;
-        receivedDate.value = data.receivedDate;
-        releasedDate.value = data.releasedDate;
-    } else {
-        // Document does not exist
-        console.log('Document does not exist.');
-    }
-
-    if (docSnapshotTogPer.exists()) {
-        const data = docSnapshotTogPer.data();
-        surveyReturnToggle.value = Boolean(data.surveyReturnToggle);
-        sketchPlanToggle.value = Boolean(data.sketchPlanToggle);
-        topographicPlanToggle.value = Boolean(data.topographicPlanToggle);
-        caadApplicationToggle.value = Boolean(data.caadApplicationToggle);
-
-        surveyProgressPercentage.value = data.surveyProgressPercentage;
-    } else {
-        // Document does not exist
-        console.log('Document does not exist.');
-    }
-
-  } catch (error) {
-    console.error('Error fetching document:', error);
-  }
-
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting document:', error);
+    });
 }
 
-onMounted(async () => {
-  // Wait for onAuthStateChanged callback to set the userId
-  await new Promise(resolve => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        userId.value = user.uid.toString();
-        unsubscribe();
-        resolve();
-      }
-    });
-  });
-  
-  // Now that userId is set, initialize the component
-  await initializeComponent();
-});
+onMounted(getAllDoc);
 
 const route = useRoute();
 const router = useRouter();
@@ -486,8 +397,8 @@ const redirectTopaymentprogress = () => {
 
 const updateValue = async () => {
     submitform();
+    getAllDoc();
     alert('Update successful!');
-    await initializeComponent();
 }
 </script>
 

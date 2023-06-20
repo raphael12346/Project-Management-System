@@ -31,11 +31,68 @@
                 <th class="table-titles">Action</th>
             </tr>
             <tr>
-                <th>LOT 5677 - A - 2 , PSD - 08 - D</th>
-                <th>Raphael S. Orillano</th>
-                <th>Brgy. Airport, Ormoc City</th>
-                <th>₱20,000.00</th>
-                <th>Ongoing</th>
+                <th>LOT 1500</th>
+                <th>Emmanuel G. Orillano</th>
+                <th>Brgy. Salvacion, Ormoc City, Leyte</th>
+                <th>₱24000.00</th>
+                <th>In Progress</th>
+                <th>
+                    <div class="actions">
+                        <button class="openBtn" @click="redirectTosurveydetails">
+                            Open
+                        </button>
+                        <button class="deleteBtn">
+                            <span id="delete-icon" class="material-symbols-rounded">
+                                delete
+                            </span>
+                        </button>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th>LOT 8448</th>
+                <th>Jess Mosquera</th>
+                <th>Brgy. Salvacion, Kananga, Leyte</th>
+                <th>₱30000.00</th>
+                <th>In Progess</th>
+                <th>
+                    <div class="actions">
+                        <button class="openBtn" @click="redirectTosurveydetails">
+                            Open
+                        </button>
+                        <button class="deleteBtn">
+                            <span id="delete-icon" class="material-symbols-rounded">
+                                delete
+                            </span>
+                        </button>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th>LOT 5690</th>
+                <th>Kyle Nierras</th>
+                <th>Brgy. Libertad, Ormoc City, Leyte</th>
+                <th>₱36000.00</th>
+                <th>In Progress</th>
+                <th>
+                    <div class="actions">
+                        <button class="openBtn" @click="redirectTosurveydetails">
+                            Open
+                        </button>
+                        <button class="deleteBtn">
+                            <span id="delete-icon" class="material-symbols-rounded">
+                                delete
+                            </span>
+                        </button>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th>LOT 9999</th>
+                <th>Nino Austria</th>
+                <th>Brgy. Guadalupe, Baybay, Leyte</th>
+                <th>₱82000.00</th>
+                <th>In Progress</th>
                 <th>
                     <div class="actions">
                         <button class="openBtn" @click="redirectTosurveydetails">

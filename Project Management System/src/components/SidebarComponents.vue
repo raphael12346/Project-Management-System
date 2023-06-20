@@ -41,9 +41,6 @@ export default {
                     <span id="more-icon" class="material-symbols-rounded">
                         more_horiz
                     </span>
-                    <div class="dropdown-content">
-                        <a href="#">Account Settings</a>
-                    </div>
                 </div>
             </div>
             <div class="panels" :class="{ active: activeComponent === 'dashboard' }" @click="redirectToDashboard">
@@ -196,8 +193,7 @@ body{
 
 #more-icon{
     font-size: 28px;
-    color: white;
-    cursor: pointer;
+    color: rgba(255, 255, 255, 0);
     display: flex;
     flex-direction: row;
     justify-content: center;

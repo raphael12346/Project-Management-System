@@ -224,6 +224,7 @@ const succeedingProductfb = ref('');
 const noOfLotsProductfb = ref('');
 
 const totalAmountfb = ref('');
+const docId = ref('');
 
 const totalAmount = computed(() => firstHectareProduct.value + succeedingProduct.value + noOfLotsProduct.value);
 
@@ -243,38 +244,66 @@ const SurveyAttachmentseSurveyURL = ref('');
 
 const submitform = () => {
   // Submit to Firebase
-  db.collection("Project")
-    .add({
-      transactionDate: transactionDate.value,
-      scheduleOfSurvey: scheduleOfSurvey.value ,
-      claimant: claimant.value,
-      typeOfSurvey: typeOfSurvey.value,
-      province: province.value,
-      municipality: municipality.value,
-      barangay: barangay.value,
-      area: area.value,
-      lotAndSurveyNo: lotAndSurveyNo.value,
-      clientName: clientName.value,
-      relationToClaimant: relationToClaimant.value,
-      address: address.value,
-      mobileNo: mobileNo.value,
-      emailAddress: emailAddress.value,
-      messenger: messenger.value,
-      firstHectareMul: firstHectareMul.value,
-      succeeding: succeeding.value,
-      succeedingMul: succeedingMul.value,
-      noOfLots: noOfLots.value,
-      noOfLotsMul: noOfLotsMul.value,
-      firstHectareProduct: firstHectareProduct.value,
-      succeedingProduct: succeedingProduct.value,
-      noOfLotsProduct: noOfLotsProduct.value,
-      totalAmount: totalAmount.value,
-    })
-    .then(() => {
-      console.log("Document successfully written!");
+  const docId = ref("");
+  const collectionName = 'Current_Id';
+  const documentId = 'currentid';
+
+  // Get a reference to the document
+  const documentRef = db.collection(collectionName).doc(documentId);
+
+  // Retrieve the data from the document
+  documentRef.get()
+    .then((doc) => {
+      if (doc.exists) {
+        // Document exists, retrieve the data
+        const data = doc.data();
+        docId.value = data.documentId;
+        console.log(docId.value)
+        db.collection("Projects")
+        .doc(docId.value)
+        .update({
+          docId: docId.value,
+          transactionDate: transactionDate.value,
+          scheduleOfSurvey: scheduleOfSurvey.value,
+          claimant: claimant.value,
+          typeOfSurvey: typeOfSurvey.value,
+          province: province.value,
+          municipality: municipality.value,
+          barangay: barangay.value,
+          area: area.value,
+          lotAndSurveyNo: lotAndSurveyNo.value,
+
+          clientName: clientName.value,
+          relationToClaimant: relationToClaimant.value,
+          address: address.value,
+          mobileNo: mobileNo.value,
+          emailAddress: emailAddress.value,
+          messenger: messenger.value,
+
+          firstHectareMul: firstHectareMul.value,
+          succeeding: succeeding.value,
+          succeedingMul: succeedingMul.value,
+          noOfLots: noOfLots.value,
+          noOfLotsMul: noOfLotsMul.value,
+          firstHectareProduct: firstHectareProduct.value,
+          succeedingProduct: succeedingProduct.value,
+          noOfLotsProduct: noOfLotsProduct.value,
+          totalAmount: totalAmount.value,
+        })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+        
+      } else {
+        // Document does not exist
+        console.log('Document does not exist.');
+      }
     })
     .catch((error) => {
-      console.error("Error writing document: ", error);
+      console.log('Error getting document:', error);
     });
 };
 
@@ -295,30 +324,51 @@ const getAllDoc = () => {
         docId.value = data.currentId;
 
         db.collection("Projects").where("docId", "==", docId.value)
-    .get()
-    .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            console.log(querySnapshot);
-            // doc.data() is never undefined for query doc snapshots
-            const data = doc.data();
-            transactionDate.value = data.transactionDate;
-            scheduleOfSurvey.value = data.scheduleOfSurvey;
-            claimant.value = data.claimant;
-            typeOfSurvey.value = data.typeOfSurvey;
-            province.value = data.province;
-            municipality.value = data.municipality;
-            barangay.value = data.barangay;
-            area.value = data.area;
-            lotAndSurveyNo.value = data.lotAndSurveyNo;
-            transactionDate.value = data.transactionDate;
-            scheduleOfSurvey.value = data.scheduleOfSurvey;
-            claimant.value = data.claimant;
-            typeOfSurvey.value = data.typeOfSurvey;
-            province.value = data.province;
-            municipality.value = data.municipality;
-            barangay.value = data.barangay;
-            area.value = data.area;
-            lotAndSurveyNo.value = data.lotAndSurveyNo;
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                const data = doc.data();
+                console.log(data)
+                docId.value = data.docId;
+                transactionDate.value = data.transactionDate;
+                scheduleOfSurvey.value = data.scheduleOfSurvey;
+                claimant.value = data.claimant;
+                typeOfSurvey.value = data.typeOfSurvey;
+                province.value = data.province;
+                municipality.value = data.municipality;
+                barangay.value = data.barangay;
+                area.value = data.area;
+                lotAndSurveyNo.value = data.lotAndSurveyNo;
+                
+                clientName.value = data.clientName;
+                relationToClaimant.value = data.relationToClaimant;
+                address.value = data.address;
+                mobileNo.value = data.mobileNo;
+                emailAddress.value = data.emailAddress;
+                messenger.value = data.messenger;
+
+                firstHectareMul.value = data.firstHectareMul;
+                succeeding.value = data.succeeding;
+                succeedingMul.value = data.succeedingMul;
+                noOfLots.value = data.noOfLots;
+                noOfLotsMul.value = data.noOfLotsMul;
+                firstHectareProductfb.value = data.firstHectareProduct;
+                succeedingProductfb.value = data.succeedingProduct;
+                noOfLotsProductfb.value = data.noOfLotsProduct;
+                totalAmountfb.value = data.totalAmount;
+
+                SurveyAttachmentsPhotoFileName.value = data.SurveyAttachmentsPhotoFileName;
+                SurveyAttachmentsDocFileName.value = data.SurveyAttachmentsDocFileName;
+                SurveyAttachmentsCadFileName.value = data.SurveyAttachmentsCadFileName;
+                SurveyAttachmentsQuatationFileName.value  = data.SurveyAttachmentsQuatationFileName;
+                SurveyAttachmentseSurveyFileName.value  = data.SurveyAttachmentseSurveyFileName;
+
+                SurveyAttachmentsPhotoUrl.value = data.SurveyAttachmentsPhotoUrl;
+                SurveyAttachmentsDocUrl.value = data.SurveyAttachmentsDocUrl;
+                SurveyAttachmentsCadUrl.value = data.SurveyAttachmentsCadUrl;
+                SurveyAttachmentsQuatationURL.value  = data.SurveyAttachmentsQuatationURL;
+                SurveyAttachmentseSurveyURL.value  = data.SurveyAttachmentseSurveyURL;
         });
     })
     .catch((error) => {
@@ -333,130 +383,9 @@ const getAllDoc = () => {
     .catch((error) => {
       console.log('Error getting document:', error);
     });
-
 }
 
-const initializeComponent = async (docId) =>{
-  
-
-
-
-  //   if (!userId.value) {
-  //       // User ID is not available yet, wait for it
-  //       return;
-  //   }
-  //   try {
-  //     const projectDoc = db
-  //     .collection('Projects')
-  //     .doc(docId.value);
-    
-
-  //   const docSnaps = await getDoc(Survey_Details);
-
-  //   if (docSnaps.exists()) {
-  //     const data = docSnapshotSD.data();
-  //     transactionDate.value = data.transactionDate;
-  //     scheduleOfSurvey.value = data.scheduleOfSurvey;
-  //     claimant.value = data.claimant;
-  //     typeOfSurvey.value = data.typeOfSurvey;
-  //     province.value = data.province;
-  //     municipality.value = data.municipality;
-  //     barangay.value = data.barangay;
-  //     area.value = data.area;
-  //     lotAndSurveyNo.value = data.lotAndSurveyNo;
-  //     transactionDate.value = data.transactionDate;
-  //     scheduleOfSurvey.value = data.scheduleOfSurvey;
-  //     claimant.value = data.claimant;
-  //     typeOfSurvey.value = data.typeOfSurvey;
-  //     province.value = data.province;
-  //     municipality.value = data.municipality;
-  //     barangay.value = data.barangay;
-  //     area.value = data.area;
-  //     lotAndSurveyNo.value = data.lotAndSurveyNo;
-  //   } else {
-  //     // Document does not exist
-  //     console.log('Document does not exist.');
-  //   }
-
-  //   // const Client_Details = projectDoc.collection('Documents').doc('Client_Details');
-  //   // const docSnapshotCD = await getDoc(Client_Details);
-
-  //   // const Survey_Attachments = projectDoc.collection('Documents').doc('Survey_Attachments');
-  //   // const docSnapshotSA = await getDoc(Survey_Attachments);
-
-  //   // const Quotation = projectDoc.collection('Documents').doc('Quotation');
-  //   // const docSnapshotQ = await getDoc(Quotation);
-
-  //   // const Survey_Information = db.collection("Users").doc(userId.value).collection("Projects").doc("LOT 1500").collection("Documents").doc('Survey_Information');
-  //   // const docSnapshotSI = await getDoc(Survey_Information);
-
-  //   // const Client_Details = db.collection("Users").doc(userId.value).collection("Projects").doc("LOT 1500").collection("Documents").doc('Client_Details');
-  //   // const docSnapshotCD = await getDoc(Client_Details);
-
-  //   // const Survey_Attachments = db.collection("Users").doc(userId.value).collection("Projects").doc("LOT 1500").collection("Documents").doc('Survey_Attachments');
-  //   // const docSnapshotSA = await getDoc(Survey_Attachments);
-
-  //   // const Quotation = db.collection("Users").doc(userId.value).collection("Projects").doc("LOT 1500").collection("Documents").doc('Quotation');
-  //   // const docSnapshotQ = await getDoc(Quotation);
-
-  //   if (docSnapshotSI.exists()) {
-  //     const data = docSnapshotSI.data();
-      
-  //   } else {
-  //     // Document does not exist
-  //     console.log('Document does not exist.');
-  //   }
-
-  //   if (docSnapshotSA.exists()) {
-  //     const data = docSnapshotSA.data();
-  //     //Retrieve Suvery Attachments File Names
-  //     SurveyAttachmentsPhotoFileName.value = data.SurveyAttachmentsPhotoFileName;
-  //     SurveyAttachmentsDocFileName.value = data.SurveyAttachmentsDocFileName;
-  //     SurveyAttachmentsCadFileName.value = data.SurveyAttachmentsCadFileName;
-  //     SurveyAttachmentsQuatationFileName.value  = data.SurveyAttachmentsQuatationFileName;
-  //     SurveyAttachmentseSurveyFileName.value  = data.SurveyAttachmentseSurveyFileName;
-
-  //     //Retrieve Suvery Attachments URL
-  //     SurveyAttachmentsPhotoUrl.value = data.SurveyAttachmentsPhotoUrl;
-  //     SurveyAttachmentsDocUrl.value = data.SurveyAttachmentsDocUrl;
-  //     SurveyAttachmentsCadUrl.value = data.SurveyAttachmentsCadUrl;
-  //     SurveyAttachmentsQuatationURL.value  = data.SurveyAttachmentsQuatationURL;
-  //     SurveyAttachmentseSurveyURL.value  = data.SurveyAttachmentseSurveyURL;
-
-  //   } else {
-  //     // Document does not exist
-  //     console.log('Document does not exist.');
-  //   }
-
-  //   if (docSnapshotCD.exists()) {
-  //     const data = docSnapshotCD.data();
-      
-  //   } else {
-  //     // Document does not exist
-  //     console.log('Document does not exist.');
-  //   }
-
-  //   if (docSnapshotQ.exists()) {
-  //       const data = docSnapshotQ.data();
-  //       firstHectareMul.value = data.firstHectareMul;
-  //       succeeding.value = data.succeeding;
-  //       succeedingMul.value = data.succeedingMul;
-  //       noOfLots.value = data.noOfLots;
-  //       noOfLotsMul.value = data.noOfLotsMul;
-  //       firstHectareProductfb.value = data.firstHectareProduct;
-  //       succeedingProductfb.value = data.succeedingProduct;
-  //       noOfLotsProductfb.value = data.noOfLotsProduct;
-  //       totalAmountfb.value = data.totalAmount;
-  //   } else {
-  //     // Document does not exist
-  //     console.log('Document does not exist.');
-  //   }
-  // } catch (error) {
-  //   console.error('Error fetching document:', error);
-  // }
-}
-
-onMounted(getAllDoc)
+onMounted(getAllDoc);
 
 //Logic in template
 const isUpdateAction = ref(false);
@@ -467,11 +396,6 @@ const router = useRouter();
 const route = useRoute();
 
 const activeComponent = computed(() => route.meta.activeComponent);
-
-function updateTitle() {
-  const newTitleElement = document.getElementById('lotInput').value;
-  title.value = newTitleElement;
-}
 
 function redirectTosurveyprogress() {
   router.push('/surveyprogress');
@@ -509,8 +433,7 @@ function makeEditable() {
   document.getElementsByClassName("updateBtn")[0].style.display = "inline-block";
 }
 
-const cancelEdit = async ()  => {
-  await initializeComponent();
+const cancelEdit = ()  => {
   const inputs = document.getElementsByClassName("input-text");
   for (let i = 0; i < inputs.length; i++) {
     const input = inputs[i];
@@ -531,7 +454,7 @@ const cancelEdit = async ()  => {
     input.disabled = true;
     input.classList.remove("editable");
   }
-
+  getAllDoc();
   isUpdateAction.value = false;
   document.getElementsByClassName("edit-button")[0].style.display = "inline-block";
   document.getElementsByClassName("cancelBtn")[0].style.display = "none";
@@ -541,21 +464,18 @@ const cancelEdit = async ()  => {
 const updateValue = async () => {
   const multiplier = document.getElementsByClassName("number-multiplier");
   for (let i = 0; i < multiplier.length; i++) {
-    const newValue = multiplier[i].value;
     multiplier[i].disabled = true;
     multiplier[i].classList.remove("editable");
   }
 
   const multiplicand = document.getElementsByClassName("number-multiplicand");
   for (let i = 1; i < multiplicand.length; i++) {
-    const newValue = multiplicand[i].value;
     multiplicand[i].disabled = true;
     multiplicand[i].classList.remove("editable");
   }
 
   const inputs = document.getElementsByClassName("input-text");
   for (let i = 0; i < inputs.length; i++) {
-    const newValue = inputs[i].value;
     inputs[i].disabled = true;
     inputs[i].classList.remove("editable");
   }
@@ -565,7 +485,7 @@ const updateValue = async () => {
   document.getElementsByClassName("cancelBtn")[0].style.display = "none";
   document.getElementsByClassName("updateBtn")[0].style.display = "none";
   submitform();
-  await initializeComponent();
+  getAllDoc();
 }
 
 </script>
@@ -573,11 +493,8 @@ const updateValue = async () => {
 <template>
     <div class="header">
         <div class="title">
-            <span>{{ title }}</span>
-
-            
+            <span>{{ title }}</span>    
         </div>
-
         <div class="right-panel">
             <div class="editBtn">
                 <button class="edit-button" @click="makeEditable()">
@@ -607,7 +524,6 @@ const updateValue = async () => {
                 </span>
             </div>
         </div>
-        
         <div class="surveydetails-panel">
             <div class="survey-information-panel">
                 <div class="survey-info-title">
@@ -830,7 +746,7 @@ const updateValue = async () => {
             </div>
             <div class="buttons-panel">
                 <button class="cancelBtn" @click="cancelEdit()">Cancel</button>
-                <button class="updateBtn" @click="updateValue(); updateTitle()">Update</button>
+                <button class="updateBtn" @click="updateValue()">Update</button>
             </div>
         </div>    
     </div>
