@@ -14,6 +14,9 @@ export default {
     },
     redirectToongoingsurveys() {
       this.$router.push('/ongoingsurveys')
+    },
+    redirectToLogin() {
+      this.$router.push('/')
     }
   }
 }
@@ -77,7 +80,7 @@ export default {
                     Settings
                 </span>
             </div>
-            <div class="panels">
+            <div class="panels" @click="redirectToLogin">
                 <span id="lower-icon" class="material-symbols-rounded">
                     logout
                 </span>
@@ -248,4 +251,5 @@ body{
 .panels.active span{
     color: #343A40;
 }
+
 </style>
